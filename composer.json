@@ -1,0 +1,26 @@
+{
+    "name": "phpactor/docblock-parser",
+    "description": "Simple Docblock Parser",
+    "type": "library",
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phpactor\\Docblock\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Phpactor\\Docblock\\Tests\\": "tests/"
+        }
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Daniel Leech",
+            "email": "daniel@dantleech.com"
+        }
+    ],
+    "minimum-stability": "dev"
+}
