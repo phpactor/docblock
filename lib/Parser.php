@@ -2,9 +2,12 @@
 
 namespace Phpactor\Docblock;
 
+use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockType;
+
 class Parser
 {
-    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([,\\\()$\w\s]+)?}';
+    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\[\\]&|,\\\()$\w\s]+)?}';
 
     public function parse($docblock): array
     {
@@ -29,5 +32,35 @@ class Parser
         }
 
         return [$prose, $tags ];
+    }
+
+    public function parseTypes(string $types): DocblockTypes
+    {
+        $types = str_replace('&', '|', $types);
+        $types = explode('|', $types);
+        $docblockTypes = [];
+
+        foreach ($types as $type) {
+            $type = trim($type);
+
+            if (substr($type, -2) == '[]') {
+                $type = substr($type, 0, -2);
+                $docblockTypes[] = DocblockType::arrayOf($type);
+                continue;
+            }
+
+            $docblockTypes[] = DocblockType::of($type);
+        }
+
+        return DocblockTypes::fromDocblockTypes($docblockTypes);
+    }
+
+    public function parseMethodName($methodName)
+    {
+        if (false !== $pos = strpos($methodName, '(')) {
+            return substr($methodName, 0, $pos);
+        }
+
+        return $methodName;
     }
 }

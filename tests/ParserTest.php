@@ -4,6 +4,8 @@ namespace Phpactor\Docblock\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Parser;
+use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockType;
 
 class ParserTest extends TestCase
 {
@@ -66,6 +68,33 @@ EOT
             [
                 '/** @method \Barfoo foobar($foobar, string $foo) */',
                 [ 'method' => [ [ '\Barfoo', 'foobar($foobar,', 'string', '$foo)' ] ] ],
+            ],
+            [
+                '/** @method Foobar[] */',
+                [ 'method' => [ [ 'Foobar[]' ] ] ],
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider provideParseTypes
+     */
+    public function testParseTypes(string $types, DocblockTypes $expected)
+    {
+        $parser = new Parser();
+        $this->assertEquals($expected, $parser->parseTypes($types));
+    }
+
+    public function provideParseTypes()
+    {
+        return [
+            [
+                'Foobar',
+                DocblockTypes::fromStringTypes(['Foobar']),
+            ],
+            [
+                'Foobar[]',
+                DocblockTypes::fromDocblockTypes([ DocblockType::arrayOf('Foobar') ]),
             ],
         ];
     }

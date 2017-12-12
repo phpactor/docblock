@@ -4,36 +4,24 @@ namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
 use Phpactor\Docblock\DocblockException;
+use Phpactor\Docblock\Tag\DocblockTypes;
 
 class MethodTag implements Tag
 {
     /**
      * @var string
      */
-    private $type;
+    private $types;
 
     /**
      * @var string
      */
     private $methodName;
 
-    public function __construct(array $metadata)
+    public function __construct(DocblockTypes $types, $methodName)
     {
-        if (null === $type = array_shift($metadata)) {
-            throw new DocblockException(
-                'Method tag has no type'
-            );
-        }
-
-        $this->type = $type;
-
-        if (null === $methodName = array_shift($metadata)) {
-            throw new DocblockException(
-                'Method tag has no name'
-            );
-        }
-
-        $this->methodName = $this->extractMethodName($methodName);
+        $this->types = $types;
+        $this->methodName = $methodName;
     }
 
     public function name()
@@ -41,22 +29,13 @@ class MethodTag implements Tag
         return 'method';
     }
 
-    public function type(): string
+    public function types(): DocblockTypes
     {
-        return $this->type;
+        return $this->types;
     }
 
     public function methodName()
     {
         return $this->methodName;
-    }
-
-    private function extractMethodName(string $methodName)
-    {
-        if (false !== $pos = strpos($methodName, '(')) {
-            return substr($methodName, 0, $pos);
-        }
-
-        return $methodName;
     }
 }

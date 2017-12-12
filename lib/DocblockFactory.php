@@ -7,6 +7,7 @@ use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Parser;
+use Phpactor\Docblock\Tag\ReturnTag;
 
 class DocblockFactory
 {
@@ -28,18 +29,73 @@ class DocblockFactory
             foreach ($metadatas as $metadata) {
                 switch ($tagName) {
                     case 'var':
-                        $tags[] = new VarTag($metadata);
+                        $tags[] = $this->createVarTag($metadata);
                         continue;
                     case 'param':
-                        $tags[] = new ParamTag($metadata);
+                        $tags[] = $this->createParamTag($metadata);
                         continue;
                     case 'method':
-                        $tags[] = new MethodTag($metadata);
+                        $tags[] = $this->createMethodTag($metadata);
+                        continue;
+                    case 'return':
+                        $tags[] = $this->createReturnTag($metadata);
                         continue;
                 }
             }
         }
 
         return Docblock::fromProseAndTags(implode(PHP_EOL, $prose), $tags);
+    }
+
+    private function createVarTag(array $metadata): VarTag
+    {
+        if (null === $types = array_shift($metadata)) {
+            throw new DocblockException(
+                '@var tag has no type(s)'
+            );
+        }
+
+        $varName = array_shift($metadata);
+
+        return new VarTag($this->parser->parseTypes($types), $varName);
+    }
+
+    private function createParamTag(array $metadata): ParamTag
+    {
+        if (null === $types = array_shift($metadata)) {
+            throw new DocblockException(
+                '@param tag has no type(s)'
+            );
+        }
+
+        $varName = array_shift($metadata);
+
+        return new ParamTag($this->parser->parseTypes($types), $varName);
+    }
+
+    private function createMethodTag(array $metadata): MethodTag
+    {
+        if (null === $types = array_shift($metadata)) {
+            throw new DocblockException(
+                '@method tag has no type(s)'
+            );
+        }
+
+        $methodName = array_shift($metadata);
+
+        return new MethodTag($this->parser->parseTypes($types), $this->parser->parseMethodName($methodName));
+    }
+
+    private function createReturnTag(array $metadata): ReturnTag
+    {
+        if (null === $types = array_shift($metadata)) {
+            throw new DocblockException(
+                '@return tag has no type(s)'
+            );
+        }
+
+        $methodName = array_shift($metadata);
+
+        return new ReturnTag($this->parser->parseTypes($types), $this->parser->parseMethodName($methodName));
     }
 }

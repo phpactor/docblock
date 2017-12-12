@@ -9,49 +9,51 @@ use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockFactory;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
+use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\Tag\ReturnTag;
 
 class DocblockFactoryTest extends TestCase
 {
     /**
-     * @var Parser
-     */
-    private $parser;
-
-    public function setUp()
-    {
-        $this->parser = $this->prophesize(Parser::class);
-    }
-
-    /**
      * @dataProvider provideCreate
      */
-    public function testCreate($tagData, Docblock $expected)
+    public function testCreate($docblock, Docblock $expected)
     {
-        $factory = new DocblockFactory($this->parser->reveal());
-        $docblock = 'ABCD';
-        $this->parser->parse($docblock)->willReturn([ [], $tagData ]);
+        $factory = new DocblockFactory();
         $docblock = $factory->create($docblock);
-        $this->assertEquals($expected, $docblock);
+        $this->assertEquals($expected->tags(), $docblock->tags());
     }
 
     public function provideCreate()
     {
         return [
-            [
-                [ ],
+            'no tags' => [
+                '/** */',
                 Docblock::fromTags([]),
             ],
-            [
-                [ 'var' => [ [ 'Foobar' ] ] ],
-                Docblock::fromTags([ new VarTag([ 'Foobar' ]), ]),
+            'var single type' => [
+                '** @var Foobar */',
+                Docblock::fromTags([ new VarTag(DocblockTypes::fromStringTypes([ 'Foobar' ])), ]),
             ],
-            [
-                [ 'param' => [ [ 'Foobar', '$foobar' ] ] ],
-                Docblock::fromTags([ new ParamTag([ 'Foobar', '$foobar' ]), ]),
+            'var multiple types' => [
+                '/** @var Foobar|string|null */',
+                Docblock::fromTags([ new VarTag(DocblockTypes::fromStringTypes([ 'Foobar', 'string', 'null' ])) ]),
             ],
-            [
-                [ 'method' => [ [ 'Foobar', 'foobar()' ] ] ],
-                Docblock::fromTags([ new MethodTag([ 'Foobar', 'foobar()' ]), ]),
+            'var union types' => [
+                '/** @var Foobar&string */',
+                Docblock::fromTags([ new VarTag(DocblockTypes::fromStringTypes([ 'Foobar', 'string' ])) ]),
+            ],
+            'param single type' => [
+                '/** @param Foobar $foobar */',
+                Docblock::fromTags([ new ParamTag(DocblockTypes::fromStringTypes([ 'Foobar' ]), '$foobar') ]),
+            ],
+            'method single type' => [
+                '/** @method Foobar foobar() */',
+                Docblock::fromTags([ new MethodTag(DocblockTypes::fromStringTypes([ 'Foobar' ]), 'foobar') ]),
+            ],
+            'return single type' => [
+                '/** @return Foobar foobar() */',
+                Docblock::fromTags([ new ReturnTag(DocblockTypes::fromStringTypes([ 'Foobar' ])) ]),
             ],
         ];
     }

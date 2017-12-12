@@ -5,21 +5,16 @@ namespace Phpactor\Docblock\Tests\Tag;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockException;
+use Phpactor\Docblock\Tag\DocblockTypes;
 
 class VarTagTest extends TestCase
 {
-    public function testExceptionNoType()
-    {
-        $this->expectException(DocblockException::class);
-        new VarTag([]);
-    }
-
     public function testGetSet()
     {
-        $tag = new VarTag([ 'Foobar' ]);
-        $this->assertEquals('Foobar', $tag->type());
+        $tag = new VarTag(DocblockTypes::fromStringTypes([ 'Foobar' ]));
+        $this->assertEquals(DocblockTypes::fromStringTypes(['Foobar']), $tag->types());
 
-        $tag = new VarTag([ 'Foobar', '$foobar' ]);
+        $tag = new VarTag(DocblockTypes::fromStringTypes([ 'Foobar' ]), '$foobar');
         $this->assertEquals('$foobar', $tag->varName());
     }
 }

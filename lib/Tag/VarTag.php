@@ -4,6 +4,7 @@ namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
 use Phpactor\Docblock\DocblockException;
+use Phpactor\Docblock\Tag\DocblockTypes;
 
 class VarTag implements Tag
 {
@@ -13,32 +14,24 @@ class VarTag implements Tag
     }
 
     /**
-     * @var string
+     * @var array
      */
-    private $type;
+    private $types;
 
     /**
      * @var string
      */
     private $varName;
 
-    public function __construct(array $metadata)
+    public function __construct(DocblockTypes $types, $varName = null)
     {
-        if (null === $type = array_shift($metadata)) {
-            throw new DocblockException(
-                'Var tag has no type'
-            );
-        }
-
-        $varName = array_shift($metadata);
-
-        $this->type = $type;
+        $this->types = $types;
         $this->varName = $varName;
     }
 
-    public function type(): string
+    public function types(): DocblockTypes
     {
-        return $this->type;
+        return $this->types;
     }
 
     public function varName()
