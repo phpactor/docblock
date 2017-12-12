@@ -28,7 +28,7 @@ class DocblockFactory
         list($prose, $tagData) = $this->parser->parse($docblock);
         foreach ($tagData as $tagName => $metadatas) {
             foreach ($metadatas as $metadata) {
-                switch ($tagName) {
+                switch (strtolower(trim($tagName))) {
                     case 'var':
                         $tags[] = $this->createVarTag($metadata);
                         continue;
@@ -41,7 +41,7 @@ class DocblockFactory
                     case 'return':
                         $tags[] = $this->createReturnTag($metadata);
                         continue;
-                    case 'inheritDoc':
+                    case 'inheritdoc':
                         $tags[] = new InheritTag();
                 }
             }
