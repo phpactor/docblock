@@ -17,7 +17,9 @@ class Parser
 
         foreach ($lines as $line) {
             if (0 === preg_match(self::TAG, $line, $matches)) {
-                $prose[] = $line;
+                if (null !== $line = $this->extractProse($line)) {
+                    $prose[] = $line;
+                }
                 continue;
             }
 
@@ -62,5 +64,32 @@ class Parser
         }
 
         return $methodName;
+    }
+
+    private function extractProse(string $line)
+    {
+        $line = trim($line);
+
+        if (empty($line)) {
+            return;
+        }
+
+        if ($line == '/**') {
+            return;
+        }
+
+        if ($line == '*') {
+            return '';
+        }
+
+        if (substr($line, 0, 2) == '* ') {
+            $line = substr($line, 2);
+        }
+
+        if (substr($line, 0, 2) == '*/') {
+            return;
+        }
+
+        return $line;
     }
 }

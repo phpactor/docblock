@@ -98,4 +98,33 @@ EOT
             ],
         ];
     }
+
+    /**
+     * @dataProvider provideParseProse
+     */
+    public function testParseProse($docblock, $expected)
+    {
+        $parser = new Parser();
+        list($prose, $tags) = $parser->parse($docblock);
+        $this->assertEquals($expected, $prose);
+    }
+
+    public function provideParseProse()
+    {
+        return [
+            [
+                <<<'EOT'
+/**
+  * Hello
+  *
+  * This is a description
+  *
+  * @return Foo
+ */
+EOT
+                ,
+                [ 'Hello', '', 'This is a description', '' ],
+            ],
+        ];
+    }
 }
