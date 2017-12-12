@@ -14,9 +14,9 @@ class Docblock
         $this->tags = $tags;
     }
 
-    public static function fromTags(array $array)
+    public static function fromTags(array $tags)
     {
-        return new self(Tags::fromArray($array));
+        return new self(Tags::fromArray($tags));
     }
 
     public function tags(): Tags
