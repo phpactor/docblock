@@ -1,5 +1,5 @@
 {
-    "name": "phpactor/docblock-parser",
+    "name": "phpactor/docblock",
     "description": "Simple Docblock Parser",
     "type": "library",
     "require-dev": {
