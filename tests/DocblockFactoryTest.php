@@ -11,6 +11,7 @@ use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Tag\DocblockTypes;
 use Phpactor\Docblock\Tag\ReturnTag;
+use Phpactor\Docblock\InheritTag;
 
 class DocblockFactoryTest extends TestCase
 {
@@ -54,6 +55,10 @@ class DocblockFactoryTest extends TestCase
             'return single type' => [
                 '/** @return Foobar foobar() */',
                 Docblock::fromTags([ new ReturnTag(DocblockTypes::fromStringTypes([ 'Foobar' ])) ]),
+            ],
+            'inheritdoc' => [
+                '/** {@inheritDoc} */',
+                Docblock::fromTags([ new InheritTag() ]),
             ],
         ];
     }

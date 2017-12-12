@@ -2,7 +2,7 @@
 
 namespace Phpactor\Docblock;
 
-final class Tags implements \IteratorAggregate
+final class Tags implements \IteratorAggregate, \Countable
 {
     private $tags = [];
 
@@ -28,6 +28,14 @@ final class Tags implements \IteratorAggregate
         return new self(array_filter($this->tags, function (Tag $tag) use ($name) {
             return $name == $tag->name();
         }));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function count()
+    {
+        return count($this->tags);
     }
 
     private function add(Tag $item)

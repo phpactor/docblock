@@ -8,6 +8,7 @@ use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Parser;
 use Phpactor\Docblock\Tag\ReturnTag;
+use Phpactor\Docblock\InheritTag;
 
 class DocblockFactory
 {
@@ -40,6 +41,8 @@ class DocblockFactory
                     case 'return':
                         $tags[] = $this->createReturnTag($metadata);
                         continue;
+                    case 'inheritDoc':
+                        $tags[] = new InheritTag();
                 }
             }
         }
