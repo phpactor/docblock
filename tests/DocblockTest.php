@@ -28,4 +28,17 @@ class DocblockTest extends TestCase
 
         $this->assertEquals(Tags::fromArray([$this->tag1->reveal()]), $docblock->tags());
     }
+
+    public function testFromProseAndTags()
+    {
+        $docblock = Docblock::fromProseAndTags(
+            'Hello this is prose',
+            [
+                $this->tag1->reveal()
+            ]
+        );
+
+        $this->assertEquals(Tags::fromArray([$this->tag1->reveal()]), $docblock->tags());
+        $this->assertEquals('Hello this is prose', $docblock->prose());
+    }
 }

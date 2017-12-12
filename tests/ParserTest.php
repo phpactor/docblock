@@ -13,7 +13,7 @@ class ParserTest extends TestCase
     public function testParseTags($docblock, $expected)
     {
         $parser = new Parser();
-        $tags = $parser->parseTags($docblock);
+        list($prose, $tags) = $parser->parse($docblock);
         $this->assertEquals($expected, $tags);
     }
 

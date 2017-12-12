@@ -29,7 +29,7 @@ class DocblockFactoryTest extends TestCase
     {
         $factory = new DocblockFactory($this->parser->reveal());
         $docblock = 'ABCD';
-        $this->parser->parseTags($docblock)->willReturn($tagData);
+        $this->parser->parse($docblock)->willReturn([ [], $tagData ]);
         $docblock = $factory->create($docblock);
         $this->assertEquals($expected, $docblock);
     }

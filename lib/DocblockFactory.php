@@ -6,6 +6,7 @@ use Phpactor\Docblock\Docblock;
 use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
+use Phpactor\Docblock\Parser;
 
 class DocblockFactory
 {
@@ -14,15 +15,16 @@ class DocblockFactory
      */
     private $parser;
 
-    public function __construct(Parser $parser)
+    public function __construct(Parser $parser = null)
     {
-        $this->parser = $parser;
+        $this->parser = $parser ?: new Parser();
     }
 
     public function create(string $docblock): Docblock
     {
         $tags = [];
-        foreach ($this->parser->parseTags($docblock) as $tagName => $metadatas) {
+        list($prose, $tagData) = $this->parser->parse($docblock);
+        foreach ($tagData as $tagName => $metadatas) {
             foreach ($metadatas as $metadata) {
                 switch ($tagName) {
                     case 'var':
@@ -38,6 +40,6 @@ class DocblockFactory
             }
         }
 
-        return Docblock::fromTags($tags);
+        return Docblock::fromProseAndTags(implode(PHP_EOL, $prose), $tags);
     }
 }

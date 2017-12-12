@@ -23,6 +23,13 @@ final class Tags implements \IteratorAggregate
         return new \ArrayIterator($this->tags);
     }
 
+    public function byName(string $name): Tags
+    {
+        return new self(array_filter($this->tags, function (Tag $tag) use ($name) {
+            return $name == $tag->name();
+        }));
+    }
+
     private function add(Tag $item)
     {
         $this->tags[] = $item;

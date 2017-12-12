@@ -7,6 +7,11 @@ use Phpactor\Docblock\DocblockException;
 
 class VarTag implements Tag
 {
+    public function name()
+    {
+        return 'var';
+    }
+
     /**
      * @var string
      */

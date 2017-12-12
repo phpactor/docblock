@@ -7,4 +7,8 @@ use Phpactor\Docblock\Tag\VarTag;
 
 class ParamTag extends VarTag
 {
+    public function name()
+    {
+        return 'param';
+    }
 }

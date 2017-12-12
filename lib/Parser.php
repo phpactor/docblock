@@ -6,13 +6,15 @@ class Parser
 {
     const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([,\\\()$\w\s]+)?}';
 
-    public function parseTags($docblock): array
+    public function parse($docblock): array
     {
         $lines = explode(PHP_EOL, $docblock);
         $tags = [];
+        $prose = [];
 
         foreach ($lines as $line) {
             if (0 === preg_match(self::TAG, $line, $matches)) {
+                $prose[] = $line;
                 continue;
             }
 
@@ -26,6 +28,6 @@ class Parser
             $tags[$tagName][] = $metadata;
         }
 
-        return $tags;
+        return [$prose, $tags ];
     }
 }

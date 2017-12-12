@@ -36,6 +36,11 @@ class MethodTag implements Tag
         $this->methodName = $this->extractMethodName($methodName);
     }
 
+    public function name()
+    {
+        return 'method';
+    }
+
     public function type(): string
     {
         return $this->type;
