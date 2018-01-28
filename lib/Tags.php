@@ -25,8 +25,9 @@ final class Tags implements \IteratorAggregate, \Countable
 
     public function byName(string $name): Tags
     {
+        $name = strtolower($name);
         return new self(array_filter($this->tags, function (Tag $tag) use ($name) {
-            return $name == $tag->name();
+            return $name == strtolower($tag->name());
         }));
     }
 
