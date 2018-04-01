@@ -27,6 +27,14 @@ class ParserTest extends TestCase
                 [ 'var' => [ [ 'Foobar' ] ] ],
             ],
             [
+                '/** @var Foobar[] */',
+                [ 'var' => [ [ 'Foobar[]' ] ] ],
+            ],
+            'for collection' => [
+                '/** @var Foobar<Item> */',
+                [ 'var' => [ [ 'Foobar<Item>' ] ] ],
+            ],
+            [
                 '/** @var Foobar $foobar */',
                 [ 'var' => [ [ 'Foobar', '$foobar' ] ] ],
             ],
@@ -95,6 +103,10 @@ EOT
             [
                 'Foobar[]',
                 DocblockTypes::fromDocblockTypes([ DocblockType::arrayOf('Foobar') ]),
+            ],
+            [
+                'Foobar<Item>',
+                DocblockTypes::fromDocblockTypes([ DocblockType::collectionOf('Foobar', 'Item') ]),
             ],
         ];
     }

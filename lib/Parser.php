@@ -7,7 +7,7 @@ use Phpactor\Docblock\DocblockType;
 
 class Parser
 {
-    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\[\\]&|,\\\()$\w\s]+)?}';
+    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\<\\>\\[\\]&|,\\\()$\w\s]+)?}';
 
     public function parse($docblock): array
     {
@@ -44,6 +44,13 @@ class Parser
 
         foreach ($types as $type) {
             $type = trim($type);
+
+            if (preg_match('{^(.*)<(.*)>$}', $type, $matches)) {
+                $type = $matches[1];
+                $collectionType = $matches[2];
+                $docblockTypes[] = DocblockType::collectionOf($type, $collectionType);
+                continue;
+            }
 
             if (substr($type, -2) == '[]') {
                 $type = substr($type, 0, -2);
