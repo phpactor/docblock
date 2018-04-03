@@ -29,7 +29,7 @@ class Parser
                 $tags[$tagName] = [];
             }
 
-            $metadata = explode(' ', trim($matches[2] ?? ''));
+            $metadata = array_values(array_filter(explode(' ', trim($matches[2] ?? ''))));
             $tags[$tagName][] = $metadata;
         }
 

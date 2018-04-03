@@ -21,66 +21,77 @@ class ParserTest extends TestCase
 
     public function provideParseTags()
     {
-        return [
-            [
-                '/** @var Foobar */',
-                [ 'var' => [ [ 'Foobar' ] ] ],
-            ],
-            [
-                '/** @var Foobar[] */',
-                [ 'var' => [ [ 'Foobar[]' ] ] ],
-            ],
-            'for collection' => [
-                '/** @var Foobar<Item> */',
-                [ 'var' => [ [ 'Foobar<Item>' ] ] ],
-            ],
-            [
-                '/** @var Foobar $foobar */',
-                [ 'var' => [ [ 'Foobar', '$foobar' ] ] ],
-            ],
-            [
-                <<<'EOT'
+        yield [
+            '/** @var Foobar */',
+            [ 'var' => [ [ 'Foobar' ] ] ],
+        ];
+
+        yield [
+            '/** @var Foobar[] */',
+            [ 'var' => [ [ 'Foobar[]' ] ] ],
+        ];
+
+        yield 'for collection' => [
+            '/** @var Foobar<Item> */',
+            [ 'var' => [ [ 'Foobar<Item>' ] ] ],
+        ];
+
+        yield [
+            '/** @var Foobar $foobar */',
+            [ 'var' => [ [ 'Foobar', '$foobar' ] ] ],
+        ];
+
+        yield 'named var with irregular spacing' => [
+            '/** @var   Foobar  $foobar */',
+            [ 'var' => [ [ 'Foobar', '$foobar' ] ] ],
+        ];
+
+        yield [
+            <<<'EOT'
 /** 
  * @var Foobar $foobar 
  * @var Barfoo $barfoo
  **/
 EOT
-                ,
-                ['var' => [
-                    [ 'Foobar', '$foobar' ],
-                    [ 'Barfoo', '$barfoo' ]
-                ]],
-            ],
-            [
-                <<<'EOT'
+        ,
+            ['var' => [
+                [ 'Foobar', '$foobar' ],
+                [ 'Barfoo', '$barfoo' ]
+            ]],
+        ];
+
+        yield [
+            <<<'EOT'
 /** 
  * @var Foobar $foobar Hello this is description
  **/
 EOT
-                ,
-                ['var' => [
-                    [ 'Foobar', '$foobar', 'Hello',  'this', 'is', 'description' ],
-                ]],
-            ],
-            [
-                <<<'EOT'
+        ,
+            ['var' => [
+                [ 'Foobar', '$foobar', 'Hello',  'this', 'is', 'description' ],
+            ]],
+        ];
+
+        yield [
+            <<<'EOT'
 /** 
  * @method \Foobar\Barfoo foobar()
  **/
 EOT
-                ,
-                ['method' => [
-                    [ '\Foobar\Barfoo', 'foobar()' ],
-                ]],
-            ],
-            [
-                '/** @method \Barfoo foobar($foobar, string $foo) */',
-                [ 'method' => [ [ '\Barfoo', 'foobar($foobar,', 'string', '$foo)' ] ] ],
-            ],
-            [
-                '/** @method Foobar[] */',
-                [ 'method' => [ [ 'Foobar[]' ] ] ],
-            ],
+        ,
+            ['method' => [
+                [ '\Foobar\Barfoo', 'foobar()' ],
+            ]],
+        ];
+
+        yield [
+            '/** @method \Barfoo foobar($foobar, string $foo) */',
+            [ 'method' => [ [ '\Barfoo', 'foobar($foobar,', 'string', '$foo)' ] ] ],
+        ];
+
+        yield [
+            '/** @method Foobar[] */',
+            [ 'method' => [ [ 'Foobar[]' ] ] ],
         ];
     }
 
@@ -134,9 +145,9 @@ EOT
   * @return Foo
  */
 EOT
-                ,
-                [ 'Hello', '', 'This is a description', '' ],
-            ],
-        ];
+        ,
+            [ 'Hello', '', 'This is a description', '' ],
+        ],
+    ];
     }
 }
