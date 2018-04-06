@@ -60,6 +60,23 @@ class DocblockFactoryTest extends TestCase
                 '/** {@inheritDoc} */',
                 Docblock::fromTags([ new InheritTag() ]),
             ],
+
+            'var no type' => [
+                '/** @var  */',
+                Docblock::fromTags([ new VarTag(DocblockTypes::empty()) ]),
+            ],
+            'param no type' => [
+                '/** @param */',
+                Docblock::fromTags([ new ParamTag(DocblockTypes::empty(), '') ]),
+            ],
+            'method no type' => [
+                '/** @method  */',
+                Docblock::fromTags([ new MethodTag(DocblockTypes::empty(), '') ]),
+            ],
+            'return no type' => [
+                '/** @return  */',
+                Docblock::fromTags([ new ReturnTag(DocblockTypes::empty()) ]),
+            ],
         ];
     }
 }

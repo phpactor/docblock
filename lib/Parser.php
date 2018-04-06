@@ -38,6 +38,10 @@ class Parser
 
     public function parseTypes(string $types): DocblockTypes
     {
+        if (empty($types)) {
+            return DocblockTypes::empty();
+        }
+
         $types = str_replace('&', '|', $types);
         $types = explode('|', $types);
         $docblockTypes = [];

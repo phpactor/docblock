@@ -16,6 +16,11 @@ final class DocblockTypes implements \IteratorAggregate
         }
     }
 
+    public function empty(): DocblockTypes
+    {
+        return new self([]);
+    }
+
     public static function fromStringTypes($types)
     {
         return new self(array_map(function (string $type) {

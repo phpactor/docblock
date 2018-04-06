@@ -9,6 +9,7 @@ use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Parser;
 use Phpactor\Docblock\Tag\ReturnTag;
 use Phpactor\Docblock\InheritTag;
+use Phpactor\Docblock\Tag\DocblockTypes;
 
 class DocblockFactory
 {
@@ -53,9 +54,7 @@ class DocblockFactory
     private function createVarTag(array $metadata): VarTag
     {
         if (null === $types = array_shift($metadata)) {
-            throw new DocblockException(
-                '@var tag has no type(s)'
-            );
+            $types = '';
         }
 
         $varName = array_shift($metadata);
@@ -66,9 +65,7 @@ class DocblockFactory
     private function createParamTag(array $metadata): ParamTag
     {
         if (null === $types = array_shift($metadata)) {
-            throw new DocblockException(
-                '@param tag has no type(s)'
-            );
+            $types = '';
         }
 
         $varName = array_shift($metadata);
@@ -79,9 +76,7 @@ class DocblockFactory
     private function createMethodTag(array $metadata): MethodTag
     {
         if (null === $types = array_shift($metadata)) {
-            throw new DocblockException(
-                '@method tag has no type(s)'
-            );
+            $types = '';
         }
 
         $methodName = array_shift($metadata);
@@ -92,9 +87,7 @@ class DocblockFactory
     private function createReturnTag(array $metadata): ReturnTag
     {
         if (null === $types = array_shift($metadata)) {
-            throw new DocblockException(
-                '@return tag has no type(s)'
-            );
+            $types = '';
         }
 
         $methodName = array_shift($metadata);
