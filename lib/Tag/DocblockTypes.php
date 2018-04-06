@@ -16,7 +16,7 @@ final class DocblockTypes implements \IteratorAggregate
         }
     }
 
-    public function empty(): DocblockTypes
+    public static function empty(): DocblockTypes
     {
         return new self([]);
     }
