@@ -59,7 +59,12 @@ class DocblockFactoryTest extends TestCase
                 Docblock::fromTags([ new PropertyTag(DocblockTypes::fromStringTypes(['string']), 'foo') ]),
             ],
 
-            'property no nothing' => [
+            'property no type' => [
+                '/** @property Foo */',
+                Docblock::fromTags([ new PropertyTag(DocblockTypes::fromStringTypes(['Foo']), '') ]),
+            ],
+
+            'property with nothing' => [
                 '/** @property */',
                 Docblock::fromTags([ new PropertyTag(DocblockTypes::empty(), '') ]),
             ],
