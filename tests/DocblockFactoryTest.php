@@ -5,6 +5,7 @@ namespace Phpactor\Docblock\Tests;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Parser;
 use Phpactor\Docblock\Docblock;
+use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockFactory;
 use Phpactor\Docblock\Tag\ParamTag;
@@ -52,6 +53,17 @@ class DocblockFactoryTest extends TestCase
                 '/** @method Foobar foobar() */',
                 Docblock::fromTags([ new MethodTag(DocblockTypes::fromStringTypes([ 'Foobar' ]), 'foobar') ]),
             ],
+
+            'property' => [
+                '/** @property string $foo */',
+                Docblock::fromTags([ new PropertyTag(DocblockTypes::fromStringTypes(['string']), 'foo') ]),
+            ],
+
+            'property no nothing' => [
+                '/** @property */',
+                Docblock::fromTags([ new PropertyTag(DocblockTypes::empty(), '') ]),
+            ],
+
             'return single type' => [
                 '/** @return Foobar foobar() */',
                 Docblock::fromTags([ new ReturnTag(DocblockTypes::fromStringTypes([ 'Foobar' ])) ]),

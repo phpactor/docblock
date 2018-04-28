@@ -3,11 +3,12 @@
 namespace Phpactor\Docblock;
 
 use Phpactor\Docblock\Docblock;
-use Phpactor\Docblock\Tag\VarTag;
-use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
-use Phpactor\Docblock\Parser;
+use Phpactor\Docblock\Tag\ParamTag;
+use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\ReturnTag;
+use Phpactor\Docblock\Tag\VarTag;
+use Phpactor\Docblock\Parser;
 use Phpactor\Docblock\InheritTag;
 use Phpactor\Docblock\Tag\DocblockTypes;
 
@@ -38,6 +39,9 @@ class DocblockFactory
                         continue;
                     case 'method':
                         $tags[] = $this->createMethodTag($metadata);
+                        continue;
+                    case 'property':
+                        $tags[] = $this->createPropertyTag($metadata);
                         continue;
                     case 'return':
                         $tags[] = $this->createReturnTag($metadata);
@@ -93,5 +97,16 @@ class DocblockFactory
         $methodName = array_shift($metadata);
 
         return new ReturnTag($this->parser->parseTypes($types), $this->parser->parseMethodName($methodName));
+    }
+
+    private function createPropertyTag($metadata)
+    {
+        if (null === $types = array_shift($metadata)) {
+            $types = '';
+        }
+
+        $propertyName = array_shift($metadata);
+
+        return new PropertyTag($this->parser->parseTypes($types), ltrim($propertyName, '$'));
     }
 }
