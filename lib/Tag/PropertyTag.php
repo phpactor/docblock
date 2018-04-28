@@ -13,10 +13,10 @@ class PropertyTag implements Tag
 
     private $propertyName;
 
-    public function __construct(DocblockTypes $types, $methodName)
+    public function __construct(DocblockTypes $types, string $propertyName)
     {
         $this->types = $types;
-        $this->methodName = $methodName;
+        $this->propertyName = $propertyName;
     }
 
     public function name()
@@ -27,5 +27,10 @@ class PropertyTag implements Tag
     public function propertyName()
     {
         return $this->propertyName;
+    }
+
+    public function types(): DocblockTypes
+    {
+        return $this->types;
     }
 }
