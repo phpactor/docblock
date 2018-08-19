@@ -3,6 +3,7 @@
 namespace Phpactor\Docblock;
 
 use Phpactor\Docblock\Docblock;
+use Phpactor\Docblock\Parser\MethodParser;
 use Phpactor\Docblock\Parser\TypesParser;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Tag\ParamTag;
@@ -25,10 +26,16 @@ class DocblockFactory
      */
     private $typesParser;
 
-    public function __construct(Parser $parser = null, TypesParser $typesParser = null)
+    /**
+     * @var MethodParser
+     */
+    private $methodParser;
+
+    public function __construct(Parser $parser = null, TypesParser $typesParser = null, MethodParser $methodParser = null)
     {
         $this->parser = $parser ?: new Parser();
         $this->typesParser = $typesParser ?: new TypesParser();
+        $this->methodParser = $methodParser ?: new MethodParser($this->typesParser);
     }
 
     public function create(string $docblock): Docblock
@@ -86,13 +93,7 @@ class DocblockFactory
 
     private function createMethodTag(array $metadata): MethodTag
     {
-        if (null === $types = array_shift($metadata)) {
-            $types = '';
-        }
-
-        $methodName = array_shift($metadata);
-
-        return new MethodTag($this->typesParser->parseTypes($types), $this->parser->parseMethodName($methodName));
+        return $this->methodParser->parseMethod($metadata);
     }
 
     private function createReturnTag(array $metadata): ReturnTag
@@ -103,7 +104,7 @@ class DocblockFactory
 
         $methodName = array_shift($metadata);
 
-        return new ReturnTag($this->typesParser->parseTypes($types), $this->parser->parseMethodName($methodName));
+        return new ReturnTag($this->typesParser->parseTypes($types));
     }
 
     private function createPropertyTag($metadata)

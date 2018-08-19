@@ -36,15 +36,6 @@ class Parser
         return [$prose, $tags ];
     }
 
-    public function parseMethodName($methodName)
-    {
-        if (false !== $pos = strpos($methodName, '(')) {
-            return substr($methodName, 0, $pos);
-        }
-
-        return $methodName;
-    }
-
     private function extractProse(string $line)
     {
         $line = trim($line);
