@@ -96,33 +96,6 @@ EOT
     }
 
     /**
-     * @dataProvider provideParseTypes
-     */
-    public function testParseTypes(string $types, DocblockTypes $expected)
-    {
-        $parser = new Parser();
-        $this->assertEquals($expected, $parser->parseTypes($types));
-    }
-
-    public function provideParseTypes()
-    {
-        return [
-            [
-                'Foobar',
-                DocblockTypes::fromStringTypes(['Foobar']),
-            ],
-            [
-                'Foobar[]',
-                DocblockTypes::fromDocblockTypes([ DocblockType::arrayOf('Foobar') ]),
-            ],
-            [
-                'Foobar<Item>',
-                DocblockTypes::fromDocblockTypes([ DocblockType::collectionOf('Foobar', 'Item') ]),
-            ],
-        ];
-    }
-
-    /**
      * @dataProvider provideParseProse
      */
     public function testParseProse($docblock, $expected)

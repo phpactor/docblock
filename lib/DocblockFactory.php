@@ -3,6 +3,7 @@
 namespace Phpactor\Docblock;
 
 use Phpactor\Docblock\Docblock;
+use Phpactor\Docblock\Parser\TypesParser;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\PropertyTag;
@@ -19,9 +20,15 @@ class DocblockFactory
      */
     private $parser;
 
-    public function __construct(Parser $parser = null)
+    /**
+     * @var TypesParser
+     */
+    private $typesParser;
+
+    public function __construct(Parser $parser = null, TypesParser $typesParser = null)
     {
         $this->parser = $parser ?: new Parser();
+        $this->typesParser = $typesParser ?: new TypesParser();
     }
 
     public function create(string $docblock): Docblock
@@ -63,7 +70,7 @@ class DocblockFactory
 
         $varName = array_shift($metadata);
 
-        return new VarTag($this->parser->parseTypes($types), $varName);
+        return new VarTag($this->typesParser->parseTypes($types), $varName);
     }
 
     private function createParamTag(array $metadata): ParamTag
@@ -74,7 +81,7 @@ class DocblockFactory
 
         $varName = array_shift($metadata);
 
-        return new ParamTag($this->parser->parseTypes($types), $varName);
+        return new ParamTag($this->typesParser->parseTypes($types), $varName);
     }
 
     private function createMethodTag(array $metadata): MethodTag
@@ -85,7 +92,7 @@ class DocblockFactory
 
         $methodName = array_shift($metadata);
 
-        return new MethodTag($this->parser->parseTypes($types), $this->parser->parseMethodName($methodName));
+        return new MethodTag($this->typesParser->parseTypes($types), $this->parser->parseMethodName($methodName));
     }
 
     private function createReturnTag(array $metadata): ReturnTag
@@ -96,7 +103,7 @@ class DocblockFactory
 
         $methodName = array_shift($metadata);
 
-        return new ReturnTag($this->parser->parseTypes($types), $this->parser->parseMethodName($methodName));
+        return new ReturnTag($this->typesParser->parseTypes($types), $this->parser->parseMethodName($methodName));
     }
 
     private function createPropertyTag($metadata)
@@ -107,6 +114,6 @@ class DocblockFactory
 
         $propertyName = array_shift($metadata);
 
-        return new PropertyTag($this->parser->parseTypes($types), ltrim($propertyName, '$'));
+        return new PropertyTag($this->typesParser->parseTypes($types), ltrim($propertyName, '$'));
     }
 }
