@@ -3,7 +3,7 @@
 namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 
 class ReturnTag implements Tag
 {

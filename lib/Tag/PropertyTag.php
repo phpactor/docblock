@@ -3,6 +3,7 @@
 namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
+use Phpactor\Docblock\DocblockTypes;
 
 class PropertyTag implements Tag
 {

@@ -12,7 +12,7 @@ use Phpactor\Docblock\Tag\ReturnTag;
 use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\Parser;
 use Phpactor\Docblock\InheritTag;
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 
 class DocblockFactory
 {

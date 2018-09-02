@@ -5,7 +5,7 @@ namespace Phpactor\Docblock\Tests\Tag;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\DocblockException;
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Tag\PropertyTag;
 
 class PropertyTagTest extends TestCase

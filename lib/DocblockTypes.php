@@ -1,8 +1,8 @@
 <?php
 
-namespace Phpactor\Docblock\Tag;
+namespace Phpactor\Docblock;
 
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\DocblockType;
 
 final class DocblockTypes implements \IteratorAggregate
