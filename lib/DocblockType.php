@@ -14,6 +14,11 @@ class DocblockType
      */
     private $iteratedType;
 
+    /**
+     * @var bool
+     */
+    private $isFullyQualified = false;
+
     private function __construct(string $type, string $iteratedType = null)
     {
         $this->type = $type;
@@ -56,5 +61,13 @@ class DocblockType
     public function __toString()
     {
         return $this->type;
+    }
+
+    public function fullyQualifiedNameOf(string $string)
+    {
+        $type = static::of($string);
+        $type->isFullyQualified = true;
+
+        return $type;
     }
 }

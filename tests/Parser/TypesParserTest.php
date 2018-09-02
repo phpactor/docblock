@@ -33,6 +33,10 @@ class TypesParserTest extends TestCase
                 'Foobar<Item>',
                 DocblockTypes::fromDocblockTypes([ DocblockType::collectionOf('Foobar', 'Item') ]),
             ],
+            [
+                '\Foobar\Foobar',
+                DocblockTypes::fromDocblockTypes([ DocblockType::fullyQualifiedNameOf('Foobar\Foobar', 'Item') ]),
+            ],
         ];
     }
 }

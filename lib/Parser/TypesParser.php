@@ -33,6 +33,11 @@ class TypesParser
                 continue;
             }
 
+            if (substr($type, 0, 1) === '\\') {
+                $docblockTypes[] = DocblockType::fullyQualifiedNameOf(substr($type, 1));
+                continue;
+            }
+
             $docblockTypes[] = DocblockType::of($type);
         }
 
