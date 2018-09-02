@@ -27,4 +27,9 @@ final class DefaultValue
     {
         return new self($value);
     }
+
+    public function value()
+    {
+        return $this->value;
+    }
 }
