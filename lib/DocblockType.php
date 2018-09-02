@@ -70,4 +70,9 @@ class DocblockType
 
         return $type;
     }
+
+    public function isFullyQualified(): bool
+    {
+        return $this->isFullyQualified;
+    }
 }
