@@ -15,17 +15,17 @@ class Parameter
     /**
      * @var DocblockTypes
      */
-    private $type;
+    private $types;
 
     /**
      * @var DefaultValue
      */
     private $defaultValue;
 
-    public function __construct(string $name, DocblockTypes $type = null, DefaultValue $defaultValue = null)
+    public function __construct(string $name, DocblockTypes $types = null, DefaultValue $defaultValue = null)
     {
         $this->name = $name;
-        $this->type = $type ?: DocblockTypes::empty();
+        $this->types = $types ?: DocblockTypes::empty();
         $this->defaultValue = $defaultValue ?: DefaultValue::none();
     }
 
@@ -34,9 +34,9 @@ class Parameter
         return $this->name;
     }
 
-    public function type(): DocblockTypes
+    public function types(): DocblockTypes
     {
-        return $this->type;
+        return $this->types;
     }
 
     public function defaultValue(): DefaultValue
@@ -44,4 +44,3 @@ class Parameter
         return $this->defaultValue;
     }
 }
-
