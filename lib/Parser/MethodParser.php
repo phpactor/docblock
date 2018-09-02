@@ -11,20 +11,23 @@ class MethodParser
      */
     private $typesParser;
 
-    public function __construct(TypesParser $typesParser)
+    public function __construct(TypesParser $typesParser = null)
     {
-        $this->typesParser = $typesParser;
+        $this->typesParser = $typesParser ?: new TypesParser();
     }
 
-    public function parseMethod(array $metadata): MethodTag
+    public function parseMethod(array $parts): MethodTag
     {
-        if (null === $types = array_shift($metadata)) {
+        if (null === $types = array_shift($parts)) {
             $types = '';
         }
 
-        $methodName = array_shift($metadata);
+        $methodName = array_shift($parts);
 
-        return new MethodTag($this->typesParser->parseTypes($types), $this->parseMethodName($methodName));
+        return new MethodTag(
+            $this->typesParser->parseTypes($types),
+            $this->parseMethodName($methodName)
+        );
     }
 
     private function parseMethodName($methodName)

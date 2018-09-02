@@ -53,7 +53,6 @@ class DocblockFactoryTest extends TestCase
                 '/** @method Foobar foobar() */',
                 Docblock::fromTags([ new MethodTag(DocblockTypes::fromStringTypes([ 'Foobar' ]), 'foobar') ]),
             ],
-
             'property' => [
                 '/** @property string $foo */',
                 Docblock::fromTags([ new PropertyTag(DocblockTypes::fromStringTypes(['string']), 'foo') ]),

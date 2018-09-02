@@ -72,7 +72,7 @@ EOT
             ]],
         ];
 
-        yield [
+        yield 'method with fully qualified type' => [
             <<<'EOT'
 /** 
  * @method \Foobar\Barfoo foobar()
@@ -84,12 +84,12 @@ EOT
             ]],
         ];
 
-        yield [
+        yield 'method with parameters' => [
             '/** @method \Barfoo foobar($foobar, string $foo) */',
             [ 'method' => [ [ '\Barfoo', 'foobar($foobar,', 'string', '$foo)' ] ] ],
         ];
 
-        yield [
+        yield 'method with array type' => [
             '/** @method Foobar[] */',
             [ 'method' => [ [ 'Foobar[]' ] ] ],
         ];
