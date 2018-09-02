@@ -60,6 +60,10 @@ class DocblockType
 
     public function __toString()
     {
+        if ($this->isFullyQualified) {
+            return '\\' . $this->type;
+        }
+
         return $this->type;
     }
 
@@ -69,5 +73,10 @@ class DocblockType
         $type->isFullyQualified = true;
 
         return $type;
+    }
+
+    public function isFullyQualified(): bool
+    {
+        return $this->isFullyQualified;
     }
 }

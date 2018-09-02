@@ -4,7 +4,7 @@ namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
 use Phpactor\Docblock\DocblockException;
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 
 class VarTag implements Tag
 {

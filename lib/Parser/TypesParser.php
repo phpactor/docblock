@@ -3,7 +3,7 @@
 namespace Phpactor\Docblock\Parser;
 
 use Phpactor\Docblock\DocblockType;
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 
 class TypesParser
 {

@@ -10,7 +10,7 @@ use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockFactory;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\MethodTag;
-use Phpactor\Docblock\Tag\DocblockTypes;
+use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Tag\ReturnTag;
 use Phpactor\Docblock\InheritTag;
 
