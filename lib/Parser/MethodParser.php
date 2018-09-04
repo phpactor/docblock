@@ -32,7 +32,7 @@ class MethodParser
             $types = '';
         }
 
-        $method = array_shift($parts);
+        $method = implode(' ', $parts);
 
         list($methodName, $parameters) = $this->methodNameAndParameters($method, $parts);
 
