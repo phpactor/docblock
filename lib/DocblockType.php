@@ -35,6 +35,14 @@ class DocblockType
         return new self($type, false);
     }
 
+    public static function fullyQualifiedNameOf(string $string): self
+    {
+        $type = static::of($string);
+        $type->isFullyQualified = true;
+
+        return $type;
+    }
+
     public static function arrayOf(string $type): DocblockType
     {
         return new self('array', $type);
@@ -65,14 +73,6 @@ class DocblockType
         }
 
         return $this->type;
-    }
-
-    public function fullyQualifiedNameOf(string $string)
-    {
-        $type = static::of($string);
-        $type->isFullyQualified = true;
-
-        return $type;
     }
 
     public function isFullyQualified(): bool
