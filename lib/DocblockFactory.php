@@ -47,19 +47,19 @@ class DocblockFactory
                 switch (strtolower(trim($tagName))) {
                     case 'var':
                         $tags[] = $this->createVarTag($metadata);
-                        continue;
+                        break;
                     case 'param':
                         $tags[] = $this->createParamTag($metadata);
-                        continue;
+                        break;
                     case 'method':
                         $tags[] = $this->createMethodTag($metadata);
-                        continue;
+                        break;
                     case 'property':
                         $tags[] = $this->createPropertyTag($metadata);
-                        continue;
+                        break;
                     case 'return':
                         $tags[] = $this->createReturnTag($metadata);
-                        continue;
+                        break;
                     case 'inheritdoc':
                         $tags[] = new InheritTag();
                 }
