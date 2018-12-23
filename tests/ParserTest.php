@@ -93,6 +93,11 @@ EOT
             '/** @method Foobar[] */',
             [ 'method' => [ [ 'Foobar[]' ] ] ],
         ];
+
+        yield 'asd' => [
+            '* @method void shouldHaveCount($count)',
+            [ 'method' => [ [ 'void', 'shouldHaveCount($count)' ] ] ],
+        ];
     }
 
     /**

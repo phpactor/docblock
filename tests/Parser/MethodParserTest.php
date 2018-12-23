@@ -106,7 +106,64 @@ class MethodParserTest extends TestCase
                         ),
                     ]
                 ),
-            ]
+            ],
+            'phpspec should have count' => [
+                [ 'void', 'shouldHaveCount($count)' ],
+                new MethodTag(
+                    DocblockTypes::fromStringTypes(['void']), 
+                    'shouldHaveCount',
+                    [
+                        new Parameter(
+                            'count',
+                            DocblockTypes::empty()
+                        ),
+                    ]
+                ),
+
+            ],
+            'laravel db' => [
+                [ 'static', '\\Illuminate\\Database\\Query\\Builder', 'table(string $table)' ],
+                new MethodTag(
+                    DocblockTypes::fromDocblockTypes([DocblockType::fullyQualifiedNameOf('Illuminate\\Database\\Query\\Builder')]), 
+                    'table',
+                    [
+                        new Parameter(
+                            'table',
+                            DocblockTypes::fromStringTypes(['string'])
+                        ),
+                    ],
+                    true
+                ),
+
+            ],
+            'laravel route' => [
+                [
+                    'static',
+                    '\\Illuminate\\Routing\\Route',
+                    'get(string $uri, \\Closure|array|string|callable|null $action = null)'
+                ],
+                new MethodTag(
+                    DocblockTypes::fromDocblockTypes([DocblockType::fullyQualifiedNameOf('Illuminate\\Routing\\Route')]), 
+                    'get',
+                    [
+                        new Parameter(
+                            'uri',
+                            DocblockTypes::fromStringTypes(['string'])
+                        ),
+                        new Parameter(
+                            'action',
+                            DocblockTypes::fromDocblockTypes([
+                                DocblockType::fullyQualifiedNameOf('Closure'),
+                                DocblockType::of('array'),
+                                DocblockType::of('string'),
+                                DocblockType::of('callable'),
+                                DocblockType::of('null'),
+                            ])
+                        ),
+                    ],
+                    true
+                )
+            ],
         ];
     }
 }
