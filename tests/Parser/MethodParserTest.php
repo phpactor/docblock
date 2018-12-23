@@ -75,6 +75,37 @@ class MethodParserTest extends TestCase
                     [],
                     true
                 ),
+            ],
+            'phpspec be constructed with' => [
+                [ 'void', 'foobar(...$arguments)' ],
+                new MethodTag(
+                    DocblockTypes::fromStringTypes(['void']), 
+                    'foobar',
+                    [
+                        new Parameter(
+                            'arguments',
+                            DocblockTypes::fromDocblockTypes([])
+                        ),
+                    ]
+                ),
+            ],
+            'phpspec be constructed through' => [
+                [ 'void', 'beConstructedThrough($factoryMethod, array $constructorArguments = array())' ],
+                new MethodTag(
+                    DocblockTypes::fromStringTypes(['void']), 
+                    'beConstructedThrough',
+                    [
+                        new Parameter(
+                            'factoryMethod',
+                            DocblockTypes::fromDocblockTypes([])
+                        ),
+                        new Parameter(
+                            'constructorArguments',
+                            DocblockTypes::fromDocblockTypes([ DocblockType::of('array') ]),
+                            DefaultValue::none()
+                        ),
+                    ]
+                ),
             ]
         ];
     }

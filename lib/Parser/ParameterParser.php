@@ -46,6 +46,11 @@ class ParameterParser
                 continue;
             }
 
+            if (substr($part, 0, 3) === '...') {
+                $parameterName = substr($part, 4);
+                continue;
+            }
+
             if ($index === 0) {
                 $types = $this->typesParser->parseTypes($part);
                 continue;
