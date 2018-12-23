@@ -34,28 +34,31 @@ class MethodParser
 
         $method = implode(' ', $parts);
 
-        list($methodName, $parameters) = $this->methodNameAndParameters($method, $parts);
+        list($static, $methodName, $parameters) = $this->methodInfo($method, $parts);
 
         return new MethodTag(
             $this->typesParser->parseTypes($types),
             $methodName,
-            $parameters
+            $parameters,
+            $static
         );
     }
 
-    private function methodNameAndParameters($method, array $parts)
+    private function methodInfo($method, array $parts)
     {
-        if (preg_match('{(.*?)\((.*)\)}', $method, $parts)) {
-            $methodName = $parts[1];
-            $paramString = $parts[2];
+        if (preg_match('{(static)?\s*(\w*?)\((.*)\)}', $method, $parts)) {
+            $static = $parts[1];
+            $methodName = $parts[2];
+            $paramString = $parts[3];
 
             return [
+                $static === 'static',
                 $methodName,
-                $this->parseParameters($paramString)
+                $this->parseParameters($paramString),
             ];
         }
 
-        return [ $method, [] ];
+        return [ false, $method, [] ];
     }
 
     private function parseParameters(string $paramString): array

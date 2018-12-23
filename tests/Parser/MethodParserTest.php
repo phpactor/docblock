@@ -66,6 +66,15 @@ class MethodParserTest extends TestCase
                         new Parameter('bar', DocblockTypes::fromDocblockTypes([ ])),
                     ]
                 ),
+            ],
+            'static method' => [
+                [ 'Foobar', 'static', 'foobar()' ],
+                new MethodTag(
+                    DocblockTypes::fromStringTypes([ 'Foobar' ]), 
+                    'foobar',
+                    [],
+                    true
+                ),
             ]
         ];
     }

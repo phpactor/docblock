@@ -25,13 +25,19 @@ class MethodTag implements Tag
     private $parameters;
 
     /**
+     * @var bool
+     */
+    private $isStatic;
+
+    /**
      * @var Parameter[] $parameters
      */
-    public function __construct(DocblockTypes $types, $methodName, array $parameters = [])
+    public function __construct(DocblockTypes $types, $methodName, array $parameters = [], bool $isStatic = false)
     {
         $this->types = $types;
         $this->methodName = $methodName;
         $this->parameters = $parameters;
+        $this->isStatic = $isStatic;
     }
 
     public function name()
@@ -52,5 +58,10 @@ class MethodTag implements Tag
     public function parameters(): array
     {
         return $this->parameters;
+    }
+
+    public function isStatic(): bool
+    {
+        return $this->isStatic;
     }
 }
