@@ -21,5 +21,10 @@
             "email": "daniel@dantleech.com"
         }
     ],
-    "license": "MIT"
+    "license": "MIT",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.2.x-dev"
+        }
+    }
 }
