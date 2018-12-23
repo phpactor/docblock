@@ -28,10 +28,10 @@ class MethodParserTest extends TestCase
                 [ ],
                 new MethodTag(DocblockTypes::empty(), ''),
             ],
-            'type only parts' => [
-                [ 'Foobar' ],
-                new MethodTag(DocblockTypes::fromStringTypes(['Foobar']), ''),
-            ],
+            //'type only parts' => [
+            //    [ 'Foobar' ],
+            //    new MethodTag(DocblockTypes::fromStringTypes(['Foobar']), ''),
+            //],
             'no parenthesis' => [
                 [ 'Foobar', 'foobar' ],
                 new MethodTag(DocblockTypes::fromStringTypes([ 'Foobar' ]), 'foobar'),
@@ -68,7 +68,7 @@ class MethodParserTest extends TestCase
                 ),
             ],
             'static method' => [
-                [ 'Foobar', 'static', 'foobar()' ],
+                [ 'static', 'Foobar', 'foobar()' ],
                 new MethodTag(
                     DocblockTypes::fromStringTypes([ 'Foobar' ]), 
                     'foobar',

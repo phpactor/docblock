@@ -28,13 +28,9 @@ class MethodParser
 
     public function parseMethod(array $parts): MethodTag
     {
-        if (null === $types = array_shift($parts)) {
-            $types = '';
-        }
-
         $method = implode(' ', $parts);
 
-        list($static, $methodName, $parameters) = $this->methodInfo($method, $parts);
+        list($static, $types, $methodName, $parameters) = $this->methodInfo($method, $parts);
 
         return new MethodTag(
             $this->typesParser->parseTypes($types),
@@ -44,21 +40,31 @@ class MethodParser
         );
     }
 
-    private function methodInfo($method, array $parts)
+    private function methodInfo(string $method, array $parts): array
     {
-        if (preg_match('{(static)?\s*(\w*?)\((.*)\)}', $method, $parts)) {
+        if (empty($method)) {
+            return [ false , '', $method, [] ];
+        }
+
+        if (substr($method, -1) !== ')') {
+            $method .= '()';
+        }
+
+        if (preg_match('{(static)?\s*([\w\\\]+)?\s+(\w*?)\((.*)\)}', $method, $parts)) {
             $static = $parts[1];
-            $methodName = $parts[2];
-            $paramString = $parts[3];
+            $types = $parts[2];
+            $methodName = $parts[3];
+            $paramString = $parts[4];
 
             return [
                 $static === 'static',
+                $types,
                 $methodName,
                 $this->parseParameters($paramString),
             ];
         }
 
-        return [ false, $method, [] ];
+        return [ false, '', $method, [] ];
     }
 
     private function parseParameters(string $paramString): array
