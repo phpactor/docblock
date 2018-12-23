@@ -50,7 +50,7 @@ class MethodParser
             $method .= '()';
         }
 
-        if (preg_match('{(static)?\s*([\w\\\]+)?\s+(\w*?)\((.*)\)}', $method, $parts)) {
+        if (preg_match('{(static)?\s*([\w\\\]+)?\s+(\w*?)\s*\((.*)\)}', $method, $parts)) {
             $static = $parts[1];
             $types = $parts[2];
             $methodName = $parts[3];

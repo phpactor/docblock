@@ -86,7 +86,10 @@ EOT
 
         yield 'method with parameters' => [
             '/** @method \Barfoo foobar($foobar, string $foo) */',
-            [ 'method' => [ [ '\Barfoo', 'foobar($foobar,', 'string', '$foo)' ] ] ],
+            [ 'method' => [ [
+                '\Barfoo',
+                'foobar($foobar,', 'string', '$foo)'
+            ] ] ],
         ];
 
         yield 'method with array type' => [
@@ -94,9 +97,17 @@ EOT
             [ 'method' => [ [ 'Foobar[]' ] ] ],
         ];
 
-        yield 'asd' => [
+        yield 'phpspec should have count' => [
             '* @method void shouldHaveCount($count)',
             [ 'method' => [ [ 'void', 'shouldHaveCount($count)' ] ] ],
+        ];
+
+        yield 'argument with default value' => [
+            '* @method void shouldHaveCount($count = 5)',
+            [ 'method' => [ [
+                'void',
+                'shouldHaveCount($count', '=', '5)'
+            ] ] ],
         ];
     }
 

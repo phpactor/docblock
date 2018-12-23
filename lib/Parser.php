@@ -7,7 +7,7 @@ use Phpactor\Docblock\DocblockType;
 
 class Parser
 {
-    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\<\\>\\[\\]&|,\\\()$\w\s]+)?}';
+    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\<\\>\\[\\]&|,\\\(\\\)$\w\s=]+)?}';
 
     public function parse($docblock): array
     {
