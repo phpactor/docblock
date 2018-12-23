@@ -18,6 +18,11 @@ final class DefaultValue
         $this->none = $none;
     }
 
+    public function isDefined(): bool
+    {
+        return $this->value !== null;
+    }
+
     public static function none()
     {
         return new self(null, true);
