@@ -3,7 +3,6 @@
 namespace Phpactor\Docblock\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\Docblock\Parser;
 use Phpactor\Docblock\Docblock;
 use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\VarTag;

@@ -3,14 +3,13 @@
 namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
-use Phpactor\Docblock\DocblockException;
 use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Method\Parameter;
 
 class MethodTag implements Tag
 {
     /**
-     * @var string
+     * @var DocblockTypes
      */
     private $types;
 

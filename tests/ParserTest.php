@@ -4,8 +4,6 @@ namespace Phpactor\Docblock\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Parser;
-use Phpactor\Docblock\DocblockTypes;
-use Phpactor\Docblock\DocblockType;
 
 class ParserTest extends TestCase
 {

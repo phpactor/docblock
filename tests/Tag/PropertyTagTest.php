@@ -3,8 +3,6 @@
 namespace Phpactor\Docblock\Tests\Tag;
 
 use PHPUnit\Framework\TestCase;
-use Phpactor\Docblock\Tag\MethodTag;
-use Phpactor\Docblock\DocblockException;
 use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Tag\PropertyTag;
 

@@ -15,7 +15,7 @@ final class Tags implements \IteratorAggregate, \Countable
 
     public static function fromArray(array $tags): Tags
     {
-         return new self($tags);
+        return new self($tags);
     }
 
     public function getIterator()

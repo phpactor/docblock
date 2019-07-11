@@ -2,7 +2,6 @@
 
 namespace Phpactor\Docblock;
 
-use Phpactor\Docblock\Docblock;
 use Phpactor\Docblock\Parser\MethodParser;
 use Phpactor\Docblock\Parser\TypesParser;
 use Phpactor\Docblock\Tag\MethodTag;
@@ -10,9 +9,6 @@ use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\ReturnTag;
 use Phpactor\Docblock\Tag\VarTag;
-use Phpactor\Docblock\Parser;
-use Phpactor\Docblock\InheritTag;
-use Phpactor\Docblock\DocblockTypes;
 
 class DocblockFactory
 {

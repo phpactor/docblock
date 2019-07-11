@@ -4,7 +4,6 @@ namespace Phpactor\Docblock\Tests\Tag;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Tag\VarTag;
-use Phpactor\Docblock\DocblockException;
 use Phpactor\Docblock\DocblockTypes;
 
 class VarTagTest extends TestCase

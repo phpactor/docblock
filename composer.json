@@ -13,7 +13,9 @@
         }
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.5"
+        "phpunit/phpunit": "~7.0",
+        "friendsofphp/php-cs-fixer": "~2.15.0",
+        "phpstan/phpstan": "~0.11.0"
     },
     "authors": [
         {

@@ -3,7 +3,6 @@
 namespace Phpactor\Docblock\Tag;
 
 use Phpactor\Docblock\Tag;
-use Phpactor\Docblock\DocblockException;
 use Phpactor\Docblock\DocblockTypes;
 
 class VarTag implements Tag
@@ -14,7 +13,7 @@ class VarTag implements Tag
     }
 
     /**
-     * @var array
+     * @var DocblockTypes
      */
     private $types;
 

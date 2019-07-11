@@ -10,7 +10,7 @@ class DocblockType
     private $type;
 
     /**
-     * @var int
+     * @var string|null
      */
     private $iteratedType;
 
@@ -32,7 +32,7 @@ class DocblockType
 
     public static function of(string $type): DocblockType
     {
-        return new self($type, false);
+        return new self($type);
     }
 
     public static function fullyQualifiedNameOf(string $string): self

@@ -4,12 +4,9 @@ namespace Phpactor\Docblock\Tests\Parser;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\DefaultValue;
-use Phpactor\Docblock\DocblockType;
 use Phpactor\Docblock\Method\Parameter;
-use Phpactor\Docblock\Parser\MethodParser;
 use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Parser\ParameterParser;
-use Phpactor\Docblock\Tag\MethodTag;
 
 class ParameterParserTest extends TestCase
 {
@@ -60,4 +57,3 @@ class ParameterParserTest extends TestCase
         ];
     }
 }
-

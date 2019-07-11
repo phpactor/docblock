@@ -2,9 +2,6 @@
 
 namespace Phpactor\Docblock;
 
-use Phpactor\Docblock\DocblockTypes;
-use Phpactor\Docblock\DocblockType;
-
 class Parser
 {
     const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\<\\>\\[\\]&|,\\\(\\\)$\w\s=]+)?}';

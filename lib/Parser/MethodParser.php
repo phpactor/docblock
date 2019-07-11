@@ -2,9 +2,6 @@
 
 namespace Phpactor\Docblock\Parser;
 
-use Phpactor\Docblock\DocblockType;
-use Phpactor\Docblock\Method\Parameter;
-use Phpactor\Docblock\DocblockTypes;
 use Phpactor\Docblock\Tag\MethodTag;
 
 class MethodParser

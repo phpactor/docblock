@@ -43,5 +43,4 @@ class TypesParser
 
         return DocblockTypes::fromDocblockTypes($docblockTypes);
     }
-
 }

@@ -1,0 +1,10 @@
+includes:
+    - vendor/phpstan/phpstan/conf/config.level7.neon
+
+parameters:
+    inferPrivatePropertyTypeFromConstructor: true
+    ignoreErrors:
+        - '#Binary operation "\+" between string and 0 results in an error#'
+    paths:
+        - lib
+
