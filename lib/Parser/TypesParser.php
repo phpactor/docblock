@@ -14,21 +14,20 @@ class TypesParser
         }
 
         $types = str_replace('&', '|', $types);
-        $types = explode('|', $types);
         $docblockTypes = [];
 
-        foreach ($types as $type) {
-            $type = trim($type);
+        foreach (explode('|', $types) as $type) {
+            $type = trim($type, "? \t\n\r\0\x0B");
 
             if (preg_match('{^(.*)<(.*)>$}', $type, $matches)) {
                 $type = $matches[1];
-                $collectionType = $matches[2];
+                $collectionType = trim($matches[2], "? \t\n\r\0\x0B");
                 $docblockTypes[] = DocblockType::collectionOf($type, $collectionType);
                 continue;
             }
 
             if (substr($type, -2) == '[]') {
-                $type = substr($type, 0, -2);
+                $type = trim(substr($type, 0, -2), "? \t\n\r\0\x0B");;
                 $docblockTypes[] = DocblockType::arrayOf($type);
                 continue;
             }
