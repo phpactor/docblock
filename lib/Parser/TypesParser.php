@@ -7,6 +7,14 @@ use Phpactor\Docblock\DocblockTypes;
 
 class TypesParser
 {
+    /**
+     * Mask to remove white space and nullable prefixes(?)
+     *
+     * The current Phpactor's type system doesn't handle "nullable",
+     * it just erases at the same time as white space.
+     */
+    private const MASK_WHITESPACE_AND_IGNORED_PREFIX = "? \t\n\r\0\x0B";
+
     public function parseTypes(string $types): DocblockTypes
     {
         if (empty($types)) {
@@ -14,21 +22,20 @@ class TypesParser
         }
 
         $types = str_replace('&', '|', $types);
-        $types = explode('|', $types);
         $docblockTypes = [];
 
-        foreach ($types as $type) {
-            $type = trim($type);
+        foreach (explode('|', $types) as $type) {
+            $type = trim($type, self::MASK_WHITESPACE_AND_IGNORED_PREFIX);
 
             if (preg_match('{^(.*)<(.*)>$}', $type, $matches)) {
                 $type = $matches[1];
-                $collectionType = $matches[2];
+                $collectionType = trim($matches[2], self::MASK_WHITESPACE_AND_IGNORED_PREFIX);
                 $docblockTypes[] = DocblockType::collectionOf($type, $collectionType);
                 continue;
             }
 
             if (substr($type, -2) == '[]') {
-                $type = substr($type, 0, -2);
+                $type = trim(substr($type, 0, -2), self::MASK_WHITESPACE_AND_IGNORED_PREFIX);
                 $docblockTypes[] = DocblockType::arrayOf($type);
                 continue;
             }
