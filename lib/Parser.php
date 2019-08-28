@@ -4,7 +4,7 @@ namespace Phpactor\Docblock;
 
 class Parser
 {
-    const TAG = '{@([a-zA-Z0-9-_\\\]+)\s*?([\\<\\>\\[\\]&|,\\\(\\\)$\w\s=]+)?}';
+    const TAG = '{@([-0-9A-Z_a-z\\\\]+)\s*?([$&(),<=>\[\\\\\]|\w\s]+)?}';
 
     public function parse($docblock): array
     {
