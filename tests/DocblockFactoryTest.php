@@ -71,6 +71,10 @@ class DocblockFactoryTest extends TestCase
                 '/** @return Foobar foobar() */',
                 Docblock::fromTags([ new ReturnTag(DocblockTypes::fromStringTypes([ 'Foobar' ])) ]),
             ],
+            'return single nullable type' => [
+                '/** @return ?Foobar foobar() */',
+                Docblock::fromTags([ new ReturnTag(DocblockTypes::fromStringTypes([ 'Foobar' ])) ]),
+            ],
             'inheritdoc' => [
                 '/** {@inheritDoc} */',
                 Docblock::fromTags([ new InheritTag() ]),
