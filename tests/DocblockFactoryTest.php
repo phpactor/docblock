@@ -4,6 +4,7 @@ namespace Phpactor\Docblock\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Docblock;
+use Phpactor\Docblock\Tag\DeprecatedTag;
 use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockFactory;
@@ -95,6 +96,10 @@ class DocblockFactoryTest extends TestCase
             'return no type' => [
                 '/** @return  */',
                 Docblock::fromTags([ new ReturnTag(DocblockTypes::empty()) ]),
+            ],
+            'deprecated' => [
+                '/** @deprecated This is deprecated */',
+                Docblock::fromTags([ new DeprecatedTag('This is deprecated') ]),
             ],
         ];
     }

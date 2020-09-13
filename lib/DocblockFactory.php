@@ -4,6 +4,7 @@ namespace Phpactor\Docblock;
 
 use Phpactor\Docblock\Parser\MethodParser;
 use Phpactor\Docblock\Parser\TypesParser;
+use Phpactor\Docblock\Tag\DeprecatedTag;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\PropertyTag;
@@ -52,6 +53,9 @@ class DocblockFactory
                         break;
                     case 'property':
                         $tags[] = $this->createPropertyTag($metadata);
+                        break;
+                    case 'deprecated':
+                        $tags[] = $this->createDeprecatedTag($metadata);
                         break;
                     case 'return':
                         $tags[] = $this->createReturnTag($metadata);
@@ -112,5 +116,10 @@ class DocblockFactory
         $propertyName = array_shift($metadata);
 
         return new PropertyTag($this->typesParser->parseTypes($types), ltrim($propertyName, '$'));
+    }
+
+    private function createDeprecatedTag(array $metadata): DeprecatedTag
+    {
+        return new DeprecatedTag(implode(' ', $metadata));
     }
 }
