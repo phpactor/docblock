@@ -15,7 +15,7 @@ class DocblockTest extends TestCase
      */
     private $tag1;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->tag1 = $this->prophesize(Tag::class);
     }
