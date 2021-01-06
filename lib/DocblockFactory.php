@@ -6,6 +6,7 @@ use Phpactor\Docblock\Parser\MethodParser;
 use Phpactor\Docblock\Parser\TypesParser;
 use Phpactor\Docblock\Tag\DeprecatedTag;
 use Phpactor\Docblock\Tag\MethodTag;
+use Phpactor\Docblock\Tag\MixinTag;
 use Phpactor\Docblock\Tag\ParamTag;
 use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\ReturnTag;
@@ -51,6 +52,9 @@ class DocblockFactory
                     case 'method':
                         $tags[] = $this->createMethodTag($metadata);
                         break;
+                    case 'mixin':
+                        $tags[] = $this->createMixinTag($metadata);
+                        break;
                     case 'property':
                         $tags[] = $this->createPropertyTag($metadata);
                         break;
@@ -66,7 +70,12 @@ class DocblockFactory
             }
         }
 
-        return Docblock::fromProseAndTags(implode(PHP_EOL, $prose), $tags);
+        return Docblock::fromProseAndTags(implode(PHP_EOL, $prose), array_filter(
+            $tags,
+            function (Tag $tag) {
+                return $tag !== null;
+            }
+        ));
     }
 
     private function createVarTag(array $metadata): VarTag
@@ -121,5 +130,14 @@ class DocblockFactory
     private function createDeprecatedTag(array $metadata): DeprecatedTag
     {
         return new DeprecatedTag(implode(' ', $metadata));
+    }
+
+    private function createMixinTag(array $metadata): ?MixinTag
+    {
+        $fqn = array_shift($metadata);
+        if (null === $fqn) {
+            return null;
+        }
+        return new MixinTag($fqn);
     }
 }

@@ -5,6 +5,7 @@ namespace Phpactor\Docblock\Tests;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Docblock;
 use Phpactor\Docblock\Tag\DeprecatedTag;
+use Phpactor\Docblock\Tag\MixinTag;
 use Phpactor\Docblock\Tag\PropertyTag;
 use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockFactory;
@@ -100,6 +101,10 @@ class DocblockFactoryTest extends TestCase
             'deprecated' => [
                 '/** @deprecated This is deprecated */',
                 Docblock::fromTags([ new DeprecatedTag('This is deprecated') ]),
+            ],
+            'mixin' => [
+                '/** @mixin Foobar\\Barfoo */',
+                Docblock::fromTags([ new MixinTag('Foobar\\Barfoo') ]),
             ],
         ];
     }
