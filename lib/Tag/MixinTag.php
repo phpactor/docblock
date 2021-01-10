@@ -6,7 +6,10 @@ use Phpactor\Docblock\Tag;
 
 class MixinTag implements Tag
 {
-    private string $fqn;
+    /**
+     * @var string
+     */
+    private $fqn;
 
     public function __construct(string $fqn)
     {
