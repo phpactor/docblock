@@ -24,10 +24,7 @@ class Lexer
         '\s+'
     ];
 
-    /**
-     * @return Token[]
-     */
-    public function lex(string $docblock): array
+    public function lex(string $docblock): Tokens
     {
         $pattern = sprintf(
             '{(%s)|%s}',
@@ -54,7 +51,7 @@ class Lexer
             $prevChunk = $chunk;
         }
 
-        return $tokens;
+        return new Tokens($tokens);
     }
 
     private function resolveType(string $value, ?string $prevValue): string

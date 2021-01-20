@@ -15,7 +15,7 @@ class LexerTest extends TestCase
      */
     public function testLex(string $lex, array $expectedTokens): void
     {
-        $tokens = (new Lexer())->lex($lex);
+        $tokens = (new Lexer())->lex($lex)->toArray();
 
         self::assertCount(count($expectedTokens), $tokens, 'Expected number of tokens');
 

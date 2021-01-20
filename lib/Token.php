@@ -2,7 +2,7 @@
 
 namespace Phpactor\Docblock;
 
-class Token
+final class Token
 {
     public const T_PHPDOC_BORDER= 'PHPDOC_BORDER';
     public const T_PHPDOC_OPEN = 'PHPDOC_OPEN';
