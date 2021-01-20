@@ -5,6 +5,9 @@ namespace Phpactor\Docblock;
 class Token
 {
     public const T_PHPDOC_BORDER= 'PHPDOC_BORDER';
+    public const T_PHPDOC_OPEN = 'PHPDOC_OPEN';
+    public const T_PHPDOC_LEADING = 'PHPDOC_LEADING';
+    public const T_PHPDOC_CLOSE = 'PHPDOC_CLOSE';
     public const T_BORDER = 'BORDER';
     public const T_TEXT = 'TEXT';
     public const T_VARIABLE = 'VARIABLE';

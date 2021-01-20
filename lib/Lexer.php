@@ -8,7 +8,7 @@ class Lexer
      * @var string[]
      */
     private $patterns = [
-        '/\*+\s*\*?', // border
+        '^/\*+\s*\*?', // start tag
         '@[\w]+', //tag
         '\s+', // whitespace
         ',', // comma
@@ -42,16 +42,35 @@ class Lexer
         );
 
         $tokens = [];
+        $prevChunk = [null,null];
         foreach ($chunks as $chunk) {
             [ $value, $offset ] = $chunk;
-            $tokens[] = new Token($offset, $this->resolveType($value), $value);
+            [ $prevValue, $_ ] = $prevChunk;
+            $tokens[] = new Token(
+                $offset,
+                $this->resolveType($value, $prevValue),
+                $value
+            );
+            $prevChunk = $chunk;
         }
 
         return $tokens;
     }
 
-    private function resolveType($value): string
+    private function resolveType(string $value, ?string $prevValue): string
     {
+        if (false !== strpos($value, '/*')) {
+            return Token::T_PHPDOC_OPEN;
+        }
+
+        if (false !== strpos($value, '*/')) {
+            return Token::T_PHPDOC_CLOSE;
+        }
+
+        if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
+            return Token::T_PHPDOC_LEADING;
+        }
+
         if (0 === strpos($value, '$')) {
             return Token::T_VARIABLE;
         }

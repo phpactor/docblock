@@ -36,11 +36,12 @@ class LexerTest extends TestCase
             <<<'EOT'
 /**
  * Hello this is
+ * Multi
  */
 EOT
 
             ,[
-                [Token::T_UNKNOWN, "/**\n *"],
+                [Token::T_PHPDOC_OPEN, "/**\n *"],
                 [Token::T_WHITESPACE, " "],
                 [Token::T_LABEL, "Hello"],
                 [Token::T_WHITESPACE, " "],
@@ -48,7 +49,10 @@ EOT
                 [Token::T_WHITESPACE, " "],
                 [Token::T_LABEL, "is"],
                 [Token::T_WHITESPACE, "\n "],
-                [Token::T_UNKNOWN, "*/"],
+                [Token::T_PHPDOC_LEADING, "* "],
+                [Token::T_LABEL, "Multi"],
+                [Token::T_WHITESPACE, "\n "],
+                [Token::T_PHPDOC_CLOSE, "*/"],
             ]
         ];
 
