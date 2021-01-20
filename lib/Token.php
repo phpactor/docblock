@@ -2,7 +2,9 @@
 
 namespace Phpactor\Docblock;
 
-final class Token
+use Phpactor\Docblock\Ast\Element;
+
+final class Token implements Element
 {
     public const T_PHPDOC_BORDER= 'PHPDOC_BORDER';
     public const T_PHPDOC_OPEN = 'PHPDOC_OPEN';
@@ -53,5 +55,10 @@ final class Token
     public function value(): string
     {
         return $this->value;
+    }
+
+    public function type(): string
+    {
+        return $this->type;
     }
 }
