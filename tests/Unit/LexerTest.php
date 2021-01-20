@@ -33,6 +33,26 @@ class LexerTest extends TestCase
     {
         yield [ '', [] ];
         yield [
+            <<<'EOT'
+/**
+ * Hello this is
+ */
+EOT
+
+            ,[
+                [Token::T_UNKNOWN, "/**\n *"],
+                [Token::T_WHITESPACE, " "],
+                [Token::T_LABEL, "Hello"],
+                [Token::T_WHITESPACE, " "],
+                [Token::T_LABEL, "this"],
+                [Token::T_WHITESPACE, " "],
+                [Token::T_LABEL, "is"],
+                [Token::T_WHITESPACE, "\n "],
+                [Token::T_UNKNOWN, "*/"],
+            ]
+        ];
+
+        yield [
             'Foobar',
             [
                 [Token::T_LABEL, "Foobar"],
@@ -62,6 +82,18 @@ class LexerTest extends TestCase
                 [Token::T_BRACKET_ANGLE_OPEN, "<"],
                 [Token::T_LABEL, "Barfoo"],
                 [Token::T_BRACKET_ANGLE_CLOSE, ">"],
+            ]
+        ];
+        yield [
+            'Foobar{Barfoo, Foobar}',
+            [
+                [Token::T_LABEL, "Foobar"],
+                [Token::T_BRACKET_CURLY_OPEN, "{"],
+                [Token::T_LABEL, "Barfoo"],
+                [Token::T_COMMA, ","],
+                [Token::T_WHITESPACE, " "],
+                [Token::T_LABEL, "Foobar"],
+                [Token::T_BRACKET_CURLY_CLOSE, "}"],
             ]
         ];
     }

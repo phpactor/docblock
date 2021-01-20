@@ -4,26 +4,17 @@ namespace Phpactor\Docblock;
 
 class Lexer
 {
-    private $position = 0;
-
     /**
      * @var string[]
      */
     private $patterns = [
-        // param tag
-        '@[\w]+',
-
-        // param tag
-        '\s',
-
-        // brackets
-        '\[', '\]', '<', '>',
-
-        // variable name
-        '\$[a-zA-Z0-9_\x80-\xff]+',
-
-        // name
-        '[^a-zA-Z0-9_\x80-\xff]+',
+        '/\*+\s*\*?', // border
+        '@[\w]+', //tag
+        '\s+', // whitespace
+        ',', // comma
+        '\{', '\}', '\[', '\]', '<', '>', // brackets
+        '\$[a-zA-Z0-9_\x80-\xff]+', // variable
+        '[^a-zA-Z0-9_\x80-\xff]+', // label
     ];
 
     /**
@@ -95,6 +86,18 @@ class Lexer
 
         if ($value === '>') {
             return Token::T_BRACKET_ANGLE_CLOSE;
+        }
+
+        if ($value === '{') {
+            return Token::T_BRACKET_CURLY_OPEN;
+        }
+
+        if ($value === '}') {
+            return Token::T_BRACKET_CURLY_CLOSE;
+        }
+
+        if ($value === ',') {
+            return Token::T_COMMA;
         }
 
         return Token::T_UNKNOWN;
