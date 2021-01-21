@@ -2,20 +2,31 @@
 
 namespace Phpactor\Docblock\Ast;
 
-class ParamNode extends Node
+class ParamNode extends TagNode
 {
     /**
-     * @var TypeNode
+     * @var ?TypeNode
      */
     private $type;
+
     /**
-     * @var VariableNode
+     * @var ?VariableNode
      */
     private $variable;
 
-    public function __construct(TypeNode $type, VariableNode $variable)
+    public function __construct(?TypeNode $type, ?VariableNode $variable)
     {
         $this->type = $type;
         $this->variable = $variable;
+    }
+
+    public function type(): ?TypeNode
+    {
+        return $this->type;
+    }
+
+    public function variable(): ?VariableNode
+    {
+        return $this->variable;
     }
 }

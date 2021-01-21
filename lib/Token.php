@@ -16,6 +16,7 @@ final class Token implements Element
     public const T_UNKNOWN = 'UNKNOWN';
     public const T_TAG = 'TAG';
     public const T_COMMA = 'COMMA';
+    public const T_LIST = '[]';
     public const T_LABEL = 'LABEL';
     public const T_WHITESPACE = 'WHITESPACE';
     public const T_BRACKET_SQUARE_OPEN = 'BRACKET_SQUARE_OPEN';
@@ -60,5 +61,10 @@ final class Token implements Element
     public function type(): string
     {
         return $this->type;
+    }
+
+    public function __toString(): string
+    {
+        return $this->value;
     }
 }

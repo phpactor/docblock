@@ -4,7 +4,7 @@ namespace Phpactor\Docblock\Ast;
 
 use Phpactor\Docblock\Token;
 
-class NameNode extends TypeNode
+class UnknownTag extends TagNode
 {
     /**
      * @var Token

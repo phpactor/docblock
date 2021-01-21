@@ -9,7 +9,9 @@ class Lexer
      */
     private $patterns = [
         '^/\*+\s*\*?', // start tag
-        '@[\w]+', //tag
+        '\s*\*', // border
+        '\[\]', //tag
+        '@\w+', //tag
         '\s+', // whitespace
         ',', // comma
         '\{', '\}', '\[', '\]', '<', '>', // brackets
@@ -114,6 +116,10 @@ class Lexer
 
         if ($value === ',') {
             return Token::T_COMMA;
+        }
+
+        if ($value === '[]') {
+            return Token::T_LIST;
         }
 
         return Token::T_UNKNOWN;

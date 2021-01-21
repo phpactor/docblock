@@ -1,11 +1,11 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Type;
 
+use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Token;
 
-
-class VariableNode extends Node
+class ClassNode extends TypeNode
 {
     /**
      * @var Token

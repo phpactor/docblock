@@ -5,7 +5,7 @@ namespace Phpactor\Docblock\Tests\Unit;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Ast\Docblock;
-use Phpactor\Docblock\Ast\NameNode;
+use Phpactor\Docblock\Ast\Type\ClassNode;
 use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\VariableNode;
@@ -45,7 +45,7 @@ class ParserTest extends TestCase
             new Docblock([
                 new Token(0, Token::T_PHPDOC_OPEN, '/** '),
                 new ParamNode(
-                    new NameNode(new Token(11, Token::T_LABEL, 'Foobar')),
+                    new ClassNode(new Token(11, Token::T_LABEL, 'Foobar')),
                     new VariableNode(new Token(18, Token::T_VARIABLE, '$foobar'))
                 ),
                 new Token(25, Token::T_WHITESPACE, ' '),

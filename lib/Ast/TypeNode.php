@@ -2,6 +2,8 @@
 
 namespace Phpactor\Docblock\Ast;
 
-class TypeNode extends Node
+use Phpactor\Docblock\Token;
+
+abstract class TypeNode extends Node
 {
 }

@@ -4,8 +4,8 @@ namespace Phpactor\Docblock\Ast;
 
 class Node implements Element
 {
-    /**
-     * @var Element[]
-     */
-    protected $children = [];
+    public function shortName(): string
+    {
+        return substr(get_class($this), strrpos(get_class($this), '\\') + 1);
+    }
 }

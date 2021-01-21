@@ -1,0 +1,50 @@
+<?php
+
+namespace Phpactor\Docblock\Tests\Printer;
+
+use Generator;
+use PHPUnit\Framework\TestCase;
+use Phpactor\Docblock\Lexer;
+use Phpactor\Docblock\Parser;
+use Phpactor\Docblock\Printer\TestPrinter;
+
+class PrinterTest extends TestCase
+{
+    /**
+     * @dataProvider provideExamples
+     */
+    public function testPrint(string $path): void
+    {
+        $update = false;
+
+        $contents = (string)file_get_contents($path);
+
+        $parts = explode('---', $contents);
+
+        $node = (new Parser())->parse((new Lexer())->lex($parts[0]));
+        $rendered = (new TestPrinter())->print($node);
+
+        /**
+         * @phpstan-ignore-next-line
+         */
+        if (!isset($parts[1]) || $update) {
+            file_put_contents($path, implode("---\n", [$parts[0], $rendered]));
+            $this->markTestSkipped('Generated output');
+            return;
+        }
+
+        self::assertEquals(ltrim($parts[1]), $rendered);
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
+    public function provideExamples(): Generator
+    {
+        foreach ((array)glob(__DIR__ . '/examples/*.test') as $path) {
+            yield [
+                $path
+            ];
+        }
+    }
+}

@@ -39,6 +39,15 @@ final class Tokens implements IteratorAggregate
         return new ArrayIterator($this->tokens);
     }
 
+    public function peek(): ?Token
+    {
+        if (!isset($this->tokens[$this->position + 1])) {
+            return null;
+        }
+
+        return $this->tokens[$this->position + 1];
+    }
+
     public function next(): ?Token
     {
         if (!isset($this->tokens[$this->position + 1])) {
