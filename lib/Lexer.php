@@ -8,9 +8,9 @@ class Lexer
      * @var string[]
      */
     private $patterns = [
-        '^/\*+\s*\*?', // start tag
+        '^/\*+', // start tag
         '\*/', // close tag
-        '\s*\*', // border
+        '\*', // leading tag
         '\[\]', //tag
         '@\w+', //tag
         '\s+', // whitespace
@@ -65,6 +65,10 @@ class Lexer
 
         if (false !== strpos($value, '*/')) {
             return Token::T_PHPDOC_CLOSE;
+        }
+
+        if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
+            return Token::T_PHPDOC_LEADING;
         }
 
         if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {

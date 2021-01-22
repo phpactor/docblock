@@ -41,7 +41,9 @@ class LexerTest extends TestCase
 EOT
 
             ,[
-                [Token::T_PHPDOC_OPEN, "/**\n *"],
+                [Token::T_PHPDOC_OPEN, "/**"],
+                [Token::T_WHITESPACE, "\n "],
+                [Token::T_PHPDOC_LEADING, "*"],
                 [Token::T_WHITESPACE, " "],
                 [Token::T_LABEL, "Hello"],
                 [Token::T_WHITESPACE, " "],
@@ -49,7 +51,8 @@ EOT
                 [Token::T_WHITESPACE, " "],
                 [Token::T_LABEL, "is"],
                 [Token::T_WHITESPACE, "\n "],
-                [Token::T_PHPDOC_LEADING, "* "],
+                [Token::T_PHPDOC_LEADING, "*"],
+                [Token::T_WHITESPACE, " "],
                 [Token::T_LABEL, "Multi"],
                 [Token::T_WHITESPACE, "\n "],
                 [Token::T_PHPDOC_CLOSE, "*/"],
@@ -66,8 +69,7 @@ EOT
             'Foobar[]',
             [
                 [Token::T_LABEL, "Foobar"],
-                [Token::T_BRACKET_SQUARE_OPEN, "["],
-                [Token::T_BRACKET_SQUARE_CLOSE, "]"],
+                [Token::T_LIST, "[]"],
             ]
         ];
         yield [
