@@ -21,7 +21,6 @@ class ParserTest extends TestCase
     public function testParse(string $text, Node $expected): void
     {
         $node = (new Parser())->parse((new Lexer())->lex($text));
-        dump($node);
         self::assertEquals($expected, $node);
     }
 
@@ -31,25 +30,21 @@ class ParserTest extends TestCase
     public function provideParse(): Generator
     {
         yield [
+            '/** */',
+            new Docblock([
+                new Token(0, Token::T_PHPDOC_OPEN, '/**'),
+                new Token(3, Token::T_WHITESPACE, ' '),
+                new Token(4, Token::T_PHPDOC_CLOSE, '*/'),
+            ])
+        ];
+        yield [
             '/** Hello */',
             new Docblock([
-                new Token(0, Token::T_PHPDOC_OPEN, '/** '),
+                new Token(0, Token::T_PHPDOC_OPEN, '/**'),
+                new Token(3, Token::T_WHITESPACE, ' '),
                 new Token(4, Token::T_LABEL, 'Hello'),
                 new Token(9, Token::T_WHITESPACE, ' '),
                 new Token(10, Token::T_PHPDOC_CLOSE, '*/'),
-            ])
-        ];
-
-        yield [
-            '/** @param Foobar $foobar */',
-            new Docblock([
-                new Token(0, Token::T_PHPDOC_OPEN, '/** '),
-                new ParamNode(
-                    new ClassNode(new Token(11, Token::T_LABEL, 'Foobar')),
-                    new VariableNode(new Token(18, Token::T_VARIABLE, '$foobar'))
-                ),
-                new Token(25, Token::T_WHITESPACE, ' '),
-                new Token(26, Token::T_PHPDOC_CLOSE, '*/'),
             ])
         ];
     }

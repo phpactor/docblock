@@ -1,0 +1,7 @@
+/**
+ * @param Foobar<Barfoo[]> $foobar
+ */
+---
+/**
+ * ParamNode(GenericNode(ClassNode(Foobar),ListNode(ClassNode(Barfoo))),VariableNode($foobar))
+ */

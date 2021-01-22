@@ -74,6 +74,10 @@ final class Tokens implements IteratorAggregate
      */
     public function skip(string $type): self
     {
+        if ($this->current()->type() !== $type) {
+            return $this;
+        }
+
         while (null !== $current = $this->next()) {
             if ($current->type() === $type) {
                 continue;

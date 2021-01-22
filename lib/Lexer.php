@@ -9,6 +9,7 @@ class Lexer
      */
     private $patterns = [
         '^/\*+\s*\*?', // start tag
+        '\*/', // close tag
         '\s*\*', // border
         '\[\]', //tag
         '@\w+', //tag
