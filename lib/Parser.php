@@ -13,85 +13,105 @@ use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
 use Phpactor\Docblock\Ast\Type\ScalarNode;
 use Phpactor\Docblock\Ast\UnknownTag;
+use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
 
 final class Parser
 {
+    /**
+     * @var Tokens
+     */
+    private $tokens;
+
     private const SCALAR_TYPES = [
         'int', 'float', 'bool', 'string'
     ];
 
     public function parse(Tokens $tokens): Node
     {
-        $children = [$tokens->current()];
+        $this->tokens = $tokens;
+        $children = [];
 
-        while ($token = $tokens->next()) {
-            assert($token instanceof Token);
-            if ($token->type() === Token::T_TAG) {
-                $children[] = $this->parseTag($token, $tokens);
+        while ($tokens->hasAnother()) {
+            if ($tokens->current()->type() === Token::T_TAG) {
+                $children[] = $this->parseTag();
                 continue;
             }
-            $children[] = $token;
+            $children[] = $tokens->chomp();
         }
 
         return new Docblock($children);
     }
 
-    private function parseTag(Token $token, Tokens $tokens): TagNode
+    private function parseTag(): TagNode
     {
+        $token = $this->tokens->current();
+
         if ($token->value() === '@param') {
-            return $this->parseParam($tokens);
+            return $this->parseParam();
+        }
+
+        if ($token->value() === '@var') {
+            return $this->parseVar();
         }
 
         return new UnknownTag($token);
     }
 
-    private function parseParam(Tokens $tokens): ParamNode
+    private function parseParam(): ParamNode
     {
-        $tokens->next();
-        $type = $this->parseType($tokens);
-        $variable = $this->parseVariable($tokens->skip(Token::T_WHITESPACE));
+        $type = $variable = null;
+        $this->tokens->chomp(Token::T_TAG);
+
+        if ($this->tokens->ifNextIs(Token::T_LABEL)) {
+            $type = $this->parseType();
+        }
+        if ($this->tokens->ifNextIs(Token::T_VARIABLE)) {
+            $variable = $this->parseVariable();
+        }
 
         return new ParamNode($type, $variable);
     }
 
-    private function parseType(Tokens $tokens): ?TypeNode
+    private function parseVar(): VarNode
     {
-        $tokens->skip(Token::T_WHITESPACE);
+        $this->tokens->chomp(Token::T_TAG);
+        $type = null;
+        if ($this->tokens->if(Token::T_LABEL)) {
+            $type = $this->parseType();
+        }
+
+        return new VarNode($type, null);
+    }
+
+    private function parseType(): ?TypeNode
+    {
+        $type = $this->tokens->chomp(Token::T_LABEL);
         $isList = false;
 
-        if (!$tokens->isType(Token::T_LABEL)) {
-            return null;
+        if ($this->tokens->current()->type() === Token::T_LIST) {
+            $list = $this->tokens->chomp();
+            return new ListNode($this->createTypeFromToken($type), $list);
         }
 
+        if ($this->tokens->current()->type() === Token::T_BRACKET_ANGLE_OPEN) {
+            $open = $this->tokens->chomp();
+            if ($this->tokens->if(Token::T_LABEL)) {
+                $typeList = $this->parseTypeList();
+            }
 
-        $type = $tokens->current();
-
-        if ($tokens->peek()->type() === Token::T_LIST) {
-            $tokens->next();
-            $tokens->next();
-            return new ListNode($this->createTypeFromToken($type), $tokens->current());
-        }
-
-        if ($tokens->peek()->type() === Token::T_BRACKET_ANGLE_OPEN) {
-            $open = $tokens->next();
-            $tokens->next();
-            $typeList = $this->parseTypeList($tokens);
-
-            if (!$tokens->isType(Token::T_BRACKET_ANGLE_CLOSE)) {
+            if ($this->tokens->current()->type() !== Token::T_BRACKET_ANGLE_CLOSE) {
                 return null;
             }
-            $tokens->next();
 
             return new GenericNode(
                 $open,
                 $this->createTypeFromToken($type),
                 $typeList,
-                $tokens->current()
+                $this->tokens->chomp()
             );
         }
 
-        $tokens->next();
         return $this->createTypeFromToken($type);
     }
 
@@ -104,27 +124,31 @@ final class Parser
         return new ClassNode($type);
     }
 
-    private function parseVariable(Tokens $tokens): ?VariableNode
+    private function parseVariable(): ?VariableNode
     {
-        if (!$tokens->isType(Token::T_VARIABLE)) {
+        if ($this->tokens->current()->type() !== Token::T_VARIABLE) {
             return null;
         }
 
-        $name = $tokens->current();
+        $name = $this->tokens->chomp(Token::T_VARIABLE);
 
         return new VariableNode($name);
     }
 
-    private function parseTypeList(Tokens $tokens): TypeList
+    private function parseTypeList(): TypeList
     {
         $types = [];
         while (true) {
-            $types[] = $this->parseType($tokens);
-            if ($tokens->current()->type() !== Token::T_COMMA) {
-                break;
+            if ($this->tokens->if(Token::T_LABEL)) {
+                $types[] = $this->parseType();
             }
-            $tokens->next();
+            if ($this->tokens->if(Token::T_COMMA)) {
+                $this->tokens->chomp();
+                continue;
+            }
+            break;
         }
+        dump($types);
 
         return new TypeList($types);
     }

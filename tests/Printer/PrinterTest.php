@@ -21,7 +21,8 @@ class PrinterTest extends TestCase
 
         $parts = explode('---', $contents);
 
-        $node = (new Parser())->parse((new Lexer())->lex($parts[0]));
+        $tokens = (new Lexer())->lex($parts[0]);
+        $node = (new Parser())->parse($tokens);
         $rendered = (new TestPrinter())->print($node);
 
         /**
@@ -33,7 +34,7 @@ class PrinterTest extends TestCase
             return;
         }
 
-        self::assertEquals(ltrim($parts[1]), $rendered);
+        self::assertEquals(trim($parts[1]), $rendered);
     }
 
     /**

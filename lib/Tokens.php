@@ -39,13 +39,72 @@ final class Tokens implements IteratorAggregate
         return new ArrayIterator($this->tokens);
     }
 
-    public function peek(): ?Token
+    public function hasAnother(): bool
     {
-        if (!isset($this->tokens[$this->position + 1])) {
+        return isset($this->tokens[$this->position + 1]);
+    }
+
+    /**
+     * Return the current token and move the position ahead.
+     */
+    public function chomp(?string $type = null): ?Token
+    {
+        if (!isset($this->tokens[$this->position])) {
             return null;
         }
 
-        return $this->tokens[$this->position + 1];
+        $token = $this->tokens[$this->position++];
+
+        if (null !== $type && $token->type() !== $type) {
+            throw new RuntimeException(sprintf(
+                'Expected type "%s" at position "%s": "%s"',
+                $type, $this->position,
+                implode('', array_map(function (Token $token) {
+                    return $token->value();
+                }, $this->tokens))
+            ));
+        }
+
+        return $token;
+    }
+
+    public function current(): Token
+    {
+        if (!isset($this->tokens[$this->position])) {
+            throw new RuntimeException(sprintf(
+                'No token at position "%s"', $this->position
+            ));
+        }
+
+        return $this->tokens[$this->position];
+    }
+
+    public function ifNextIs(string $type): bool
+    {
+        if ($this->next()->type() === $type) {
+            $this->position++;
+            return true;
+        }
+
+        return false;
+    }
+
+    public function if(string $type): bool
+    {
+        if ($this->current()->type() === $type) {
+            return true;
+        }
+
+        if ($this->current()->type() !== Token::T_WHITESPACE) {
+            return false;
+        }
+
+        if ($this->next()->type() === $type) {
+            $this->position++;
+            return true;
+        }
+
+        return false;
     }
 
     public function next(): ?Token
@@ -54,43 +113,6 @@ final class Tokens implements IteratorAggregate
             return null;
         }
 
-        return $this->tokens[++$this->position];
-    }
-
-    public function current(): Token
-    {
-        if (!isset($this->tokens[$this->position])) {
-            throw new RuntimeException(sprintf(
-                'No token at current position "%s"',
-                $this->position
-            ));
-        }
-
-        return $this->tokens[$this->position];
-    }
-
-    /**
-     * Skip until all tokens of the given type
-     */
-    public function skip(string $type): self
-    {
-        if ($this->current()->type() !== $type) {
-            return $this;
-        }
-
-        while (null !== $current = $this->next()) {
-            if ($current->type() === $type) {
-                continue;
-            }
-
-            return $this;
-        }
-
-        return $this;
-    }
-
-    public function isType(string $type): bool
-    {
-        return $this->current()->type() === $type;
+        return $this->tokens[$this->position + 1];
     }
 }

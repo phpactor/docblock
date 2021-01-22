@@ -11,6 +11,7 @@ use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
 use Phpactor\Docblock\Printer;
 use Phpactor\Docblock\Token;
@@ -54,6 +55,11 @@ final class TestPrinter implements Printer
             return;
         }
 
+        if ($node instanceof VarNode) {
+            $this->renderVar($node);
+            return;
+        }
+
         if ($node instanceof ListNode) {
             $this->renderListNode($node);
             return;
@@ -93,6 +99,17 @@ final class TestPrinter implements Printer
         $this->render($node->type());
         $this->out[] = ',';
         $this->render($node->variable());
+        $this->out[] = ')';
+    }
+
+    private function renderVar(VarNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->render($node->type());
+        if ($node->variable()) {
+            $this->out[] = ',';
+            $this->render($node->variable());
+        }
         $this->out[] = ')';
     }
 
