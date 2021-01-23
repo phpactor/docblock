@@ -8,6 +8,7 @@ use Phpactor\Docblock\Ast\Element;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\MixinNode;
 use Phpactor\Docblock\Ast\PropertyNode;
+use Phpactor\Docblock\Ast\ReturnNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
@@ -119,6 +120,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof MixinNode) {
             $this->renderMixin($node);
+            return;
+        }
+
+        if ($node instanceof ReturnNode) {
+            $this->renderReturn($node);
             return;
         }
 
@@ -248,6 +254,13 @@ final class TestPrinter implements Printer
             $this->out[] = ',';
             $this->render($node->name());
         }
+        $this->out[] = ')';
+    }
+
+    private function renderReturn(ReturnNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->render($node->type());
         $this->out[] = ')';
     }
 }

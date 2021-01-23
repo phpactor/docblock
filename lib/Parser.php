@@ -8,6 +8,7 @@ use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\MixinNode;
 use Phpactor\Docblock\Ast\PropertyNode;
+use Phpactor\Docblock\Ast\ReturnNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -76,6 +77,10 @@ final class Parser
 
         if ($token->value === '@mixin') {
             return $this->parseMixin();
+        }
+
+        if ($token->value === '@return') {
+            return $this->parseReturn();
         }
 
         return new UnknownTag($this->tokens->chomp());
@@ -230,6 +235,18 @@ final class Parser
         }
 
         return new MixinNode($type);
+    }
+
+    private function parseReturn(): ReturnNode
+    {
+        $this->tokens->chomp();
+        $type = null;
+
+        if ($this->tokens->if(Token::T_LABEL)) {
+            $type = $this->parseType();
+        }
+
+        return new ReturnNode($type);
     }
 
     private function parseText(): ?TextNode

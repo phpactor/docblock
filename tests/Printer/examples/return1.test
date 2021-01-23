@@ -1,1 +1,7 @@
+/**
+ * @return Foobar
+ */
 ---
+/**
+ * ReturnNode(ClassNode(Foobar))
+ */
