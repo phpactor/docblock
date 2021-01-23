@@ -21,6 +21,11 @@ class PrinterTest extends TestCase
 
         $parts = explode('---', $contents);
 
+        if (empty($parts[0])) {
+            $this->markTestIncomplete(sprintf('No example given for "%s"', $path));
+            return;
+        }
+
         $tokens = (new Lexer())->lex($parts[0]);
         $node = (new Parser())->parse($tokens);
         $rendered = (new TestPrinter())->print($node);
