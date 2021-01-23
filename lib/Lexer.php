@@ -43,20 +43,28 @@ class Lexer
      */
     private $includeSurrounding;
 
+    /**
+     * @var string
+     */
+    private $pattern;
+
+    /**
+     * @param bool $includeSurrounding Tokenize DOCBLOCK_ tags, decreases performance.
+     */
     public function __construct(bool $includeSurrounding = false)
     {
         $this->includeSurrounding = $includeSurrounding;
-    }
-
-    public function lex(string $docblock): Tokens
-    {
-        $pattern = sprintf(
+        $this->pattern = sprintf(
             '{(%s)|%s}',
             implode(')|(', self::PATTERNS),
             implode('|', self::IGNORE_PATTERNS)
         );
+    }
+
+    public function lex(string $docblock): Tokens
+    {
         $chunks = (array)preg_split(
-            $pattern,
+            $this->pattern,
             $docblock,
             null,
             PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
