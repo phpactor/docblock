@@ -85,6 +85,18 @@ final class Tokens implements IteratorAggregate
         return $token;
     }
 
+    /**
+     * Chomp only if the current node is the given type
+     */
+    public function chompIf(string $type): ?Token
+    {
+        if ($this->current->type === $type) {
+            return $this->chomp($type);
+        }
+
+        return null;
+    }
+
     public function ifNextIs(string $type): bool
     {
         if ($this->next()->type === $type) {

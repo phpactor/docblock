@@ -25,6 +25,8 @@ use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\ScalarNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
+use Phpactor\Docblock\Ast\ValueNode;
+use Phpactor\Docblock\Ast\Value\NullValue;
 use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
 
@@ -137,7 +139,7 @@ final class Parser
         if ($this->tokens->if(Token::T_PAREN_OPEN)) {
             $open = $this->tokens->chomp(Token::T_PAREN_OPEN);
             $parameterList = $this->parseParameterList();
-            $close = $this->tokens->chomp(Token::T_PAREN_CLOSE);
+            $close = $this->tokens->chompIf(Token::T_PAREN_CLOSE);
         }
 
         return new MethodNode($type, $name, $static, $open, $parameterList, $close, $this->parseText());
@@ -279,14 +281,18 @@ final class Parser
 
     private function parseParameter(): ParameterNode
     {
-        $type = $name = null;
+        $type = $name = $default = null;
         if ($this->tokens->if(Token::T_LABEL)) {
             $type = $this->parseTypes();
         }
         if ($this->tokens->if(Token::T_VARIABLE)) {
             $name = $this->parseVariable();
         }
-        return new ParameterNode($type, $name);
+        if ($this->tokens->if(Token::T_EQUALS)) {
+            $equals = $this->tokens->chomp();
+            $default = $this->parseValue();
+        }
+        return new ParameterNode($type, $name, $default);
     }
 
     private function parseDeprecated(): DeprecatedNode
@@ -354,6 +360,17 @@ final class Parser
     private function ifType(): bool
     {
         return $this->tokens->if(Token::T_LABEL) || $this->tokens->if(Token::T_NULLABLE);
+    }
+
+    private function parseValue(): ?ValueNode
+    {
+        if ($this->tokens->if(Token::T_LABEL)) {
+            if (strtolower($this->tokens->current->value) === 'null') {
+                return new NullValue($this->tokens->chomp());
+            }
+        }
+
+        return null;
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace Phpactor\Docblock\Ast;
 
-class Node implements Element
+abstract class Node implements Element
 {
     public function shortName(): string
     {

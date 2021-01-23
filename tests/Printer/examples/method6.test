@@ -1,0 +1,7 @@
+/**
+ * @method static bool allIpv4(string $value, int $flag = null, string|callable $message = null, string $propertyPath = null) Assert that value is an IPv4 address for all values.
+ */
+---
+/**
+ * MethodNode(ScalarNode(bool),allIpv4,static,ParameterList(ParameterNode(VariableNode($value),ScalarNode(string)),ParameterNode(VariableNode($flag),ScalarNode(int),null),ParameterNode(VariableNode($message),UnionNode(ScalarNode(string)|ScalarNode(callable)),null),ParameterNode(VariableNode($propertyPath),ScalarNode(string),null)),TextNode(Assert that value is an IPv4 address for all values.))
+ */

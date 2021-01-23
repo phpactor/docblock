@@ -23,6 +23,7 @@ use Phpactor\Docblock\Ast\Type\NullNode;
 use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
+use Phpactor\Docblock\Ast\ValueNode;
 use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
 use Phpactor\Docblock\Printer;
@@ -144,6 +145,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof ParameterNode) {
             $this->renderParameter($node);
+            return;
+        }
+
+        if ($node instanceof ValueNode) {
+            $this->renderValue($node);
             return;
         }
 
@@ -327,6 +333,15 @@ final class TestPrinter implements Printer
             $this->out[] = ',';
             $this->render($node->type());
         }
+        if ($node->default()) {
+            $this->out[] = ',';
+            $this->render($node->default());
+        }
         $this->out[] = ')';
+    }
+
+    private function renderValue(ValueNode $node)
+    {
+        $this->out[] = json_encode($node->value());
     }
 }

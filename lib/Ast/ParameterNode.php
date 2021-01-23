@@ -13,10 +13,16 @@ class ParameterNode extends Node
      */
     private $name;
 
-    public function __construct(?TypeNode $type, ?VariableNode $name)
+    /**
+     * @var ValueNode|null
+     */
+    private $default;
+
+    public function __construct(?TypeNode $type, ?VariableNode $name, ?ValueNode $default)
     {
         $this->type = $type;
         $this->name = $name;
+        $this->default = $default;
     }
 
     public function name(): ?VariableNode
@@ -27,5 +33,10 @@ class ParameterNode extends Node
     public function type(): ?TypeNode
     {
         return $this->type;
+    }
+
+    public function default(): ?ValueNode
+    {
+        return $this->default;
     }
 }

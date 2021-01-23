@@ -1,0 +1,7 @@
+/**
+ * @method static bool allAlnum(mixed $value, string|callable $message = null, string $propertyPath = null) Assert that value is alphanumeric for all values.
+ */
+---
+/**
+ * MethodNode(ScalarNode(bool),allAlnum,static,ParameterList(ParameterNode(VariableNode($value),ScalarNode(mixed)),ParameterNode(VariableNode($message),UnionNode(ScalarNode(string)|ScalarNode(callable)),null),ParameterNode(VariableNode($propertyPath),ScalarNode(string),null)),TextNode(Assert that value is alphanumeric for all values.))
+ */

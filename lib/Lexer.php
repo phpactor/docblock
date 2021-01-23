@@ -17,6 +17,7 @@ final class Lexer
         '\s+', // whitespace
         ',', // comma
         '\|', // bar (union)
+        '=', // equals
         '(', ')', '\{', '\}', '\[', '\]', '<', '>', // brackets
         '\$[a-zA-Z0-9_\x80-\xff]+', // variable
         '[a-zA-Z0-9_\\\]+', // label
@@ -35,6 +36,7 @@ final class Lexer
         '[]' => Token::T_LIST,
         '?' => Token::T_NULLABLE,
         '|' => Token::T_BAR,
+        '=' => Token::T_EQUALS,
     ];
 
     /**
@@ -112,7 +114,7 @@ final class Lexer
             return Token::T_WHITESPACE;
         }
 
-        if (ctype_alpha($value) || false !== strpos($value, '\\')) {
+        if (ctype_alpha($value[0]) || $value[0] === '\\') {
             return Token::T_LABEL;
         }
 

@@ -1,0 +1,7 @@
+/**
+ * @method bool is(string $value = null)
+ */
+---
+/**
+ * MethodNode(ScalarNode(bool),is,ParameterList(ParameterNode(VariableNode($value),ScalarNode(string),null)))
+ */
