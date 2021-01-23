@@ -2,6 +2,7 @@
 
 namespace Phpactor\Docblock;
 
+use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
@@ -56,6 +57,10 @@ final class Parser
             return $this->parseVar();
         }
 
+        if ($token->value === '@deprecated') {
+            return $this->parseDeprecated();
+        }
+
         return new UnknownTag($this->tokens->chomp());
     }
 
@@ -71,31 +76,7 @@ final class Parser
             $variable = $this->parseVariable();
         }
 
-        $text = [];
-        if (
-            $this->tokens->current->type === Token::T_WHITESPACE && 
-            $this->tokens->next()->type === Token::T_LABEL
-        ) {
-            $this->tokens->chomp();
-        }
-        while ($this->tokens->current) {
-            if ($this->tokens->current->type === Token::T_PHPDOC_CLOSE) {
-                break;
-            }
-            if ($this->tokens->current->type === Token::T_PHPDOC_LEADING) {
-                break;
-            }
-            if (false !== strpos($this->tokens->current->value, "\n")) {
-                break;
-            }
-            $text[] = $this->tokens->chomp();
-        }
-
-        if ($text) {
-            $textNode = new TextNode($text);
-        }
-
-        return new ParamNode($type, $variable, $textNode);
+        return new ParamNode($type, $variable, $this->parseText());
     }
 
     private function parseVar(): VarNode
@@ -178,5 +159,40 @@ final class Parser
         }
 
         return new TypeList($types);
+    }
+
+    private function parseDeprecated(): DeprecatedNode
+    {
+        $this->tokens->chomp();
+        return new DeprecatedNode($this->parseText());
+    }
+
+    private function parseText(): ?TextNode
+    {
+        $text = [];
+        if (
+            $this->tokens->current->type === Token::T_WHITESPACE && 
+            $this->tokens->next()->type === Token::T_LABEL
+        ) {
+            $this->tokens->chomp();
+        }
+        while ($this->tokens->current) {
+            if ($this->tokens->current->type === Token::T_PHPDOC_CLOSE) {
+                break;
+            }
+            if ($this->tokens->current->type === Token::T_PHPDOC_LEADING) {
+                break;
+            }
+            if (false !== strpos($this->tokens->current->value, "\n")) {
+                break;
+            }
+            $text[] = $this->tokens->chomp();
+        }
+        
+        if ($text) {
+            return new TextNode($text);
+        }
+
+        return null;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Phpactor\Docblock\Printer;
 
+use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
 use Phpactor\Docblock\Ast\TextNode;
@@ -92,6 +93,11 @@ final class TestPrinter implements Printer
             return;
         }
 
+        if ($node instanceof DeprecatedNode) {
+            $this->renderDeprecated($node);
+            return;
+        }
+
         throw new RuntimeException(sprintf(
             'Do not know how to render "%s"',
             get_class($node)
@@ -173,6 +179,15 @@ final class TestPrinter implements Printer
     {
         $this->out[] = $node->shortName() . '(';
         $this->out[] = $node->toString();
+        $this->out[] = ')';
+    }
+
+    private function renderDeprecated(DeprecatedNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        if ($node->text()) {
+            $this->render($node->text());
+        }
         $this->out[] = ')';
     }
 }
