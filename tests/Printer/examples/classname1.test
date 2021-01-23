@@ -1,0 +1,8 @@
+/**
+ * @var Foobar\Barfoo
+ */
+---
+/**
+ * VarNode(ClassNode(Foobar\Barfoo))
+ */
+

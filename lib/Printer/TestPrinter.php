@@ -18,6 +18,7 @@ use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
 use Phpactor\Docblock\Ast\Type\NullableNode;
+use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
@@ -80,6 +81,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof NullableNode) {
             $this->renderNullable($node);
+            return;
+        }
+
+        if ($node instanceof UnionNode) {
+            $this->renderUnion($node);
             return;
         }
 
@@ -195,12 +201,12 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderTypeList(TypeList $typeList): void
+    private function renderTypeList(TypeList $typeList, string $delimiter = ','): void
     {
         foreach ($typeList as $i => $param) {
             $this->render($param);
             if ($i + 1 !== $typeList->count()) {
-                $this->out[] = ',';
+                $this->out[] = $delimiter;
             }
         }
     }
@@ -261,6 +267,13 @@ final class TestPrinter implements Printer
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
+        $this->out[] = ')';
+    }
+
+    private function renderUnion(UnionNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->renderTypeList($node->types(), '|');
         $this->out[] = ')';
     }
 }

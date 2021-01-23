@@ -16,9 +16,10 @@ final class Lexer
         '@\w+', //tag
         '\s+', // whitespace
         ',', // comma
+        '\|', // bar (union)
         '\{', '\}', '\[', '\]', '<', '>', // brackets
         '\$[a-zA-Z0-9_\x80-\xff]+', // variable
-        '[^a-zA-Z0-9_\x80-\xff]+', // label
+        '[^a-zA-Z0-9_\x80-\xff\\\]+', // label
     ];
 
     private const TOKEN_VALUE_MAP = [
@@ -31,6 +32,7 @@ final class Lexer
         ',' => Token::T_COMMA,
         '[]' => Token::T_LIST,
         '?' => Token::T_NULLABLE,
+        '|' => Token::T_BAR,
     ];
 
     /**
@@ -112,7 +114,7 @@ final class Lexer
             return Token::T_WHITESPACE;
         }
 
-        if (ctype_alpha($value) || $value === '_') {
+        if (ctype_alpha($value) || false !== strpos($value, '\\')) {
             return Token::T_LABEL;
         }
 

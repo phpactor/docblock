@@ -12,6 +12,7 @@ final class Token implements Element
     public const T_VARIABLE = 'VARIABLE';
     public const T_UNKNOWN = 'UNKNOWN';
     public const T_NULLABLE = 'NULLABLE';
+    public const T_BAR = 'BAR';
     public const T_TAG = 'TAG';
     public const T_COMMA = 'COMMA';
     public const T_LIST = 'LIST';
