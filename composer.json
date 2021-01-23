@@ -13,6 +13,7 @@
         "php": "^7.3"
     },
     "require-dev": {
+        "phpbench/phpbench": "^1.0",
         "ergebnis/composer-normalize": "^2.0",
         "friendsofphp/php-cs-fixer": "^2.17",
         "phpstan/phpstan": "~0.12.0",
