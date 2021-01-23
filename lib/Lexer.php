@@ -2,7 +2,7 @@
 
 namespace Phpactor\Docblock;
 
-class Lexer
+final class Lexer
 {
     /**
      * @var string[]
@@ -39,21 +39,12 @@ class Lexer
     ];
 
     /**
-     * @var bool
-     */
-    private $includeSurrounding;
-
-    /**
      * @var string
      */
     private $pattern;
 
-    /**
-     * @param bool $includeSurrounding Tokenize DOCBLOCK_ tags, decreases performance.
-     */
-    public function __construct(bool $includeSurrounding = false)
+    public function __construct()
     {
-        $this->includeSurrounding = $includeSurrounding;
         $this->pattern = sprintf(
             '{(%s)|%s}',
             implode(')|(', self::PATTERNS),
@@ -87,18 +78,16 @@ class Lexer
 
     private function resolveType(string $value, ?array $prevChunk = null): string
     {
-        if ($this->includeSurrounding) {
-            if (false !== strpos($value, '/*')) {
-                return Token::T_PHPDOC_OPEN;
-            }
+        if (false !== strpos($value, '/*')) {
+            return Token::T_PHPDOC_OPEN;
+        }
 
-            if (false !== strpos($value, '*/')) {
-                return Token::T_PHPDOC_CLOSE;
-            }
+        if (false !== strpos($value, '*/')) {
+            return Token::T_PHPDOC_CLOSE;
+        }
 
-            if ($prevChunk && 0 === strpos($prevChunk[0], "\n") && trim($value) === '*') {
-                return Token::T_PHPDOC_LEADING;
-            }
+        if ($prevChunk && 0 === strpos($prevChunk[0], "\n") && trim($value) === '*') {
+            return Token::T_PHPDOC_LEADING;
         }
 
         if (array_key_exists($value, self::TOKEN_VALUE_MAP)) {
