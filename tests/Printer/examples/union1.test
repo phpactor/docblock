@@ -1,0 +1,3 @@
+/** @var string|bool|?Bar */
+---
+/** VarNode(UnionNode(ScalarNode(string)|ScalarNode(bool)|NullableNode(ClassNode(Bar)))) */

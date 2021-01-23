@@ -1,0 +1,7 @@
+/**
+ * @property string $foo
+ */
+---
+/**
+ * PropertyNode(ScalarNode(string),$foo)
+ */

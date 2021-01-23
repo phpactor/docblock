@@ -1,0 +1,19 @@
+/**
+ * Hello World
+ *
+ * @param Foobar $foobar
+ *
+ * @param string $barfoo
+ *
+ * @param bool $bool
+ */
+---
+/**
+ * Hello World
+ *
+ * ParamNode(ClassNode(Foobar),VariableNode($foobar))
+ *
+ * ParamNode(ScalarNode(string),VariableNode($barfoo))
+ *
+ * ParamNode(ScalarNode(bool),VariableNode($bool))
+ */

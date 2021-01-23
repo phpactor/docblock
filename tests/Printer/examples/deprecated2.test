@@ -1,0 +1,7 @@
+/**
+ * @deprecated This is because
+ */
+---
+/**
+ * DeprecatedNode(TextNode(This is because))
+ */

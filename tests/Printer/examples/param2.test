@@ -1,0 +1,9 @@
+/**
+ * @param Foobar $foobar
+ * @param string $barfoo
+ */
+---
+/**
+ * ParamNode(ClassNode(Foobar),VariableNode($foobar))
+ * ParamNode(ScalarNode(string),VariableNode($barfoo))
+ */

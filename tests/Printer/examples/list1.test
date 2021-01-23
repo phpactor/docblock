@@ -1,0 +1,9 @@
+/**
+ * @param Foobar[] $foobar
+ * @param string[] $strings
+ */
+---
+/**
+ * ParamNode(ListNode(ClassNode(Foobar)),VariableNode($foobar))
+ * ParamNode(ListNode(ScalarNode(string)),VariableNode($strings))
+ */

@@ -1,0 +1,3 @@
+/** @var string $foobar */
+---
+/** VarNode(ScalarNode(string),VariableNode($foobar)) */
