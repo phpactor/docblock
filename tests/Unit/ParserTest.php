@@ -20,7 +20,7 @@ class ParserTest extends TestCase
      */
     public function testParse(string $text, Node $expected): void
     {
-        $node = (new Parser())->parse((new Lexer())->lex($text));
+        $node = (new Parser())->parse((new Lexer(true))->lex($text));
         self::assertEquals($expected, $node);
     }
 

@@ -7,7 +7,7 @@ class Lexer
     /**
      * @var string[]
      */
-    private $patterns = [
+    private const PATTERNS = [
         '^/\*+', // start tag
         '\*/', // close tag
         '\*', // leading tag
@@ -20,7 +20,7 @@ class Lexer
         '[^a-zA-Z0-9_\x80-\xff]+', // label
     ];
 
-    private $tokenValueMap = [
+    private const TOKEN_VALUE_MAP = [
         ']' => Token::T_BRACKET_SQUARE_CLOSE,
         '[' => Token::T_BRACKET_SQUARE_OPEN,
         '>' => Token::T_BRACKET_ANGLE_CLOSE,
@@ -34,16 +34,26 @@ class Lexer
     /**
      * @var string[]
      */
-    private $ignorePatterns = [
+    private const IGNORE_PATTERNS = [
         '\s+'
     ];
+
+    /**
+     * @var bool
+     */
+    private $includeSurrounding;
+
+    public function __construct(bool $includeSurrounding = false)
+    {
+        $this->includeSurrounding = $includeSurrounding;
+    }
 
     public function lex(string $docblock): Tokens
     {
         $pattern = sprintf(
             '{(%s)|%s}',
-            implode(')|(', $this->patterns),
-            implode('|', $this->ignorePatterns)
+            implode(')|(', self::PATTERNS),
+            implode('|', self::IGNORE_PATTERNS)
         );
         $chunks = (array)preg_split(
             $pattern,
@@ -53,13 +63,12 @@ class Lexer
         );
 
         $tokens = [];
-        $prevChunk = [null,null];
+        $prevChunk = null;
         foreach ($chunks as $chunk) {
             [ $value, $offset ] = $chunk;
-            [ $prevValue, $_ ] = $prevChunk;
             $tokens[] = new Token(
                 $offset,
-                $this->resolveType($value, $prevValue),
+                $this->resolveType($value, $prevChunk),
                 $value
             );
             $prevChunk = $chunk;
@@ -68,28 +77,24 @@ class Lexer
         return new Tokens($tokens);
     }
 
-    private function resolveType(string $value, ?string $prevValue): string
+    private function resolveType(string $value, ?array $prevChunk = null): string
     {
-        // performance: saves around 7%
-        //
-        // if (false !== strpos($value, '/*')) {
-        //     return Token::T_PHPDOC_OPEN;
-        // }
+        if ($this->includeSurrounding) {
+            if (false !== strpos($value, '/*')) {
+                return Token::T_PHPDOC_OPEN;
+            }
 
-        // if (false !== strpos($value, '*/')) {
-        //     return Token::T_PHPDOC_CLOSE;
-        // }
+            if (false !== strpos($value, '*/')) {
+                return Token::T_PHPDOC_CLOSE;
+            }
 
-        // if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
-        //     return Token::T_PHPDOC_LEADING;
-        // }
+            if ($prevChunk && 0 === strpos($prevChunk[0], "\n") && trim($value) === '*') {
+                return Token::T_PHPDOC_LEADING;
+            }
+        }
 
-        // if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
-        //     return Token::T_PHPDOC_LEADING;
-        // }
-
-        if (array_key_exists($value, $this->tokenValueMap)) {
-            return $this->tokenValueMap[$value];
+        if (array_key_exists($value, self::TOKEN_VALUE_MAP)) {
+            return self::TOKEN_VALUE_MAP[$value];
         }
 
         if ($value[0] === '$') {
