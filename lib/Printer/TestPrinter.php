@@ -6,6 +6,7 @@ use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
 use Phpactor\Docblock\Ast\MethodNode;
+use Phpactor\Docblock\Ast\MixinNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
@@ -14,6 +15,7 @@ use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
@@ -74,6 +76,11 @@ final class TestPrinter implements Printer
             return;
         }
 
+        if ($node instanceof NullableNode) {
+            $this->renderNullable($node);
+            return;
+        }
+
         if ($node instanceof TypeNode) {
             $this->renderTypeNode($node);
             return;
@@ -101,6 +108,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof MethodNode) {
             $this->renderMethod($node);
+            return;
+        }
+
+        if ($node instanceof MixinNode) {
+            $this->renderMixin($node);
             return;
         }
 
@@ -205,6 +217,20 @@ final class TestPrinter implements Printer
             $this->out[] = ',';
             $this->render($node->name());
         }
+        $this->out[] = ')';
+    }
+
+    private function renderMixin(MixinNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->render($node->class());
+        $this->out[] = ')';
+    }
+
+    private function renderNullable(NullableNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->render($node->type());
         $this->out[] = ')';
     }
 }

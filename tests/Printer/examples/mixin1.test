@@ -1,1 +1,7 @@
+/**
+ * @mixin Foobar
+ */
 ---
+/**
+ * MixinNode(ClassNode(Foobar))
+ */

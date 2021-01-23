@@ -2,9 +2,11 @@
 
 namespace Phpactor\Docblock;
 
+use PhpParser\Node\NullableType;
 use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\MethodNode;
+use Phpactor\Docblock\Ast\MixinNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -14,6 +16,7 @@ use Phpactor\Docblock\Ast\TagNode;
 use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\ScalarNode;
 use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\VarNode;
@@ -66,6 +69,10 @@ final class Parser
             return $this->parseMethod();
         }
 
+        if ($token->value === '@mixin') {
+            return $this->parseMixin();
+        }
+
         return new UnknownTag($this->tokens->chomp());
     }
 
@@ -74,7 +81,7 @@ final class Parser
         $type = $variable = $textNode = null;
         $this->tokens->chomp(Token::T_TAG);
 
-        if ($this->tokens->ifNextIs(Token::T_LABEL)) {
+        if ($this->ifType()) {
             $type = $this->parseType();
         }
         if ($this->tokens->ifNextIs(Token::T_VARIABLE)) {
@@ -88,7 +95,7 @@ final class Parser
     {
         $this->tokens->chomp(Token::T_TAG);
         $type = $variable = null;
-        if ($this->tokens->if(Token::T_LABEL)) {
+        if ($this->ifType()) {
             $type = $this->parseType();
         }
         if ($this->tokens->ifNextIs(Token::T_VARIABLE)) {
@@ -102,7 +109,7 @@ final class Parser
     {
         $this->tokens->chomp(Token::T_TAG);
         $type = $name = null;
-        if ($this->tokens->if(Token::T_LABEL)) {
+        if ($this->ifType()) {
             $type = $this->parseType();
         }
         if ($this->tokens->ifNextIs(Token::T_LABEL)) {
@@ -114,6 +121,11 @@ final class Parser
 
     private function parseType(): ?TypeNode
     {
+        if ($this->tokens->current->type === Token::T_NULLABLE) {
+            $nullable = $this->tokens->chomp();
+            return new NullableNode($nullable, $this->parseType());
+        }
+
         $type = $this->tokens->chomp(Token::T_LABEL);
         $isList = false;
 
@@ -186,6 +198,21 @@ final class Parser
         return new DeprecatedNode($this->parseText());
     }
 
+    private function parseMixin(): MixinNode
+    {
+        $this->tokens->chomp();
+        $type = null;
+
+        if ($this->tokens->if(Token::T_LABEL)) {
+            $type = $this->parseType();
+            if (!$type instanceof ClassNode) {
+                $type = null;
+            }
+        }
+
+        return new MixinNode($type);
+    }
+
     private function parseText(): ?TextNode
     {
         $text = [];
@@ -213,5 +240,10 @@ final class Parser
         }
 
         return null;
+    }
+
+    private function ifType(): bool
+    {
+        return $this->tokens->if(Token::T_LABEL) || $this->tokens->if(Token::T_NULLABLE);
     }
 }

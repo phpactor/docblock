@@ -12,6 +12,7 @@ final class Lexer
         '\*/', // close tag
         '\*', // leading tag
         '\[\]', //tag
+        '\?', //tag
         '@\w+', //tag
         '\s+', // whitespace
         ',', // comma
@@ -29,6 +30,7 @@ final class Lexer
         '}' => Token::T_BRACKET_CURLY_CLOSE,
         ',' => Token::T_COMMA,
         '[]' => Token::T_LIST,
+        '?' => Token::T_NULLABLE,
     ];
 
     /**

@@ -6,14 +6,12 @@ use Phpactor\Docblock\Ast\Element;
 
 final class Token implements Element
 {
-    public const T_PHPDOC_BORDER= 'PHPDOC_BORDER';
     public const T_PHPDOC_OPEN = 'PHPDOC_OPEN';
     public const T_PHPDOC_LEADING = 'PHPDOC_LEADING';
     public const T_PHPDOC_CLOSE = 'PHPDOC_CLOSE';
-    public const T_BORDER = 'BORDER';
-    public const T_TEXT = 'TEXT';
     public const T_VARIABLE = 'VARIABLE';
     public const T_UNKNOWN = 'UNKNOWN';
+    public const T_NULLABLE = 'NULLABLE';
     public const T_TAG = 'TAG';
     public const T_COMMA = 'COMMA';
     public const T_LIST = 'LIST';
