@@ -76,12 +76,15 @@ final class Parser
     private function parseVar(): VarNode
     {
         $this->tokens->chomp(Token::T_TAG);
-        $type = null;
+        $type = $variable = null;
         if ($this->tokens->if(Token::T_LABEL)) {
             $type = $this->parseType();
         }
+        if ($this->tokens->ifNextIs(Token::T_VARIABLE)) {
+            $variable = $this->parseVariable();
+        }
 
-        return new VarNode($type, null);
+        return new VarNode($type, $variable);
     }
 
     private function parseType(): ?TypeNode
@@ -148,7 +151,6 @@ final class Parser
             }
             break;
         }
-        dump($types);
 
         return new TypeList($types);
     }
