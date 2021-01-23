@@ -8,16 +8,23 @@ class Lexer
      * @var string[]
      */
     private $patterns = [
-        '^/\*+', // start tag
-        '\*/', // close tag
-        '\*', // leading tag
-        '\[\]', //tag
-        '@\w+', //tag
-        '\s+', // whitespace
-        ',', // comma
-        '\{', '\}', '\[', '\]', '<', '>', // brackets
-        '\$[a-zA-Z0-9_\x80-\xff]+', // variable
-        '[^a-zA-Z0-9_\x80-\xff]+', // label
+        '^/\*+' => Token::T_PHPDOC_OPEN,
+        '\*/' => Token::T_PHPDOC_CLOSE,
+        '\*' => Token::T_PHPDOC_LEADING,
+        '\[\]' => Token::T_LIST,
+        '@\w+' => Token::T_TAG,
+        '\s+' => Token::T_WHITESPACE,
+        ',' => Token::T_COMMA,
+        '\{' => Token::T_BRACKET_CURLY_OPEN, 
+        '\}' => Token::T_BRACKET_CURLY_CLOSE,
+        '\[' => Token::T_BRACKET_SQUARE_OPEN,
+        '\]' => Token::T_BRACKET_SQUARE_CLOSE,
+        '<' => Token::T_BRACKET_ANGLE_OPEN,
+        '>' => Token::T_BRACKET_ANGLE_CLOSE,
+        // brackets'\$[a-zA-Z0-9_\x80-\xff]+',
+        '\$[a-zA-Z0-9_\x80-\xff]+' => Token::T_VARIABLE,
+        '[A-Za-zA-Z0-9_\x80-\xff]+' => Token::T_LABEL,
+        // label
     ];
 
     /**
@@ -31,27 +38,20 @@ class Lexer
     {
         $pattern = sprintf(
             '{(%s)|%s}',
-            implode(')|(', $this->patterns),
+            implode(')|(', array_map(function (string $pattern, string $name) {
+                return sprintf('?P<%s>%s', $name, $pattern);
+            }, array_keys($this->patterns), array_values($this->patterns))),
             implode('|', $this->ignorePatterns)
         );
-        $chunks = (array)preg_split(
-            $pattern,
-            $docblock,
-            null,
-            PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_OFFSET_CAPTURE
-        );
 
+        preg_match_all($pattern, $docblock, $matches, PREG_SET_ORDER|PREG_OFFSET_CAPTURE|PREG_UNMATCHED_AS_NULL);
         $tokens = [];
-        $prevChunk = [null,null];
-        foreach ($chunks as $chunk) {
-            [ $value, $offset ] = $chunk;
-            [ $prevValue, $_ ] = $prevChunk;
-            $tokens[] = new Token(
-                $offset,
-                $this->resolveType($value, $prevValue),
-                $value
-            );
-            $prevChunk = $chunk;
+        foreach ($matches as $groups) {
+            foreach ($groups as $name => $group) {
+                if (is_string($name) && $group[1] >= 0) {
+                    $tokens[] = new Token($group[1], $name, $group[0]);
+                }
+            }
         }
 
         return new Tokens($tokens);
