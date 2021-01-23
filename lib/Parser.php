@@ -56,7 +56,7 @@ final class Parser
             return $this->parseVar();
         }
 
-        return new UnknownTag($token);
+        return new UnknownTag($this->tokens->chomp());
     }
 
     private function parseParam(): ParamNode

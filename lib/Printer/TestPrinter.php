@@ -12,6 +12,7 @@ use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\VarNode;
 use Phpactor\Docblock\Ast\VariableNode;
 use Phpactor\Docblock\Printer;
@@ -83,6 +84,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof VariableNode) {
             $this->renderVariableNode($node);
+            return;
+        }
+
+        if ($node instanceof UnknownTag) {
+            $this->out[] = $node->shortName();
             return;
         }
 
