@@ -1,0 +1,7 @@
+/**
+ * @param bool $bool This is a boolean
+ */
+---
+/**
+ * ParamNode(ScalarNode(bool),VariableNode($bool),TextNode(This is a boolean))
+ */

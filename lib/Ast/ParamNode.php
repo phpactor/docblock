@@ -14,10 +14,16 @@ class ParamNode extends TagNode
      */
     private $variable;
 
-    public function __construct(?TypeNode $type, ?VariableNode $variable)
+    /**
+     * @var TextNode|null
+     */
+    private $text;
+
+    public function __construct(?TypeNode $type, ?VariableNode $variable, ?TextNode $text = null)
     {
         $this->type = $type;
         $this->variable = $variable;
+        $this->text = $text;
     }
 
     public function type(): ?TypeNode
@@ -28,5 +34,10 @@ class ParamNode extends TagNode
     public function variable(): ?VariableNode
     {
         return $this->variable;
+    }
+
+    public function text(): ?TextNode
+    {
+        return $this->text;
     }
 }

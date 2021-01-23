@@ -21,7 +21,7 @@ class PrinterTest extends TestCase
 
         $parts = explode('---', $contents);
 
-        $tokens = (new Lexer())->lex($parts[0]);
+        $tokens = (new Lexer(true))->lex($parts[0]);
         $node = (new Parser())->parse($tokens);
         $rendered = (new TestPrinter())->print($node);
 

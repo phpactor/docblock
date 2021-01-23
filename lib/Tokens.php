@@ -95,6 +95,10 @@ final class Tokens implements IteratorAggregate
         return false;
     }
 
+    /**
+     * If the current or next non-whitespace node matches,
+     * advance internal pointer and return true;
+     */
     public function if(string $type): bool
     {
         if ($this->current->type === $type) {

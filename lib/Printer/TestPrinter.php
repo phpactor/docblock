@@ -4,6 +4,7 @@ namespace Phpactor\Docblock\Printer;
 
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
+use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -75,6 +76,11 @@ final class TestPrinter implements Printer
             return;
         }
 
+        if ($node instanceof TextNode) {
+            $this->renderTextNode($node);
+            return;
+        }
+
         if ($node instanceof VariableNode) {
             $this->renderVariableNode($node);
             return;
@@ -99,6 +105,10 @@ final class TestPrinter implements Printer
         $this->render($node->type());
         $this->out[] = ',';
         $this->render($node->variable());
+        if ($node->text()) {
+            $this->out[] = ',';
+            $this->render($node->text());
+        }
         $this->out[] = ')';
     }
 
@@ -151,5 +161,12 @@ final class TestPrinter implements Printer
                 $this->out[] = ',';
             }
         }
+    }
+
+    private function renderTextNode(TextNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->out[] = $node->toString();
+        $this->out[] = ')';
     }
 }

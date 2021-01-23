@@ -3,6 +3,7 @@
 namespace Phpactor\Docblock;
 
 use Phpactor\Docblock\Ast\Docblock;
+use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\Type\ClassNode;
 use Phpactor\Docblock\Ast\Node;
@@ -60,7 +61,7 @@ final class Parser
 
     private function parseParam(): ParamNode
     {
-        $type = $variable = null;
+        $type = $variable = $textNode = null;
         $this->tokens->chomp(Token::T_TAG);
 
         if ($this->tokens->ifNextIs(Token::T_LABEL)) {
@@ -70,7 +71,31 @@ final class Parser
             $variable = $this->parseVariable();
         }
 
-        return new ParamNode($type, $variable);
+        $text = [];
+        if (
+            $this->tokens->current->type === Token::T_WHITESPACE && 
+            $this->tokens->next()->type === Token::T_LABEL
+        ) {
+            $this->tokens->chomp();
+        }
+        while ($this->tokens->current) {
+            if ($this->tokens->current->type === Token::T_PHPDOC_CLOSE) {
+                break;
+            }
+            if ($this->tokens->current->type === Token::T_PHPDOC_LEADING) {
+                break;
+            }
+            if (false !== strpos($this->tokens->current->value, "\n")) {
+                break;
+            }
+            $text[] = $this->tokens->chomp();
+        }
+
+        if ($text) {
+            $textNode = new TextNode($text);
+        }
+
+        return new ParamNode($type, $variable, $textNode);
     }
 
     private function parseVar(): VarNode
