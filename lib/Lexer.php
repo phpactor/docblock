@@ -110,10 +110,6 @@ final class Lexer
             return Token::T_WHITESPACE;
         }
 
-        if (trim($value) === '') {
-            return Token::T_WHITESPACE;
-        }
-
         if (ctype_alpha($value) || false !== strpos($value, '\\')) {
             return Token::T_LABEL;
         }
