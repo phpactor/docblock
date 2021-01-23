@@ -7,6 +7,7 @@ use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\MixinNode;
+use Phpactor\Docblock\Ast\PropertyNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
@@ -108,6 +109,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof MethodNode) {
             $this->renderMethod($node);
+            return;
+        }
+
+        if ($node instanceof PropertyNode) {
+            $this->renderProperty($node);
             return;
         }
 
@@ -231,6 +237,17 @@ final class TestPrinter implements Printer
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
+        $this->out[] = ')';
+    }
+
+    private function renderProperty(PropertyNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        $this->render($node->type());
+        if ($node->name()) {
+            $this->out[] = ',';
+            $this->render($node->name());
+        }
         $this->out[] = ')';
     }
 }

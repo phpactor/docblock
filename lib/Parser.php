@@ -7,6 +7,7 @@ use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\MixinNode;
+use Phpactor\Docblock\Ast\PropertyNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -69,6 +70,10 @@ final class Parser
             return $this->parseMethod();
         }
 
+        if ($token->value === '@property') {
+            return $this->parseProperty();
+        }
+
         if ($token->value === '@mixin') {
             return $this->parseMixin();
         }
@@ -117,6 +122,20 @@ final class Parser
         }
 
         return new MethodNode($type, $name);
+    }
+
+    private function parseProperty(): PropertyNode
+    {
+        $this->tokens->chomp(Token::T_TAG);
+        $type = $name = null;
+        if ($this->ifType()) {
+            $type = $this->parseType();
+        }
+        if ($this->tokens->ifNextIs(Token::T_VARIABLE)) {
+            $name = $this->tokens->chomp();
+        }
+
+        return new PropertyNode($type, $name);
     }
 
     private function parseType(): ?TypeNode
