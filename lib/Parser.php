@@ -56,32 +56,27 @@ final class Parser
     {
         $token = $this->tokens->current;
 
-        if ($token->value === '@param') {
-            return $this->parseParam();
-        }
+        switch ($token->value) {
+            case '@param':
+                return $this->parseParam();
 
-        if ($token->value === '@var') {
-            return $this->parseVar();
-        }
+            case '@var':
+                return $this->parseVar();
 
-        if ($token->value === '@deprecated') {
-            return $this->parseDeprecated();
-        }
+            case '@deprecated':
+                return $this->parseDeprecated();
 
-        if ($token->value === '@method') {
-            return $this->parseMethod();
-        }
+            case '@method':
+                return $this->parseMethod();
 
-        if ($token->value === '@property') {
-            return $this->parseProperty();
-        }
+            case '@property':
+                return $this->parseProperty();
 
-        if ($token->value === '@mixin') {
-            return $this->parseMixin();
-        }
+            case '@mixin':
+                return $this->parseMixin();
 
-        if ($token->value === '@return') {
-            return $this->parseReturn();
+            case '@return':
+                return $this->parseReturn();
         }
 
         return new UnknownTag($this->tokens->chomp());
