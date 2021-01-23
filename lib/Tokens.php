@@ -39,6 +39,11 @@ final class Tokens implements IteratorAggregate
         return new ArrayIterator($this->tokens);
     }
 
+    public function hasCurrent(): bool
+    {
+        return isset($this->tokens[$this->position]);
+    }
+
     public function hasAnother(): bool
     {
         return isset($this->tokens[$this->position + 1]);

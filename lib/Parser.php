@@ -32,7 +32,7 @@ final class Parser
         $this->tokens = $tokens;
         $children = [];
 
-        while ($tokens->hasAnother()) {
+        while ($tokens->hasCurrent()) {
             if ($tokens->current()->type() === Token::T_TAG) {
                 $children[] = $this->parseTag();
                 continue;

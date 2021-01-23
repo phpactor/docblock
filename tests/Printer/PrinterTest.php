@@ -34,7 +34,7 @@ class PrinterTest extends TestCase
             return;
         }
 
-        self::assertEquals(trim($parts[1]), $rendered);
+        self::assertEquals(trim($parts[1]), trim($rendered));
     }
 
     /**
