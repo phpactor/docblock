@@ -3,5 +3,5 @@
  */
 ---
 /**
- * MethodNode(ClassNode(Foobar),foobar)() 
+ * MethodNode(ClassNode(Foobar),foobar) 
  */

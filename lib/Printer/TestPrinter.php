@@ -7,6 +7,8 @@ use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\MixinNode;
+use Phpactor\Docblock\Ast\ParameterList;
+use Phpactor\Docblock\Ast\ParameterNode;
 use Phpactor\Docblock\Ast\PropertyNode;
 use Phpactor\Docblock\Ast\ReturnNode;
 use Phpactor\Docblock\Ast\TextNode;
@@ -140,6 +142,11 @@ final class TestPrinter implements Printer
             return;
         }
 
+        if ($node instanceof ParameterNode) {
+            $this->renderParameter($node);
+            return;
+        }
+
         throw new RuntimeException(sprintf(
             'Do not know how to render "%s"',
             get_class($node)
@@ -241,6 +248,17 @@ final class TestPrinter implements Printer
             $this->out[] = ',';
             $this->render($node->name());
         }
+        if ($node->static()) {
+            $this->out[] = ',static';
+        }
+        if ($node->parameters()) {
+            $this->out[] = ',';
+            $this->renderParameterList($node->parameters());
+        }
+        if ($node->text()) {
+            $this->out[] = ',';
+            $this->render($node->text());
+        }
         $this->out[] = ')';
     }
 
@@ -284,6 +302,31 @@ final class TestPrinter implements Printer
     {
         $this->out[] = $node->shortName() . '(';
         $this->renderTypeList($node->types(), '|');
+        $this->out[] = ')';
+    }
+
+    private function renderParameterList(ParameterList $list): void
+    {
+        $this->out[] = 'ParameterList(';
+        foreach ($list as $i => $parameter) {
+            $this->render($parameter);
+            if ($i + 1 !== $list->count()) {
+                $this->out[] = ',';
+            }
+        }
+        $this->out[] = ')';
+    }
+
+    private function renderParameter(ParameterNode $node): void
+    {
+        $this->out[] = $node->shortName() . '(';
+        if ($node->name()) {
+            $this->render($node->name());
+        }
+        if ($node->type()) {
+            $this->out[] = ',';
+            $this->render($node->type());
+        }
         $this->out[] = ')';
     }
 }

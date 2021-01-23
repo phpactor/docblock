@@ -1,0 +1,7 @@
+/**
+ * @method static Foobar foobar() 
+ */
+---
+/**
+ * MethodNode(ClassNode(Foobar),foobar,static) 
+ */

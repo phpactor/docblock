@@ -27,7 +27,7 @@
 /**
  * Sets a user-defined error handler function
  * UnknownTag https://php.net/manual/en/function.set-error-handler.php
- * ParamNode(UnionNode(ClassNode(callable)|NullNode()),VariableNode($error_handler),TextNode( <p>))
+ * ParamNode(UnionNode(ScalarNode(callable)|NullNode()),VariableNode($error_handler),TextNode( <p>))
  * The user function needs to accept two parameters...
  * </p>
  * <p>
@@ -36,14 +36,14 @@
  * <i>errno</i>
  * The first parameter, <i>errno</i>, contains the
  * level of the error raised, as an integer.
- * @param int $error_types [optional] <p>
+ * ParamNode(ScalarNode(int),VariableNode($error_types),TextNode( [optional] <p>))
  * Can be used to mask the triggering of the
  * <i>error_handler</i> function just like the error_reporting ini setting
  * controls which errors are shown. Without this mask set the
  * <i>error_handler</i> will be called for every error
  * regardless to the setting of the error_reporting setting.
  * </p>
- * ReturnNode(UnionNode(ClassNode(callable)|NullNode()),TextNode(a string containing the previously defined error handler (if any). If))
+ * ReturnNode(UnionNode(ScalarNode(callable)|NullNode()),TextNode(a string containing the previously defined error handler (if any). If))
  * the built-in error handler is used null is returned. null is also returned
  * in case of an error such as an invalid callback. If the previous error handler
  * was a class method, this function will return an indexed array with the class

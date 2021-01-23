@@ -8,7 +8,7 @@ final class Lexer
      * @var string[]
      */
     private const PATTERNS = [
-        '^/\*+', // start tag
+        '/\*+', // start tag
         '\*/', // close tag
         '\*', // leading tag
         '\[\]', //tag
@@ -17,9 +17,9 @@ final class Lexer
         '\s+', // whitespace
         ',', // comma
         '\|', // bar (union)
-        '\{', '\}', '\[', '\]', '<', '>', // brackets
+        '(', ')', '\{', '\}', '\[', '\]', '<', '>', // brackets
         '\$[a-zA-Z0-9_\x80-\xff]+', // variable
-        '[^a-zA-Z0-9_\x80-\xff\\\]+', // label
+        '[a-zA-Z0-9_\\\]+', // label
     ];
 
     private const TOKEN_VALUE_MAP = [
@@ -29,6 +29,8 @@ final class Lexer
         '<' => Token::T_BRACKET_ANGLE_OPEN,
         '{' => Token::T_BRACKET_CURLY_OPEN,
         '}' => Token::T_BRACKET_CURLY_CLOSE,
+        '(' => Token::T_PAREN_OPEN,
+        ')' => Token::T_PAREN_CLOSE,
         ',' => Token::T_COMMA,
         '[]' => Token::T_LIST,
         '?' => Token::T_NULLABLE,
@@ -39,7 +41,7 @@ final class Lexer
      * @var string[]
      */
     private const IGNORE_PATTERNS = [
-        '\s+'
+        '\s+',
     ];
 
     /**

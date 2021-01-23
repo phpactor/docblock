@@ -7,6 +7,8 @@ use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\MixinNode;
+use Phpactor\Docblock\Ast\ParameterList;
+use Phpactor\Docblock\Ast\ParameterNode;
 use Phpactor\Docblock\Ast\PropertyNode;
 use Phpactor\Docblock\Ast\ReturnNode;
 use Phpactor\Docblock\Ast\TextNode;
@@ -34,7 +36,7 @@ final class Parser
     private $tokens;
 
     private const SCALAR_TYPES = [
-        'int', 'float', 'bool', 'string'
+        'int', 'float', 'bool', 'string', 'mixed', 'callable'
     ];
 
     public function parse(Tokens $tokens): Node
@@ -115,15 +117,30 @@ final class Parser
     private function parseMethod(): MethodNode
     {
         $this->tokens->chomp(Token::T_TAG);
-        $type = $name = null;
+        $type = $name = $parameterList = $open = $close = null;
+        $static = null;
+
+        if ($this->tokens->ifNextIs(Token::T_LABEL)) {
+            if ($this->tokens->current->value === 'static') {
+                $static = $this->tokens->chomp();
+            }
+        }
+
         if ($this->ifType()) {
             $type = $this->parseTypes();
         }
-        if ($this->tokens->ifNextIs(Token::T_LABEL)) {
+
+        if ($this->tokens->if(Token::T_LABEL)) {
             $name = $this->tokens->chomp();
         }
 
-        return new MethodNode($type, $name);
+        if ($this->tokens->if(Token::T_PAREN_OPEN)) {
+            $open = $this->tokens->chomp(Token::T_PAREN_OPEN);
+            $parameterList = $this->parseParameterList();
+            $close = $this->tokens->chomp(Token::T_PAREN_CLOSE);
+        }
+
+        return new MethodNode($type, $name, $static, $open, $parameterList, $close, $this->parseText());
     }
 
     private function parseProperty(): PropertyNode
@@ -241,6 +258,37 @@ final class Parser
         return new TypeList($types);
     }
 
+    private function parseParameterList(): ?ParameterList
+    {
+        if ($this->tokens->if(Token::T_PAREN_CLOSE)) {
+            return null;
+        }
+
+        $parameters = [];
+        while (true) {
+            $parameters[] = $this->parseParameter();
+            if ($this->tokens->if(Token::T_COMMA)) {
+                $this->tokens->chomp();
+                continue;
+            }
+            break;
+        }
+
+        return new ParameterList($parameters);
+    }
+
+    private function parseParameter(): ParameterNode
+    {
+        $type = $name = null;
+        if ($this->tokens->if(Token::T_LABEL)) {
+            $type = $this->parseTypes();
+        }
+        if ($this->tokens->if(Token::T_VARIABLE)) {
+            $name = $this->parseVariable();
+        }
+        return new ParameterNode($type, $name);
+    }
+
     private function parseDeprecated(): DeprecatedNode
     {
         $this->tokens->chomp();
@@ -307,4 +355,5 @@ final class Parser
     {
         return $this->tokens->if(Token::T_LABEL) || $this->tokens->if(Token::T_NULLABLE);
     }
+
 }
