@@ -4,6 +4,7 @@ namespace Phpactor\Docblock;
 
 use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
+use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -61,6 +62,10 @@ final class Parser
             return $this->parseDeprecated();
         }
 
+        if ($token->value === '@method') {
+            return $this->parseMethod();
+        }
+
         return new UnknownTag($this->tokens->chomp());
     }
 
@@ -91,6 +96,20 @@ final class Parser
         }
 
         return new VarNode($type, $variable);
+    }
+
+    private function parseMethod(): MethodNode
+    {
+        $this->tokens->chomp(Token::T_TAG);
+        $type = $name = null;
+        if ($this->tokens->if(Token::T_LABEL)) {
+            $type = $this->parseType();
+        }
+        if ($this->tokens->ifNextIs(Token::T_LABEL)) {
+            $name = $this->tokens->chomp();
+        }
+
+        return new MethodNode($type, $name);
     }
 
     private function parseType(): ?TypeNode
