@@ -8,8 +8,9 @@ use Phpactor\Docblock\Parser;
 /**
  * @Iterations(33)
  * @Revs(50)
+ * @BeforeMethods({"setUp"})
  */
-class ParserBench
+abstract class AbstractParserBenchCase
 {
     public function benchParse(): void
     {
@@ -20,7 +21,9 @@ class ParserBench
  * @param string $baz
  */
 EOT;
-        $parser = new Parser();
-        $parser->parse((new Lexer())->lex($doc));
+        $this->parse($doc);
     }
+
+    abstract public function setUp(): void;
+    abstract public function parse(string $doc): void;
 }
