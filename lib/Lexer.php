@@ -20,6 +20,17 @@ class Lexer
         '[^a-zA-Z0-9_\x80-\xff]+', // label
     ];
 
+    private $tokenValueMap = [
+        ']' => Token::T_BRACKET_SQUARE_CLOSE,
+        '[' => Token::T_BRACKET_SQUARE_OPEN,
+        '>' => Token::T_BRACKET_ANGLE_CLOSE,
+        '<' => Token::T_BRACKET_ANGLE_OPEN,
+        '{' => Token::T_BRACKET_CURLY_OPEN,
+        '}' => Token::T_BRACKET_CURLY_CLOSE,
+        ',' => Token::T_COMMA,
+        '[]' => Token::T_LIST,
+    ];
+
     /**
      * @var string[]
      */
@@ -59,27 +70,33 @@ class Lexer
 
     private function resolveType(string $value, ?string $prevValue): string
     {
-        if (false !== strpos($value, '/*')) {
-            return Token::T_PHPDOC_OPEN;
+        // performance: saves around 7%
+        //
+        // if (false !== strpos($value, '/*')) {
+        //     return Token::T_PHPDOC_OPEN;
+        // }
+
+        // if (false !== strpos($value, '*/')) {
+        //     return Token::T_PHPDOC_CLOSE;
+        // }
+
+        // if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
+        //     return Token::T_PHPDOC_LEADING;
+        // }
+
+        // if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
+        //     return Token::T_PHPDOC_LEADING;
+        // }
+
+        if (array_key_exists($value, $this->tokenValueMap)) {
+            return $this->tokenValueMap[$value];
         }
 
-        if (false !== strpos($value, '*/')) {
-            return Token::T_PHPDOC_CLOSE;
-        }
-
-        if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
-            return Token::T_PHPDOC_LEADING;
-        }
-
-        if ($prevValue && 0 === strpos($prevValue, "\n") && trim($value) === '*') {
-            return Token::T_PHPDOC_LEADING;
-        }
-
-        if (0 === strpos($value, '$')) {
+        if ($value[0] === '$') {
             return Token::T_VARIABLE;
         }
 
-        if (0 === strpos($value, '@')) {
+        if ($value[0] === '@') {
             return Token::T_TAG;
         }
 
@@ -93,38 +110,6 @@ class Lexer
 
         if (ctype_alpha($value) || $value === '_') {
             return Token::T_LABEL;
-        }
-
-        if ($value === ']') {
-            return Token::T_BRACKET_SQUARE_CLOSE;
-        }
-
-        if ($value === '[') {
-            return Token::T_BRACKET_SQUARE_OPEN;
-        }
-
-        if ($value === '<') {
-            return Token::T_BRACKET_ANGLE_OPEN;
-        }
-
-        if ($value === '>') {
-            return Token::T_BRACKET_ANGLE_CLOSE;
-        }
-
-        if ($value === '{') {
-            return Token::T_BRACKET_CURLY_OPEN;
-        }
-
-        if ($value === '}') {
-            return Token::T_BRACKET_CURLY_CLOSE;
-        }
-
-        if ($value === ',') {
-            return Token::T_COMMA;
-        }
-
-        if ($value === '[]') {
-            return Token::T_LIST;
         }
 
         return Token::T_UNKNOWN;
