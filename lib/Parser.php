@@ -33,7 +33,7 @@ final class Parser
         $children = [];
 
         while ($tokens->hasCurrent()) {
-            if ($tokens->current()->type === Token::T_TAG) {
+            if ($tokens->current->type === Token::T_TAG) {
                 $children[] = $this->parseTag();
                 continue;
             }
@@ -45,7 +45,7 @@ final class Parser
 
     private function parseTag(): TagNode
     {
-        $token = $this->tokens->current();
+        $token = $this->tokens->current;
 
         if ($token->value === '@param') {
             return $this->parseParam();
@@ -92,18 +92,18 @@ final class Parser
         $type = $this->tokens->chomp(Token::T_LABEL);
         $isList = false;
 
-        if ($this->tokens->current()->type === Token::T_LIST) {
+        if ($this->tokens->current->type === Token::T_LIST) {
             $list = $this->tokens->chomp();
             return new ListNode($this->createTypeFromToken($type), $list);
         }
 
-        if ($this->tokens->current()->type === Token::T_BRACKET_ANGLE_OPEN) {
+        if ($this->tokens->current->type === Token::T_BRACKET_ANGLE_OPEN) {
             $open = $this->tokens->chomp();
             if ($this->tokens->if(Token::T_LABEL)) {
                 $typeList = $this->parseTypeList();
             }
 
-            if ($this->tokens->current()->type !== Token::T_BRACKET_ANGLE_CLOSE) {
+            if ($this->tokens->current->type !== Token::T_BRACKET_ANGLE_CLOSE) {
                 return null;
             }
 
@@ -129,7 +129,7 @@ final class Parser
 
     private function parseVariable(): ?VariableNode
     {
-        if ($this->tokens->current()->type !== Token::T_VARIABLE) {
+        if ($this->tokens->current->type !== Token::T_VARIABLE) {
             return null;
         }
 

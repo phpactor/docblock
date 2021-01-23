@@ -13,6 +13,11 @@ final class Tokens implements IteratorAggregate
      */
     private $tokens;
 
+    /**
+     * @var ?Token
+     */
+    public $current;
+
     private $position = 0;
 
     /**
@@ -21,6 +26,9 @@ final class Tokens implements IteratorAggregate
     public function __construct(array $tokens)
     {
         $this->tokens = $tokens;
+        if (count($tokens)) {
+            $this->current = $tokens[$this->position];
+        }
     }
 
     /**
@@ -59,13 +67,14 @@ final class Tokens implements IteratorAggregate
         }
 
         $token = $this->tokens[$this->position++];
+        $this->current = @$this->tokens[$this->position];
 
         if (null !== $type && $token->type !== $type) {
             throw new RuntimeException(sprintf(
                 'Expected type "%s" at position "%s": "%s"',
                 $type, $this->position,
                 implode('', array_map(function (Token $token) {
-                    return $token->value();
+                    return $token->value;
                 }, $this->tokens))
             ));
         }
@@ -73,21 +82,10 @@ final class Tokens implements IteratorAggregate
         return $token;
     }
 
-    public function current(): Token
-    {
-        if (!isset($this->tokens[$this->position])) {
-            throw new RuntimeException(sprintf(
-                'No token at position "%s"', $this->position
-            ));
-        }
-
-        return $this->tokens[$this->position];
-    }
-
     public function ifNextIs(string $type): bool
     {
         if ($this->next()->type === $type) {
-            $this->position++;
+            $this->current = @$this->tokens[++$this->position];
             return true;
         }
 
@@ -96,16 +94,16 @@ final class Tokens implements IteratorAggregate
 
     public function if(string $type): bool
     {
-        if ($this->current()->type === $type) {
+        if ($this->current->type === $type) {
             return true;
         }
 
-        if ($this->current()->type !== Token::T_WHITESPACE) {
+        if ($this->current->type !== Token::T_WHITESPACE) {
             return false;
         }
 
         if ($this->next()->type === $type) {
-            $this->position++;
+            $this->current = $this->tokens[++$this->position];
             return true;
         }
 
