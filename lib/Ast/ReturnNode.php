@@ -9,13 +9,24 @@ class ReturnNode extends TagNode
      */
     private $type;
 
-    public function __construct(?TypeNode $type)
+    /**
+     * @var TextNode|null
+     */
+    private $text;
+
+    public function __construct(?TypeNode $type, ?TextNode $text = null)
     {
         $this->type = $type;
+        $this->text = $text;
     }
 
     public function type(): ?TypeNode
     {
         return $this->type;
+    }
+
+    public function text(): ?TextNode
+    {
+        return $this->text;
     }
 }

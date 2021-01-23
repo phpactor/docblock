@@ -17,6 +17,7 @@ use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\Type\NullNode;
 use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
@@ -86,6 +87,11 @@ final class TestPrinter implements Printer
 
         if ($node instanceof UnionNode) {
             $this->renderUnion($node);
+            return;
+        }
+
+        if ($node instanceof NullNode) {
+            $this->out[] = $node->shortName() . '()';
             return;
         }
 
@@ -267,6 +273,10 @@ final class TestPrinter implements Printer
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
+        if ($node->text()) {
+            $this->out[] = ',';
+            $this->render($node->text());
+        }
         $this->out[] = ')';
     }
 

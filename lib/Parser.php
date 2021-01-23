@@ -18,6 +18,7 @@ use Phpactor\Docblock\Ast\TagNode;
 use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\Type\NullNode;
 use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\ScalarNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
@@ -202,6 +203,9 @@ final class Parser
 
     private function createTypeFromToken(Token $type): TypeNode
     {
+        if (strtolower($type->value) === 'null') {
+            return new NullNode($type);
+        }
         if (in_array($type->value, self::SCALAR_TYPES)) {
             return new ScalarNode($type);
         }
@@ -267,7 +271,7 @@ final class Parser
             $type = $this->parseTypes();
         }
 
-        return new ReturnNode($type);
+        return new ReturnNode($type, $this->parseText());
     }
 
     private function parseText(): ?TextNode
