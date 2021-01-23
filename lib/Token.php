@@ -29,38 +29,23 @@ final class Token implements Element
     /**
      * @var int
      */
-    private $byteOffset;
+    public $byteOffset;
 
     /**
      * @var string
      */
-    private $type;
+    public $type;
 
     /**
      * @var string
      */
-    private $value;
+    public $value;
 
     public function __construct(int $byteOffset, string $type, string $value)
     {
         $this->byteOffset = $byteOffset;
         $this->type = $type;
         $this->value = $value;
-    }
-
-    public function byteOffset(): int
-    {
-        return $this->byteOffset;
-    }
-
-    public function value(): string
-    {
-        return $this->value;
-    }
-
-    public function type(): string
-    {
-        return $this->type;
     }
 
     public function __toString(): string

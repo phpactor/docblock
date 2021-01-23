@@ -46,7 +46,7 @@ final class TestPrinter implements Printer
         }
 
         if ($node instanceof Token) {
-            $this->out[] = $node->value();
+            $this->out[] = $node->value;
             return;
         }
 

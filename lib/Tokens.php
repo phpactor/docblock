@@ -60,7 +60,7 @@ final class Tokens implements IteratorAggregate
 
         $token = $this->tokens[$this->position++];
 
-        if (null !== $type && $token->type() !== $type) {
+        if (null !== $type && $token->type !== $type) {
             throw new RuntimeException(sprintf(
                 'Expected type "%s" at position "%s": "%s"',
                 $type, $this->position,
@@ -86,7 +86,7 @@ final class Tokens implements IteratorAggregate
 
     public function ifNextIs(string $type): bool
     {
-        if ($this->next()->type() === $type) {
+        if ($this->next()->type === $type) {
             $this->position++;
             return true;
         }
@@ -96,15 +96,15 @@ final class Tokens implements IteratorAggregate
 
     public function if(string $type): bool
     {
-        if ($this->current()->type() === $type) {
+        if ($this->current()->type === $type) {
             return true;
         }
 
-        if ($this->current()->type() !== Token::T_WHITESPACE) {
+        if ($this->current()->type !== Token::T_WHITESPACE) {
             return false;
         }
 
-        if ($this->next()->type() === $type) {
+        if ($this->next()->type === $type) {
             $this->position++;
             return true;
         }

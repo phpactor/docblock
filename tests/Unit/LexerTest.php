@@ -21,7 +21,7 @@ class LexerTest extends TestCase
 
         foreach ($tokens as $index => $token) {
             [$type, $value] = $expectedTokens[$index];
-            $expectedToken = new Token($token->byteOffset(), $type, $value);
+            $expectedToken = new Token($token->byteOffset, $type, $value);
             self::assertEquals($expectedToken, $token);
         }
     }
