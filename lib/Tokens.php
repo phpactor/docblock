@@ -18,6 +18,9 @@ final class Tokens implements IteratorAggregate
      */
     public $current;
 
+    /**
+     * @var int
+     */
     private $position = 0;
 
     /**
