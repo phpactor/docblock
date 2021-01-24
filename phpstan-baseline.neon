@@ -101,6 +101,11 @@ parameters:
 			path: lib/DocblockFactory.php
 
 		-
+			message: "#^Method Phpactor\\\\Docblock\\\\DocblockFactory\\:\\:createMixinTag\\(\\) has parameter \\$metadata with no value type specified in iterable type array\\.$#"
+			count: 1
+			path: lib/DocblockFactory.php
+
+		-
 			message: "#^Class Phpactor\\\\Docblock\\\\DocblockTypes implements generic interface IteratorAggregate but does not specify its types\\: TKey, TValue$#"
 			count: 1
 			path: lib/DocblockTypes.php
@@ -142,11 +147,6 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\Docblock\\\\DocblockTypes\\:\\:getIterator\\(\\) return type has no value type specified in iterable type Traversable\\<mixed, mixed\\>\\.$#"
-			count: 1
-			path: lib/DocblockTypes.php
-
-		-
-			message: "#^Method Phpactor\\\\Docblock\\\\DocblockTypes\\:\\:add\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/DocblockTypes.php
 
@@ -316,11 +316,6 @@ parameters:
 			path: lib/Tag/ReturnTag.php
 
 		-
-			message: "#^Method Phpactor\\\\Docblock\\\\Tag\\\\VarTag\\:\\:name\\(\\) has no return typehint specified\\.$#"
-			count: 1
-			path: lib/Tag/VarTag.php
-
-		-
 			message: "#^Property Phpactor\\\\Docblock\\\\Tag\\\\VarTag\\:\\:\\$types type has no value type specified in iterable type Phpactor\\\\Docblock\\\\DocblockTypes\\.$#"
 			count: 1
 			path: lib/Tag/VarTag.php
@@ -332,6 +327,11 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\Docblock\\\\Tag\\\\VarTag\\:\\:__construct\\(\\) has parameter \\$varName with no typehint specified\\.$#"
+			count: 1
+			path: lib/Tag/VarTag.php
+
+		-
+			message: "#^Method Phpactor\\\\Docblock\\\\Tag\\\\VarTag\\:\\:name\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Tag/VarTag.php
 
@@ -377,11 +377,6 @@ parameters:
 
 		-
 			message: "#^Method Phpactor\\\\Docblock\\\\Tags\\:\\:byName\\(\\) return type has no value type specified in iterable type Phpactor\\\\Docblock\\\\Tags\\.$#"
-			count: 1
-			path: lib/Tags.php
-
-		-
-			message: "#^Method Phpactor\\\\Docblock\\\\Tags\\:\\:add\\(\\) has no return typehint specified\\.$#"
 			count: 1
 			path: lib/Tags.php
 

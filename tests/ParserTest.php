@@ -10,7 +10,7 @@ class ParserTest extends TestCase
     /**
      * @dataProvider provideParseTags
      */
-    public function testParseTags($docblock, $expected)
+    public function testParseTags($docblock, $expected): void
     {
         $parser = new Parser();
         list($prose, $tags) = $parser->parse($docblock);
@@ -46,11 +46,11 @@ class ParserTest extends TestCase
 
         yield [
             <<<'EOT'
-/** 
- * @var Foobar $foobar 
- * @var Barfoo $barfoo
- **/
-EOT
+                /** 
+                 * @var Foobar $foobar 
+                 * @var Barfoo $barfoo
+                 **/
+                EOT
         ,
             ['var' => [
                 [ 'Foobar', '$foobar' ],
@@ -60,10 +60,10 @@ EOT
 
         yield [
             <<<'EOT'
-/** 
- * @var Foobar $foobar Hello this is description
- **/
-EOT
+                /** 
+                 * @var Foobar $foobar Hello this is description
+                 **/
+                EOT
         ,
             ['var' => [
                 [ 'Foobar', '$foobar', 'Hello',  'this', 'is', 'description' ],
@@ -72,10 +72,10 @@ EOT
 
         yield 'method with fully qualified type' => [
             <<<'EOT'
-/** 
- * @method \Foobar\Barfoo foobar()
- **/
-EOT
+                /** 
+                 * @method \Foobar\Barfoo foobar()
+                 **/
+                EOT
         ,
             ['method' => [
                 [ '\Foobar\Barfoo', 'foobar()' ],
@@ -112,7 +112,7 @@ EOT
     /**
      * @dataProvider provideParseProse
      */
-    public function testParseProse($docblock, $expected)
+    public function testParseProse($docblock, $expected): void
     {
         $parser = new Parser();
         list($prose, $tags) = $parser->parse($docblock);
@@ -124,14 +124,14 @@ EOT
         return [
             [
                 <<<'EOT'
-/**
-  * Hello
-  *
-  * This is a description
-  *
-  * @return Foo
- */
-EOT
+                    /**
+                      * Hello
+                      *
+                      * This is a description
+                      *
+                      * @return Foo
+                     */
+                    EOT
         ,
             [ 'Hello', '', 'This is a description', '' ],
         ],

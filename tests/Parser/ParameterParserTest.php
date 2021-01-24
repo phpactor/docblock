@@ -13,7 +13,7 @@ class ParameterParserTest extends TestCase
     /**
      * @dataProvider provideCreate
      */
-    public function testCreate(string $paramString, Parameter $expected = null)
+    public function testCreate(string $paramString, Parameter $expected = null): void
     {
         $parser = new ParameterParser();
         $this->assertEquals($expected, $parser->parse($paramString));

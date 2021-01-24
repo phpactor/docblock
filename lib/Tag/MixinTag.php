@@ -26,4 +26,3 @@ class MixinTag implements Tag
         return 'mixin';
     }
 }
-

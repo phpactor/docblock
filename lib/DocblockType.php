@@ -25,6 +25,15 @@ class DocblockType
         $this->iteratedType = $iteratedType;
     }
 
+    public function __toString()
+    {
+        if ($this->isFullyQualified) {
+            return '\\' . $this->type;
+        }
+
+        return $this->type;
+    }
+
     public static function collectionOf(string $type, string $iteratedType): DocblockType
     {
         return new self($type, $iteratedType);
@@ -64,15 +73,6 @@ class DocblockType
     public function isCollection(): bool
     {
         return $this->iteratedType && $this->type !== 'array';
-    }
-
-    public function __toString()
-    {
-        if ($this->isFullyQualified) {
-            return '\\' . $this->type;
-        }
-
-        return $this->type;
     }
 
     public function isFullyQualified(): bool

@@ -15,7 +15,7 @@ class MethodParserTest extends TestCase
     /**
      * @dataProvider provideCreate
      */
-    public function testCreate(array $parts, MethodTag $expected)
+    public function testCreate(array $parts, MethodTag $expected): void
     {
         $parser = new MethodParser();
         $this->assertEquals($expected, $parser->parseMethod($parts));

@@ -8,7 +8,7 @@ use Phpactor\Docblock\DocblockTypes;
 
 class MethodTagTest extends TestCase
 {
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $tag = new MethodTag(DocblockTypes::fromStringTypes([ 'Foobar']), 'foobar');
         $this->assertEquals('foobar', $tag->methodName());

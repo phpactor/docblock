@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class DocblockTypeTest extends TestCase
 {
-    public function testCanBeACollection()
+    public function testCanBeACollection(): void
     {
         $type = DocblockType::collectionOf('Foobar', 'Item');
         $this->assertTrue($type->isCollection());
