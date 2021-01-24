@@ -49,8 +49,7 @@ class MethodNode extends TagNode
         ?ParameterList $parameters,
         ?Token $parenClose,
         ?TextNode $text
-    )
-    {
+    ) {
         $this->type = $type;
         $this->name = $name;
         $this->static = $static;

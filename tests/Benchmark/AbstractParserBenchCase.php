@@ -3,8 +3,6 @@
 namespace Phpactor\Docblock\Tests\Benchmark;
 
 use Generator;
-use Phpactor\Docblock\Lexer;
-use Phpactor\Docblock\Parser;
 
 /**
  * @Iterations(33)
@@ -14,15 +12,16 @@ use Phpactor\Docblock\Parser;
  */
 abstract class AbstractParserBenchCase
 {
+    abstract public function setUp(): void;
     public function benchParse(): void
     {
         $doc = <<<'EOT'
-/**
- * @param Foobar $foobar
- * @var Foobar $bafoo
- * @param string $baz
- */
-EOT;
+            /**
+             * @param Foobar $foobar
+             * @var Foobar $bafoo
+             * @param string $baz
+             */
+            EOT;
         $this->parse($doc);
     }
 
@@ -51,7 +50,5 @@ EOT;
     {
         $this->parse(file_get_contents(__DIR__ . '/examples/assert.example'));
     }
-
-    abstract public function setUp(): void;
     abstract public function parse(string $doc): void;
 }

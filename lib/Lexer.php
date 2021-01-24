@@ -120,5 +120,4 @@ final class Lexer
 
         return Token::T_UNKNOWN;
     }
-
 }

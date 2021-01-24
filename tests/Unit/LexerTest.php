@@ -34,72 +34,72 @@ class LexerTest extends TestCase
         yield [ '', [] ];
         yield [
             <<<'EOT'
-/**
- * Hello this is
- * Multi
- */
-EOT
+                /**
+                 * Hello this is
+                 * Multi
+                 */
+                EOT
 
             ,[
-                [Token::T_PHPDOC_OPEN, "/**"],
+                [Token::T_PHPDOC_OPEN, '/**'],
                 [Token::T_WHITESPACE, "\n "],
-                [Token::T_PHPDOC_LEADING, "*"],
-                [Token::T_WHITESPACE, " "],
-                [Token::T_LABEL, "Hello"],
-                [Token::T_WHITESPACE, " "],
-                [Token::T_LABEL, "this"],
-                [Token::T_WHITESPACE, " "],
-                [Token::T_LABEL, "is"],
+                [Token::T_PHPDOC_LEADING, '*'],
+                [Token::T_WHITESPACE, ' '],
+                [Token::T_LABEL, 'Hello'],
+                [Token::T_WHITESPACE, ' '],
+                [Token::T_LABEL, 'this'],
+                [Token::T_WHITESPACE, ' '],
+                [Token::T_LABEL, 'is'],
                 [Token::T_WHITESPACE, "\n "],
-                [Token::T_PHPDOC_LEADING, "*"],
-                [Token::T_WHITESPACE, " "],
-                [Token::T_LABEL, "Multi"],
+                [Token::T_PHPDOC_LEADING, '*'],
+                [Token::T_WHITESPACE, ' '],
+                [Token::T_LABEL, 'Multi'],
                 [Token::T_WHITESPACE, "\n "],
-                [Token::T_PHPDOC_CLOSE, "*/"],
+                [Token::T_PHPDOC_CLOSE, '*/'],
             ]
         ];
 
         yield [
             'Foobar',
             [
-                [Token::T_LABEL, "Foobar"],
+                [Token::T_LABEL, 'Foobar'],
             ]
         ];
         yield [
             'Foobar[]',
             [
-                [Token::T_LABEL, "Foobar"],
-                [Token::T_LIST, "[]"],
+                [Token::T_LABEL, 'Foobar'],
+                [Token::T_LIST, '[]'],
             ]
         ];
         yield [
             'Foobar<Barfoo>',
             [
-                [Token::T_LABEL, "Foobar"],
-                [Token::T_BRACKET_ANGLE_OPEN, "<"],
-                [Token::T_LABEL, "Barfoo"],
-                [Token::T_BRACKET_ANGLE_CLOSE, ">"],
+                [Token::T_LABEL, 'Foobar'],
+                [Token::T_BRACKET_ANGLE_OPEN, '<'],
+                [Token::T_LABEL, 'Barfoo'],
+                [Token::T_BRACKET_ANGLE_CLOSE, '>'],
             ]
         ];
         yield [
             'Foobar<Barfoo>',
             [
-                [Token::T_LABEL, "Foobar"],
-                [Token::T_BRACKET_ANGLE_OPEN, "<"],
-                [Token::T_LABEL, "Barfoo"],
-                [Token::T_BRACKET_ANGLE_CLOSE, ">"],
+                [Token::T_LABEL, 'Foobar'],
+                [Token::T_BRACKET_ANGLE_OPEN, '<'],
+                [Token::T_LABEL, 'Barfoo'],
+                [Token::T_BRACKET_ANGLE_CLOSE, '>'],
             ]
         ];
         yield [
             'Foobar{Barfoo, Foobar}',
             [
-                [Token::T_LABEL, "Foobar"],
-                [Token::T_BRACKET_CURLY_OPEN, "{"],
-                [Token::T_LABEL, "Barfoo"],
-                [Token::T_COMMA, ","],
-                [Token::T_WHITESPACE, " "],
-                [Token::T_LABEL, "Foobar"],
-                [Token::T_BRACKET_CURLY_CLOSE, "}"],
+                [Token::T_LABEL, 'Foobar'],
+                [Token::T_BRACKET_CURLY_OPEN, '{'],
+                [Token::T_LABEL, 'Barfoo'],
+                [Token::T_COMMA, ','],
+                [Token::T_WHITESPACE, ' '],
+                [Token::T_LABEL, 'Foobar'],
+                [Token::T_BRACKET_CURLY_CLOSE, '}'],
             ]
         ];
     }

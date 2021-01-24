@@ -4,7 +4,6 @@ namespace Phpactor\Docblock\Tests\Benchmark;
 
 use Phpactor\Docblock\Lexer;
 use Phpactor\Docblock\Parser;
-use Phpactor\Docblock\Tests\Benchmark\AbstractParserBenchCase;
 
 class PhpactorParserBench extends AbstractParserBenchCase
 {

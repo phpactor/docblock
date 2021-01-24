@@ -8,15 +8,15 @@ use RuntimeException;
 
 final class Tokens implements IteratorAggregate
 {
-    /**
-     * @var Token[]
-     */
-    private $tokens;
 
     /**
      * @var ?Token
      */
     public $current;
+    /**
+     * @var Token[]
+     */
+    private $tokens;
 
     /**
      * @var int
@@ -75,7 +75,8 @@ final class Tokens implements IteratorAggregate
         if (null !== $type && $token->type !== $type) {
             throw new RuntimeException(sprintf(
                 'Expected type "%s" at position "%s": "%s"',
-                $type, $this->position,
+                $type,
+                $this->position,
                 implode('', array_map(function (Token $token) {
                     return $token->value;
                 }, $this->tokens))

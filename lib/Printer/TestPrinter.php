@@ -14,7 +14,6 @@ use Phpactor\Docblock\Ast\ReturnNode;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
-use Phpactor\Docblock\Ast\Type\ClassNode;
 use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
@@ -43,7 +42,7 @@ final class TestPrinter implements Printer
 
         $this->render($node);
 
-        return implode("", $this->out);
+        return implode('', $this->out);
     }
 
     private function render(?Element $node): void
@@ -340,7 +339,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderValue(ValueNode $node)
+    private function renderValue(ValueNode $node): void
     {
         $this->out[] = json_encode($node->value());
     }

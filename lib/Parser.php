@@ -2,7 +2,6 @@
 
 namespace Phpactor\Docblock;
 
-use PhpParser\Node\NullableType;
 use Phpactor\Docblock\Ast\DeprecatedNode;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\MethodNode;
@@ -32,14 +31,13 @@ use Phpactor\Docblock\Ast\VariableNode;
 
 final class Parser
 {
+    private const SCALAR_TYPES = [
+        'int', 'float', 'bool', 'string', 'mixed', 'callable'
+    ];
     /**
      * @var Tokens
      */
     private $tokens;
-
-    private const SCALAR_TYPES = [
-        'int', 'float', 'bool', 'string', 'mixed', 'callable'
-    ];
 
     public function parse(Tokens $tokens): Node
     {
@@ -332,7 +330,7 @@ final class Parser
     {
         $text = [];
         if (
-            $this->tokens->current->type === Token::T_WHITESPACE && 
+            $this->tokens->current->type === Token::T_WHITESPACE &&
             $this->tokens->next()->type === Token::T_LABEL
         ) {
             $this->tokens->chomp();
@@ -372,5 +370,4 @@ final class Parser
 
         return null;
     }
-
 }
