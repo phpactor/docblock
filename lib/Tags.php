@@ -2,7 +2,11 @@
 
 namespace Phpactor\Docblock;
 
-final class Tags implements \IteratorAggregate, \Countable
+use IteratorAggregate;
+use Countable;
+use ArrayIterator;
+
+final class Tags implements IteratorAggregate, Countable
 {
     private $tags = [];
 
@@ -20,7 +24,7 @@ final class Tags implements \IteratorAggregate, \Countable
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->tags);
+        return new ArrayIterator($this->tags);
     }
 
     public function byName(string $name): Tags
@@ -39,7 +43,7 @@ final class Tags implements \IteratorAggregate, \Countable
         return count($this->tags);
     }
 
-    private function add(Tag $item)
+    private function add(Tag $item): void
     {
         $this->tags[] = $item;
     }

@@ -8,7 +8,7 @@ use Phpactor\Docblock\DocblockTypes;
 
 class VarTagTest extends TestCase
 {
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $tag = new VarTag(DocblockTypes::fromStringTypes([ 'Foobar' ]));
         $this->assertEquals(DocblockTypes::fromStringTypes(['Foobar']), $tag->types());

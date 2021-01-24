@@ -2,7 +2,10 @@
 
 namespace Phpactor\Docblock;
 
-final class DocblockTypes implements \IteratorAggregate
+use IteratorAggregate;
+use ArrayIterator;
+
+final class DocblockTypes implements IteratorAggregate
 {
     private $docblocktypes = [];
 
@@ -32,10 +35,10 @@ final class DocblockTypes implements \IteratorAggregate
 
     public function getIterator()
     {
-        return new \ArrayIterator($this->docblocktypes);
+        return new ArrayIterator($this->docblocktypes);
     }
 
-    private function add(DocblockType $item)
+    private function add(DocblockType $item): void
     {
         $this->docblocktypes[] = $item;
     }

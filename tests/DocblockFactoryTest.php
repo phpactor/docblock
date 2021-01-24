@@ -20,7 +20,7 @@ class DocblockFactoryTest extends TestCase
     /**
      * @dataProvider provideCreate
      */
-    public function testCreate($docblock, Docblock $expected)
+    public function testCreate($docblock, Docblock $expected): void
     {
         $factory = new DocblockFactory();
         $docblock = $factory->create($docblock);

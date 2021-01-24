@@ -7,10 +7,6 @@ use Phpactor\Docblock\DocblockTypes;
 
 class VarTag implements Tag
 {
-    public function name()
-    {
-        return 'var';
-    }
 
     /**
      * @var DocblockTypes
@@ -26,6 +22,10 @@ class VarTag implements Tag
     {
         $this->types = $types;
         $this->varName = $varName;
+    }
+    public function name()
+    {
+        return 'var';
     }
 
     public function types(): DocblockTypes

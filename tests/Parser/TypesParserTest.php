@@ -12,7 +12,7 @@ class TypesParserTest extends TestCase
     /**
      * @dataProvider provideParseTypes
      */
-    public function testParseTypes(string $types, DocblockTypes $expected)
+    public function testParseTypes(string $types, DocblockTypes $expected): void
     {
         $parser = new TypesParser();
         $this->assertEquals($expected, $parser->parseTypes($types));
