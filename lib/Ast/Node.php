@@ -132,7 +132,7 @@ abstract class Node implements Element
     }
 
     /**
-     * @param iterable<Element|array<Element>> $elements
+     * @param iterable<null|Element|array<Element>> $elements
      */
     private function endOf(iterable $elements): int
     {

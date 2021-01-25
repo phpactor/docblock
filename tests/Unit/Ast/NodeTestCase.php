@@ -3,15 +3,13 @@
 namespace Phpactor\Docblock\Tests\Unit\Ast;
 
 use Closure;
-use Generator;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Ast\Element;
-use Phpactor\Docblock\Ast\ElementList;
 use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Lexer;
 use Phpactor\Docblock\Parser;
 
-abstract class NodeTestCase extends TestCase
+class NodeTestCase extends TestCase
 {
     /**
      * @dataProvider provideNode
@@ -21,10 +19,12 @@ abstract class NodeTestCase extends TestCase
         $node = $this->parse($doc);
         $nodes = iterator_to_array($node->getDescendantNodes(), false);
         self::assertIsIterable($nodes);
-        self::assertEquals(0, $node->start());
-        self::assertEquals(strlen($doc), $node->end());
+        self::assertEquals(0, $node->start(), 'Start offset');
+        self::assertEquals(strlen($doc), $node->end(), 'End offset');
 
-        $assertion($node);
+        if ($assertion) {
+            $assertion($node);
+        }
     }
 
     /**
@@ -50,11 +50,6 @@ abstract class NodeTestCase extends TestCase
         $two = $this->parse($one->toString());
         self::assertEquals($one, $two);
     }
-    
-    /**
-     * @return Generator<mixed>
-     */
-    abstract public function provideNode(): Generator;
 
     private function parse(string $doc): Node
     {

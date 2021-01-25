@@ -110,7 +110,7 @@ final class Parser
 
     private function parseVar(): VarNode
     {
-        $this->tokens->chomp(Token::T_TAG);
+        $tag = $this->tokens->chomp(Token::T_TAG);
         $type = $variable = null;
         if ($this->ifType()) {
             $type = $this->parseTypes();
@@ -119,7 +119,7 @@ final class Parser
             $variable = $this->parseVariable();
         }
 
-        return new VarNode($type, $variable);
+        return new VarNode($tag, $type, $variable);
     }
 
     private function parseMethod(): MethodNode
@@ -205,7 +205,7 @@ final class Parser
         $type = $this->tokens->chomp(Token::T_LABEL);
 
         if (null === $this->tokens->current) {
-            return null;
+            return $this->createTypeFromToken($type);
         }
 
         $isList = false;
@@ -334,14 +334,14 @@ final class Parser
 
     private function parseReturn(): ReturnNode
     {
-        $this->tokens->chomp();
+        $tag = $this->tokens->chomp(Token::T_TAG);
         $type = null;
 
         if ($this->tokens->if(Token::T_LABEL)) {
             $type = $this->parseTypes();
         }
 
-        return new ReturnNode($type, $this->parseText());
+        return new ReturnNode($tag, $type, $this->parseText());
     }
 
     private function parseText(): ?TextNode

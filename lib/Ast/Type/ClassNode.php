@@ -11,7 +11,6 @@ class ClassNode extends TypeNode
         'name'
     ];
 
-
     /**
      * @var Token
      */
