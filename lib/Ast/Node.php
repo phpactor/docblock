@@ -12,9 +12,13 @@ abstract class Node implements Element
 
     public function toString(): string
     {
-        return implode(' ', array_map(function (Token $token) {
-            return $token->value;
-        }, iterator_to_array($this->tokens(), false)));
+        $out = str_repeat(' ', $this->length());;
+        $start = $this->start();
+        foreach ($this->tokens() as $token) {
+            $out = substr_replace($out, $token->value, $token->start() - $start, $token->length());
+        }
+
+        return $out;
     }
 
     /**
@@ -102,24 +106,54 @@ abstract class Node implements Element
 
     public function start(): int
     {
-        $first = $this->getChildElements()->current();
-        if (null === $first) {
-            return 0;
+        return $this->startOf($this->getChildElements());
+    }
+
+    /**
+     * @param iterable<Element|array<Element>> $elements
+     */
+    public function startOf(iterable $elements): int
+    {
+        foreach ($elements as $element) {
+            if ($element instanceof Element) {
+                return $element->start();
+            }
+            if (is_array($element)) {
+                return $this->startOf($element);
+            }
         }
 
-        return $first->start();
+        return 0;
     }
 
     public function end(): int
     {
-        foreach (array_reverse(static::CHILD_NAMES) as $childName) {
-            $element = $this->$childName;
+        return $this->endOf(array_reverse(iterator_to_array($this->getChildElements(), false)));
+    }
+
+    /**
+     * @param iterable<Element|array<Element>> $elements
+     */
+    private function endOf(iterable $elements): int
+    {
+        foreach ($elements as $element) {
+
             if (null === $element) {
                 continue;
             }
 
+            if (is_array($element)) {
+                return $this->endOf(array_reverse($element));
+            }
+
             return $element->end();
         }
+
         return 0;
+    }
+
+    private function length(): int
+    {
+        return $this->end() - $this->start();
     }
 }

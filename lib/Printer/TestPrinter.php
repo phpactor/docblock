@@ -315,9 +315,6 @@ final class TestPrinter implements Printer
         $this->out[] = 'ParameterList(';
         foreach ($list as $i => $parameter) {
             $this->render($parameter);
-            if ($i + 1 !== $list->count()) {
-                $this->out[] = ',';
-            }
         }
         $this->out[] = ')';
     }

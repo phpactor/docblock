@@ -91,6 +91,10 @@ final class Tokens implements IteratorAggregate
      */
     public function chompIf(string $type): ?Token
     {
+        if ($this->current === null) {
+            return null;
+        }
+
         if ($this->current->type === $type) {
             return $this->chomp($type);
         }

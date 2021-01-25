@@ -71,4 +71,9 @@ final class Token implements Element
     {
         return $this->byteOffset + strlen($this->value);
     }
+
+    public function length(): int
+    {
+        return $this->end() - $this->start();
+    }
 }
