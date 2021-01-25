@@ -14,6 +14,7 @@ class ParameterList extends Node implements IteratorAggregate, Countable
     protected const CHILD_NAMES = [
         'list'
     ];
+
     /**
      * @var ParameterNode[]
      */
@@ -41,12 +42,5 @@ class ParameterList extends Node implements IteratorAggregate, Countable
     public function count()
     {
         return count($this->list);
-    }
-
-    public function toString(): string
-    {
-        return implode(', ', array_map(function (Element $element) {
-            return $element->toString();
-        }, $this->list));
     }
 }

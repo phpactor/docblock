@@ -100,6 +100,7 @@ final class Parser
         if ($this->ifType()) {
             $type = $this->parseTypes();
         }
+
         if ($this->tokens->ifNextIs(Token::T_VARIABLE)) {
             $variable = $this->parseVariable();
         }
@@ -189,14 +190,24 @@ final class Parser
 
         return new UnionNode(new TypeList($types));
     }
+
     private function parseType(): ?TypeNode
     {
+        if (null === $this->tokens->current) {
+            return null;
+        }
+
         if ($this->tokens->current->type === Token::T_NULLABLE) {
             $nullable = $this->tokens->chomp();
             return new NullableNode($nullable, $this->parseTypes());
         }
 
         $type = $this->tokens->chomp(Token::T_LABEL);
+
+        if (null === $this->tokens->current) {
+            return null;
+        }
+
         $isList = false;
 
         if ($this->tokens->current->type === Token::T_LIST) {
@@ -275,7 +286,7 @@ final class Parser
         while (true) {
             $parameters[] = $this->parseParameter();
             if ($this->tokens->if(Token::T_COMMA)) {
-                $this->tokens->chomp();
+                $parameters[] = $this->tokens->chomp();
                 continue;
             }
             break;

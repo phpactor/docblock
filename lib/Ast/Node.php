@@ -12,28 +12,39 @@ abstract class Node implements Element
 
     public function toString(): string
     {
-        $parts = [];
-        foreach (static::CHILD_NAMES as $childName) {
-            $child = $this->$childName;
+        return implode(' ', array_map(function (Token $token) {
+            return $token->value;
+        }, iterator_to_array($this->tokens(), false)));
+    }
 
-            if (is_array($child)) {
-                $parts = array_merge(array_map(function (Element $element) {
-                    return $element->toString();
-                }, $child));
+    /**
+     * @return Generator<Token>
+     */
+    public function tokens(): Generator
+    {
+        yield from $this->findTokens($this->getChildElements());
+    }
+
+    /**
+     * @return Generator<Token>
+     * @param iterable<Element|array<Element>> $nodes
+     */
+    private function findTokens(iterable $nodes): Generator
+    {
+        foreach ($nodes as $node) {
+            if ($node instanceof Token) {
+                yield $node;
                 continue;
             }
 
-            if ($child instanceof Token) {
-                $parts[] = $child->value;
-                continue;
+            if ($node instanceof Node) {
+                yield from $node->tokens();
             }
-            if ($child instanceof Node) {
-                $parts[] = $child->toString();
-                continue;
+
+            if (is_array($node)) {
+                yield from $this->findTokens($node);
             }
         }
-
-        return implode(' ', $parts);
     }
 
     public function shortName(): string
@@ -47,7 +58,7 @@ abstract class Node implements Element
     public function getDescendantNodes(): Generator
     {
         yield $this;
-        yield from $this->walkNodes($this->getChildNodes());
+        yield from $this->walkNodes($this->getChildElements());
     }
 
     /**
@@ -79,7 +90,7 @@ abstract class Node implements Element
     /**
      * @return Generator<Element>
      */
-    private function getChildNodes(): Generator
+    public function getChildElements(): Generator
     {
         foreach (static::CHILD_NAMES as $name) {
             $child = $this->$name;
@@ -91,7 +102,7 @@ abstract class Node implements Element
 
     public function start(): int
     {
-        $first = $this->getChildNodes()->current();
+        $first = $this->getChildElements()->current();
         if (null === $first) {
             return 0;
         }

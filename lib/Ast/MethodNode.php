@@ -8,7 +8,6 @@ class MethodNode extends TagNode
 {
     public const CHILD_NAMES = [
         'tag',
-        'type',
         'static',
         'type',
         'name',

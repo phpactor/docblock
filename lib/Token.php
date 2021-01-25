@@ -27,6 +27,7 @@ final class Token implements Element
     public const T_BRACKET_CURLY_CLOSE = 'BRACKET_CURLY_CLOSE';
     public const T_PAREN_OPEN = 'PAREN_OPEN';
     public const T_PAREN_CLOSE = 'PAREN_CLOSE';
+    public const T_INVALID = 'INVALID';
 
     /**
      * @var int

@@ -8,11 +8,11 @@ use RuntimeException;
 
 final class Tokens implements IteratorAggregate
 {
-
     /**
      * @var ?Token
      */
     public $current;
+
     /**
      * @var Token[]
      */
@@ -100,7 +100,8 @@ final class Tokens implements IteratorAggregate
 
     public function ifNextIs(string $type): bool
     {
-        if ($this->next()->type === $type) {
+        $next = $this->next();
+        if ($next && $next->type === $type) {
             $this->current = @$this->tokens[++$this->position];
             return true;
         }
@@ -114,6 +115,10 @@ final class Tokens implements IteratorAggregate
      */
     public function if(string $type): bool
     {
+        if (null === $this->current) {
+            return false;
+        }
+
         if ($this->current->type === $type) {
             return true;
         }
@@ -122,7 +127,8 @@ final class Tokens implements IteratorAggregate
             return false;
         }
 
-        if ($this->next()->type === $type) {
+        $next = $this->next();
+        if ($next && $this->next()->type === $type) {
             $this->current = $this->tokens[++$this->position];
             return true;
         }
