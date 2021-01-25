@@ -8,25 +8,32 @@ use Phpactor\Docblock\Token;
 
 class GenericNode extends TypeNode
 {
+    protected const CHILD_NAMES = [
+        'open',
+        'type',
+        'open',
+        'parameters',
+        'close'
+    ];
     /**
      * @var Token
      */
-    private $open;
+    public $open;
 
     /**
      * @var Token
      */
-    private $close;
+    public $close;
 
     /**
      * @var TypeList
      */
-    private $parameters;
+    public $parameters;
 
     /**
      * @var TypeNode
      */
-    private $type;
+    public $type;
 
     public function __construct(Token $open, TypeNode $type, TypeList $parameters, Token $close)
     {

@@ -50,8 +50,24 @@ final class Token implements Element
         $this->value = $value;
     }
 
-    public function __toString(): string
+    public function toString(): string
     {
         return $this->value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function start(): int
+    {
+        return $this->byteOffset;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function end(): int
+    {
+        return $this->byteOffset + strlen($this->value);
     }
 }

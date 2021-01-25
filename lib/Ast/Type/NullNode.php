@@ -7,10 +7,14 @@ use Phpactor\Docblock\Token;
 
 class NullNode extends TypeNode
 {
+    protected const CHILD_NAMES = [
+        'null',
+    ];
+
     /**
      * @var Token
      */
-    private $null;
+    public $null;
 
     public function __construct(Token $null)
     {

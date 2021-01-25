@@ -4,19 +4,26 @@ namespace Phpactor\Docblock\Ast;
 
 class ParameterNode extends Node
 {
+    protected const CHILD_NAMES = [
+        'type',
+        'name',
+        'default',
+    ];
+
     /**
      * @var TypeNode|null
      */
-    private $type;
+    public $type;
+
     /**
      * @var VariableNode|null
      */
-    private $name;
+    public $name;
 
     /**
      * @var ValueNode|null
      */
-    private $default;
+    public $default;
 
     public function __construct(?TypeNode $type, ?VariableNode $name, ?ValueNode $default)
     {

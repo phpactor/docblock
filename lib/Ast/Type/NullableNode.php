@@ -7,15 +7,20 @@ use Phpactor\Docblock\Token;
 
 class NullableNode extends TypeNode
 {
+    protected const CHILD_NAMES = [
+        'nullable',
+        'type',
+    ];
+
     /**
      * @var Token
      */
-    private $nullable;
+    public $nullable;
 
     /**
      * @var TypeNode
      */
-    private $type;
+    public $type;
 
     public function __construct(Token $nullable, TypeNode $type)
     {

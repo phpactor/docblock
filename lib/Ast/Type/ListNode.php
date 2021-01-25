@@ -7,15 +7,20 @@ use Phpactor\Docblock\Token;
 
 class ListNode extends TypeNode
 {
+    protected const CHILD_NAMES = [
+        'type',
+        'listChars',
+    ];
+
     /**
      * @var TypeNode
      */
-    private $type;
+    public $type;
 
     /**
      * @var Token
      */
-    private $listChars;
+    public $listChars;
 
     public function __construct(TypeNode $type, Token $listChars)
     {

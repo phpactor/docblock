@@ -7,6 +7,7 @@ use Phpactor\Docblock\Token;
 class MethodNode extends TagNode
 {
     public const CHILD_NAMES = [
+        'tag',
         'type',
         'static',
         'type',
@@ -52,7 +53,13 @@ class MethodNode extends TagNode
      */
     public $parenClose;
 
+    /**
+     * @var Token|null
+     */
+    public $tag;
+
     public function __construct(
+        ?Token $tag,
         ?TypeNode $type,
         ?Token $name,
         ?Token $static,
@@ -68,6 +75,7 @@ class MethodNode extends TagNode
         $this->text = $text;
         $this->parenOpen = $parenOpen;
         $this->parenClose = $parenClose;
+        $this->tag = $tag;
     }
 
     public function name(): ?Token

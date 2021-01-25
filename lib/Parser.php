@@ -41,8 +41,8 @@ final class Parser
 
     public function parse(Tokens $tokens): Node
     {
-        $this->tokens = $tokens;
         $children = [];
+        $this->tokens = $tokens;
 
         while ($tokens->hasCurrent()) {
             if ($tokens->current->type === Token::T_TAG) {
@@ -50,6 +50,13 @@ final class Parser
                 continue;
             }
             $children[] = $tokens->chomp();
+        }
+
+        if (count($children) === 1) {
+            $node = reset($children);
+            if ($node instanceof Node) {
+                return $node;
+            }
         }
 
         return new Docblock($children);
@@ -116,7 +123,7 @@ final class Parser
 
     private function parseMethod(): MethodNode
     {
-        $this->tokens->chomp(Token::T_TAG);
+        $tag = $this->tokens->chomp(Token::T_TAG);
         $type = $name = $parameterList = $open = $close = null;
         $static = null;
 
@@ -140,7 +147,7 @@ final class Parser
             $close = $this->tokens->chompIf(Token::T_PAREN_CLOSE);
         }
 
-        return new MethodNode($type, $name, $static, $open, $parameterList, $close, $this->parseText());
+        return new MethodNode($tag, $type, $name, $static, $open, $parameterList, $close, $this->parseText());
     }
 
     private function parseProperty(): PropertyNode

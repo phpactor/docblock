@@ -9,19 +9,22 @@ use IteratorAggregate;
 /**
  * @implements IteratorAggregate<ParameterNode>
  */
-class ParameterList implements IteratorAggregate, Countable
+class ParameterList extends Node implements IteratorAggregate, Countable
 {
+    protected const CHILD_NAMES = [
+        'list'
+    ];
     /**
      * @var ParameterNode[]
      */
-    private $parameterList;
+    public $list;
 
     /**
-     * @param ParameterNode[] $parameterList
+     * @param ParameterNode[] $list
      */
-    public function __construct(array $parameterList)
+    public function __construct(array $list)
     {
-        $this->parameterList = $parameterList;
+        $this->list = $list;
     }
 
     /**
@@ -29,7 +32,7 @@ class ParameterList implements IteratorAggregate, Countable
      */
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator($this->parameterList);
+        return new ArrayIterator($this->list);
     }
 
     /**
@@ -37,6 +40,13 @@ class ParameterList implements IteratorAggregate, Countable
      */
     public function count()
     {
-        return count($this->parameterList);
+        return count($this->list);
+    }
+
+    public function toString(): string
+    {
+        return implode(', ', array_map(function (Element $element) {
+            return $element->toString();
+        }, $this->list));
     }
 }

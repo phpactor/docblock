@@ -7,10 +7,14 @@ use Phpactor\Docblock\Ast\TypeNode;
 
 class UnionNode extends TypeNode
 {
+    protected const CHILD_NAMES = [
+        'types',
+    ];
+
     /**
      * @var TypeList
      */
-    private $types;
+    public $types;
 
     public function __construct(TypeList $types)
     {

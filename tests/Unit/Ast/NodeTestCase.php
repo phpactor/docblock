@@ -20,6 +20,7 @@ abstract class NodeTestCase extends TestCase
         $node = (new Parser())->parse((new Lexer())->lex($doc));
         $nodes = iterator_to_array($node->getDescendantNodes(), false);
         self::assertIsIterable($nodes);
+        $assertion($node);
     }
 
     /**
