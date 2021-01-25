@@ -4,23 +4,28 @@ namespace Phpactor\Docblock\Ast;
 
 class Docblock extends Node
 {
+    protected const CHILD_NAMES = [
+        'children'
+    ];
+
     /**
-     * @var Element[]
+     * @var ElementList
      */
-    private $children = [];
+    public $children = [];
 
     /**
      * @param Element[] $children
      */
     public function __construct(array $children)
     {
-        $this->children = $children;
+        $this->children = new ElementList($children);
     }
 
     /**
-     * @return Element[]
+     * @return ElementList<Element>
      */
-    public function children(): array
+    public function children(): ElementList
+
     {
         return $this->children;
     }

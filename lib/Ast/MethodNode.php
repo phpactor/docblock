@@ -6,40 +6,51 @@ use Phpactor\Docblock\Token;
 
 class MethodNode extends TagNode
 {
+    public const CHILD_NAMES = [
+        'type',
+        'static',
+        'type',
+        'name',
+        'parenOpen',
+        'parameters',
+        'parenClose',
+        'text'
+    ];
+
     /**
      * @var TypeNode|null
      */
-    private $type;
+    public $type;
 
     /**
      * @var Token|null
      */
-    private $name;
+    public $name;
 
     /**
      * @var Token|null
      */
-    private $static;
+    public $static;
 
     /**
      * @var ParameterList|null
      */
-    private $parameters;
+    public $parameters;
 
     /**
      * @var TextNode|null
      */
-    private $text;
+    public $text;
 
     /**
      * @var Token|null
      */
-    private $parenOpen;
+    public $parenOpen;
 
     /**
      * @var Token|null
      */
-    private $parenClose;
+    public $parenClose;
 
     public function __construct(
         ?TypeNode $type,

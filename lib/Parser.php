@@ -328,6 +328,10 @@ final class Parser
 
     private function parseText(): ?TextNode
     {
+        if (!$this->tokens->current) {
+            return null;
+        }
+
         $text = [];
         if (
             $this->tokens->current->type === Token::T_WHITESPACE &&

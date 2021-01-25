@@ -4,6 +4,10 @@ namespace Phpactor\Docblock\Ast;
 
 class DeprecatedNode extends TagNode
 {
+    public const CHILD_NAMES = [
+        'text',
+    ];
+
     /**
      * @var TextNode
      */
