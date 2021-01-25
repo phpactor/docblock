@@ -2,28 +2,43 @@
 
 namespace Phpactor\Docblock\Ast;
 
+use Phpactor\Docblock\Token;
+
 class ParamNode extends TagNode
 {
+    protected const CHILD_NAMES = [
+        'tag',
+        'type',
+        'variable',
+        'text',
+    ];
+
     /**
      * @var ?TypeNode
      */
-    private $type;
+    public $type;
 
     /**
      * @var ?VariableNode
      */
-    private $variable;
+    public $variable;
 
     /**
      * @var TextNode|null
      */
-    private $text;
+    public $text;
 
-    public function __construct(?TypeNode $type, ?VariableNode $variable, ?TextNode $text = null)
+    /**
+     * @var Token
+     */
+    public $tag;
+
+    public function __construct(Token $tag, ?TypeNode $type, ?VariableNode $variable, ?TextNode $text = null)
     {
         $this->type = $type;
         $this->variable = $variable;
         $this->text = $text;
+        $this->tag = $tag;
     }
 
     public function type(): ?TypeNode

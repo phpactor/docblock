@@ -95,7 +95,7 @@ final class Parser
     private function parseParam(): ParamNode
     {
         $type = $variable = $textNode = null;
-        $this->tokens->chomp(Token::T_TAG);
+        $tag = $this->tokens->chomp(Token::T_TAG);
 
         if ($this->ifType()) {
             $type = $this->parseTypes();
@@ -105,7 +105,7 @@ final class Parser
             $variable = $this->parseVariable();
         }
 
-        return new ParamNode($type, $variable, $this->parseText());
+        return new ParamNode($tag, $type, $variable, $this->parseText());
     }
 
     private function parseVar(): VarNode
