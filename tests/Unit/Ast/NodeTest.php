@@ -7,6 +7,10 @@ use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Ast\MethodNode;
 use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Ast\ParamNode;
+use Phpactor\Docblock\Ast\ReturnNode;
+use Phpactor\Docblock\Ast\Type\GenericNode;
+use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\Type\UnionNode;
 
 class NodeTest extends NodeTestCase
 {
@@ -15,17 +19,19 @@ class NodeTest extends NodeTestCase
      */
     public function provideNode(): Generator
     {
-        yield from $this->methodTag();
-        yield from $this->paramTag();
-        yield from $this->varTag();
-        yield from $this->returnTag();
+        yield from $this->provideTags();
+        yield from $this->provideTypes();
     }
 
     /**
      * @return Generator<mixed>
      */
-    private function methodTag(): Generator
+    private function provideTags()
     {
+        yield [ '@deprecated This is deprecated'];
+        yield [ '/** This is docblock @deprecated Foo */'];
+        yield [ '@mixin Foo\Bar'];
+        yield [ '@param string $foo This is a parameter'];
         yield [
             '@method static Baz\Bar bar(string $boo, string $baz)',
             function (MethodNode $methodNode) {
@@ -38,29 +44,39 @@ class NodeTest extends NodeTestCase
                 self::assertEquals(')', $methodNode->parenClose->toString());
             }
         ];
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    private function paramTag(): Generator
-    {
-        yield ['@param Baz\Bar $foobar'];
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    private function varTag(): Generator
-    {
+        yield ['@param Baz\Bar $foobar This is a parameter'];
         yield ['@var Baz\Bar $foobar'];
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    private function returnTag(): Generator
-    {
         yield ['@return Baz\Bar'];
     }
+
+    /**
+     * @return Generator<mixed>
+     */
+    private function provideTypes(): Generator
+    {
+        yield 'scalar' => ['string'];
+        yield 'union' => [
+            '@return string|int|bool|float|mixed',
+            function (ReturnNode $return) {
+                $type = $return->type;
+                assert($type instanceof UnionNode);
+                self::assertInstanceOf(UnionNode::class, $type);
+                self::assertEquals('string', $type->types->types()->first()->toString());
+                self::assertCount(5, $type->types->types());
+            }
+        ];
+        yield 'list' => [
+            '@return Foo[]',
+            function (ReturnNode $return) {
+                self::assertInstanceOf(ListNode::class, $return->type);
+            }
+        ];
+        yield 'generic' => [
+            '@return Foo<Bar<string, int>, Baz|Bar>',
+            function (ReturnNode $return) {
+                self::assertInstanceOf(GenericNode::class, $return->type);
+            }
+        ];
+    }
+
 }

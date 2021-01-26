@@ -32,7 +32,7 @@ use Phpactor\Docblock\Ast\VariableNode;
 final class Parser
 {
     private const SCALAR_TYPES = [
-        'int', 'float', 'bool', 'string', 'mixed', 'callable'
+        'int', 'float', 'bool', 'string', 'mixed'
     ];
     /**
      * @var Tokens
@@ -171,12 +171,12 @@ final class Parser
         if (null === $type) {
             return $type;
         }
-        $types = [$type];
+        $elements = [$type];
 
         while (true) {
             if ($this->tokens->if(Token::T_BAR)) {
-                $this->tokens->chomp();
-                $types[] = $this->parseType();
+                $elements[] = $this->tokens->chomp();
+                $elements[] = $this->parseType();
                 if (null !== $type) {
                     continue;
                 }
@@ -184,11 +184,11 @@ final class Parser
             break;
         }
 
-        if (count($types) === 1) {
-            return $types[0];
+        if (count($elements) === 1) {
+            return $elements[0];
         }
 
-        return new UnionNode(new TypeList($types));
+        return new UnionNode(new TypeList($elements));
     }
 
     private function parseType(): ?TypeNode
@@ -267,7 +267,7 @@ final class Parser
                 $types[] = $this->parseTypes();
             }
             if ($this->tokens->if(Token::T_COMMA)) {
-                $this->tokens->chomp();
+                $types[] = $this->tokens->chomp();
                 continue;
             }
             break;
@@ -313,13 +313,15 @@ final class Parser
 
     private function parseDeprecated(): DeprecatedNode
     {
-        $this->tokens->chomp();
-        return new DeprecatedNode($this->parseText());
+        return new DeprecatedNode(
+            $this->tokens->chomp(Token::T_TAG),
+            $this->parseText()
+        );
     }
 
     private function parseMixin(): MixinNode
     {
-        $this->tokens->chomp();
+        $tag = $this->tokens->chomp(Token::T_TAG);
         $type = null;
 
         if ($this->tokens->if(Token::T_LABEL)) {
@@ -329,7 +331,7 @@ final class Parser
             }
         }
 
-        return new MixinNode($type);
+        return new MixinNode($tag, $type);
     }
 
     private function parseReturn(): ReturnNode
@@ -346,17 +348,19 @@ final class Parser
 
     private function parseText(): ?TextNode
     {
-        if (!$this->tokens->current) {
+        if (null === $this->tokens->current) {
             return null;
         }
 
         $text = [];
+
         if (
             $this->tokens->current->type === Token::T_WHITESPACE &&
             $this->tokens->next()->type === Token::T_LABEL
         ) {
             $this->tokens->chomp();
         }
+
         while ($this->tokens->current) {
             if ($this->tokens->current->type === Token::T_PHPDOC_CLOSE) {
                 break;

@@ -20,9 +20,4 @@ class UnionNode extends TypeNode
     {
         $this->types = $types;
     }
-
-    public function types(): TypeList
-    {
-        return $this->types;
-    }
 }

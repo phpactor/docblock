@@ -9,7 +9,6 @@ use Phpactor\Docblock\Token;
 class GenericNode extends TypeNode
 {
     protected const CHILD_NAMES = [
-        'open',
         'type',
         'open',
         'parameters',

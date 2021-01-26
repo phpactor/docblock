@@ -48,7 +48,7 @@ class NodeTestCase extends TestCase
     {
         $one = $this->parse($doc);
         $two = $this->parse($one->toString());
-        self::assertEquals($one, $two);
+        self::assertEquals($one, $two, $one->toString());
     }
 
     private function parse(string $doc): Node

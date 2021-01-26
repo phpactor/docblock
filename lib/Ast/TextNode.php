@@ -6,10 +6,14 @@ use Phpactor\Docblock\Token;
 
 class TextNode extends Node
 {
+    protected const CHILD_NAMES = [
+        'tokens',
+    ];
+
     /**
      * @var Token[]
      */
-    private $tokens;
+    public $tokens;
 
     /**
      * @param Token[] $tokens

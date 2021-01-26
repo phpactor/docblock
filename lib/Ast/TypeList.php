@@ -5,31 +5,38 @@ namespace Phpactor\Docblock\Ast;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
+use Phpactor\Docblock\Token;
+use RuntimeException;
 
 /**
- * @implements IteratorAggregate<TypeNode>
+ * @template T of Element
+ * @implements IteratorAggregate<int,T>
  */
-class TypeList implements IteratorAggregate, Countable
+class TypeList extends Node implements IteratorAggregate, Countable
 {
-    /**
-     * @var TypeNode[]
-     */
-    private $typeList;
+    protected const CHILD_NAMES = [
+        'list'
+    ];
 
     /**
-     * @param TypeNode[] $typeList
+     * @var array<T>
      */
-    public function __construct(array $typeList)
+    public $list;
+
+    /**
+     * @param array<T> $list
+     */
+    public function __construct(array $list)
     {
-        $this->typeList = $typeList;
+        $this->list = $list;
     }
 
     /**
-     * @return ArrayIterator<int, TypeNode>
+     * @return ArrayIterator<int, T>
      */
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator($this->typeList);
+        return new ArrayIterator($this->list);
     }
 
     /**
@@ -37,6 +44,30 @@ class TypeList implements IteratorAggregate, Countable
      */
     public function count()
     {
-        return count($this->typeList);
+        return count($this->list);
+    }
+
+    /**
+     * @return T
+     */
+    public function first(): Element
+    {
+        if (!isset($this->list[0])) {
+            throw new RuntimeException(sprintf(
+                'List has no first element'
+            ));
+        }
+
+        return $this->list[0];
+    }
+
+    /**
+     * @return TypeList<TypeNode&T>
+     */
+    public function types(): self
+    {
+        return new self(array_filter($this->list, function (Element $element) {
+            return $element instanceof TypeNode;
+        }));
     }
 }
