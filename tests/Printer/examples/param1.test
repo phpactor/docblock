@@ -2,6 +2,10 @@
  * @param Foobar $foobar
  */
 ---
-/**
- * ParamNode(ClassNode(Foobar),VariableNode($foobar))
+Docblock: = 
+ ElementList: = /**
+ * 
+  ParamTag: = @param
+   ClassNode: = Foobar
+   VariableNode: = $foobar
  */

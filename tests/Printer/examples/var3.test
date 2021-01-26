@@ -1,3 +1,7 @@
 /** @var string $foobar */
 ---
-/** VarNode(ScalarNode(string),VariableNode($foobar)) */
+Docblock: = 
+ ElementList: = /** 
+  VarTag: = @var
+   ScalarNode: = string
+   VariableNode: = $foobar */

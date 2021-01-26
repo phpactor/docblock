@@ -2,6 +2,9 @@
  * @mixin Foobar
  */
 ---
-/**
- * MixinNode(ClassNode(Foobar))
+Docblock: = 
+ ElementList: = /**
+ * 
+  MixinTag: = @mixin
+   ClassNode: = Foobar
  */

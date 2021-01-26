@@ -33,8 +33,11 @@ use Phpactor\Docblock\Ast\Tokens;
 
 final class Parser
 {
+    /**
+     * TODO: callable is not a scalar
+     */
     private const SCALAR_TYPES = [
-        'int', 'float', 'bool', 'string', 'mixed'
+        'int', 'float', 'bool', 'string', 'mixed', 'callable',
     ];
     /**
      * @var Tokens

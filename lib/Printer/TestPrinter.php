@@ -36,308 +36,41 @@ final class TestPrinter implements Printer
      */
     private $out = [];
 
+    private $indent = 0;
+
     public function print(Node $node): string
     {
-        $this->out = [];
+        $this->indent++;
+        $out = sprintf('%s: = ', $node->shortName());
+        foreach ($node->getChildElements() as $child) {
+            $out .= $this->printElement($child);
+        }
+        $this->indent--;
 
-        $this->render($node);
-
-        return implode('', $this->out);
+        return $out;
     }
 
-    private function render(?Element $node): void
+    /**
+     * @param array|Element $element
+     */
+    public function printElement($element): string
     {
-        if (null === $node) {
-            $this->out[] = '#missing#';
-            return;
+        if ($element instanceof Token) {
+            return sprintf('%s', $element->value);
         }
 
-        if ($node instanceof Docblock) {
-            $this->renderDocblock($node);
-            return;
+        if ($element instanceof Node) {
+            return $this->newLine() . $this->print($element);
         }
 
-        if ($node instanceof Token) {
-            $this->out[] = $node->value;
-            return;
-        }
-
-        if ($node instanceof ParamTag) {
-            $this->renderParam($node);
-            return;
-        }
-
-        if ($node instanceof VarTag) {
-            $this->renderVar($node);
-            return;
-        }
-
-        if ($node instanceof ListNode) {
-            $this->renderListNode($node);
-            return;
-        }
-
-        if ($node instanceof GenericNode) {
-            $this->renderGenericNode($node);
-            return;
-        }
-
-        if ($node instanceof NullableNode) {
-            $this->renderNullable($node);
-            return;
-        }
-
-        if ($node instanceof UnionNode) {
-            $this->renderUnion($node);
-            return;
-        }
-
-        if ($node instanceof NullNode) {
-            $this->out[] = $node->shortName() . '()';
-            return;
-        }
-
-        if ($node instanceof TypeNode) {
-            $this->renderTypeNode($node);
-            return;
-        }
-
-        if ($node instanceof TextNode) {
-            $this->renderTextNode($node);
-            return;
-        }
-
-        if ($node instanceof VariableNode) {
-            $this->renderVariableNode($node);
-            return;
-        }
-
-        if ($node instanceof UnknownTag) {
-            $this->out[] = $node->shortName();
-            return;
-        }
-
-        if ($node instanceof DeprecatedTag) {
-            $this->renderDeprecated($node);
-            return;
-        }
-
-        if ($node instanceof MethodTag) {
-            $this->renderMethod($node);
-            return;
-        }
-
-        if ($node instanceof PropertyTag) {
-            $this->renderProperty($node);
-            return;
-        }
-
-        if ($node instanceof MixinTag) {
-            $this->renderMixin($node);
-            return;
-        }
-
-        if ($node instanceof ReturnTag) {
-            $this->renderReturn($node);
-            return;
-        }
-
-        if ($node instanceof ParameterTag) {
-            $this->renderParameter($node);
-            return;
-        }
-
-        if ($node instanceof ValueNode) {
-            $this->renderValue($node);
-            return;
-        }
-
-        throw new RuntimeException(sprintf(
-            'Do not know how to render "%s"',
-            get_class($node)
-        ));
+        return implode('', array_map(function (Element $element) {
+            return $this->printElement($element);
+        }, (array)$element));
     }
 
-    private function renderDocblock(Docblock $node): void
+    private function newLine(): string
     {
-        foreach ($node->children() as $child) {
-            $this->render($child);
-        }
+        return "\n".str_repeat(' ', $this->indent);
     }
 
-    private function renderParam(ParamTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        $this->out[] = ',';
-        $this->render($node->variable());
-        if ($node->text()) {
-            $this->out[] = ',';
-            $this->render($node->text());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderVar(VarTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        if ($node->variable()) {
-            $this->out[] = ',';
-            $this->render($node->variable());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderTypeNode(TypeNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->name());
-        $this->out[] = ')';
-    }
-
-    private function renderVariableNode(VariableNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->name());
-        $this->out[] = ')';
-    }
-
-    private function renderListNode(ListNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        $this->out[] = ')';
-    }
-
-    private function renderGenericNode(GenericNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        $this->out[] = ',';
-        $this->renderTypeList($node->parameters());
-        $this->out[] = ')';
-    }
-
-    private function renderTypeList(TypeList $typeList, string $delimiter = ','): void
-    {
-        foreach ($typeList as $i => $param) {
-            $this->render($param);
-            if ($i + 1 !== $typeList->count()) {
-                $this->out[] = $delimiter;
-            }
-        }
-    }
-
-    private function renderTextNode(TextNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->out[] = $node->toString();
-        $this->out[] = ')';
-    }
-
-    private function renderDeprecated(DeprecatedTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        if ($node->text()) {
-            $this->render($node->text());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderMethod(MethodTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        if ($node->name()) {
-            $this->out[] = ',';
-            $this->render($node->name());
-        }
-        if ($node->static()) {
-            $this->out[] = ',static';
-        }
-        if ($node->parameters()) {
-            $this->out[] = ',';
-            $this->renderParameterList($node->parameters());
-        }
-        if ($node->text()) {
-            $this->out[] = ',';
-            $this->render($node->text());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderMixin(MixinTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->class());
-        $this->out[] = ')';
-    }
-
-    private function renderNullable(NullableNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        $this->out[] = ')';
-    }
-
-    private function renderProperty(PropertyTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        if ($node->name()) {
-            $this->out[] = ',';
-            $this->render($node->name());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderReturn(ReturnTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->render($node->type());
-        if ($node->text()) {
-            $this->out[] = ',';
-            $this->render($node->text());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderUnion(UnionNode $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        $this->renderTypeList($node->types(), '|');
-        $this->out[] = ')';
-    }
-
-    private function renderParameterList(ParameterList $list): void
-    {
-        $this->out[] = 'ParameterList(';
-        foreach ($list as $i => $parameter) {
-            $this->render($parameter);
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderParameter(ParameterTag $node): void
-    {
-        $this->out[] = $node->shortName() . '(';
-        if ($node->name()) {
-            $this->render($node->name());
-        }
-        if ($node->type()) {
-            $this->out[] = ',';
-            $this->render($node->type());
-        }
-        if ($node->default()) {
-            $this->out[] = ',';
-            $this->render($node->default());
-        }
-        $this->out[] = ')';
-    }
-
-    private function renderValue(ValueNode $node): void
-    {
-        $this->out[] = json_encode($node->value());
-    }
 }

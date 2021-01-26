@@ -2,6 +2,9 @@
  * @method Foobar foobar() 
  */
 ---
-/**
- * MethodNode(ClassNode(Foobar),foobar) 
+Docblock: = 
+ ElementList: = /**
+ * 
+  MethodTag: = @method
+   ClassNode: = Foobarfoobar() 
  */

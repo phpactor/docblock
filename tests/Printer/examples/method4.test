@@ -2,6 +2,14 @@
  * @method bool is(string $value = null)
  */
 ---
-/**
- * MethodNode(ScalarNode(bool),is,ParameterList(ParameterNode(VariableNode($value),ScalarNode(string),null)))
+Docblock: = 
+ ElementList: = /**
+ * 
+  MethodTag: = @method
+   ScalarNode: = boolis(
+   ParameterList: = 
+    ParameterTag: = 
+     ScalarNode: = string
+     VariableNode: = $value
+     NullValue: = )
  */

@@ -17,7 +17,7 @@ class NodeTestCase extends TestCase
     public function testNode(string $doc, ?Closure $assertion = null): void
     {
         $node = $this->parse($doc);
-        $nodes = iterator_to_array($node->getDescendantNodes(), false);
+        $nodes = iterator_to_array($node->getDescendantElements(), false);
         self::assertIsIterable($nodes);
         self::assertEquals(0, $node->start(), 'Start offset');
         self::assertEquals(strlen($doc), $node->end(), 'End offset');

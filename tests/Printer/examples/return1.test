@@ -2,6 +2,9 @@
  * @return Foobar
  */
 ---
-/**
- * ReturnNode(ClassNode(Foobar))
+Docblock: = 
+ ElementList: = /**
+ * 
+  ReturnTag: = @return
+   ClassNode: = Foobar
  */

@@ -2,6 +2,9 @@
  * @deprecated This is because
  */
 ---
-/**
- * DeprecatedNode(TextNode(This is because))
+Docblock: = 
+ ElementList: = /**
+ * 
+  DeprecatedTag: = @deprecated
+   TextNode: = This is because
  */

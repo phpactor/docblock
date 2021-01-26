@@ -59,7 +59,7 @@ abstract class Node implements Element
     /**
      * @return Generator<Element>
      */
-    public function getDescendantNodes(): Generator
+    public function getDescendantElements(): Generator
     {
         yield $this;
         yield from $this->walkNodes($this->getChildElements());
@@ -80,7 +80,7 @@ abstract class Node implements Element
             }
 
             if ($child instanceof Node) {
-                yield from $child->getDescendantNodes();
+                yield from $child->getDescendantElements();
                 continue;
             }
 

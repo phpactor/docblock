@@ -2,6 +2,10 @@
  * @var ?Foo
  */
 ---
-/**
- * VarNode(NullableNode(ClassNode(Foo)))
+Docblock: = 
+ ElementList: = /**
+ * 
+  VarTag: = @var
+   NullableNode: = ?
+    ClassNode: = Foo
  */

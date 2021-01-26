@@ -3,7 +3,14 @@
  * @param string $barfoo
  */
 ---
-/**
- * ParamNode(ClassNode(Foobar),VariableNode($foobar))
- * ParamNode(ScalarNode(string),VariableNode($barfoo))
+Docblock: = 
+ ElementList: = /**
+ * 
+  ParamTag: = @param
+   ClassNode: = Foobar
+   VariableNode: = $foobar
+ * 
+  ParamTag: = @param
+   ScalarNode: = string
+   VariableNode: = $barfoo
  */

@@ -2,6 +2,10 @@
  * @var string[]
  */
 ---
-/**
- * VarNode(ListNode(ScalarNode(string)))
+Docblock: = 
+ ElementList: = /**
+ * 
+  VarTag: = @var
+   ListNode: = 
+    ScalarNode: = string[]
  */

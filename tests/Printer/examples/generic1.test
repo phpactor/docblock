@@ -2,6 +2,14 @@
  * @param Foobar<Barfoo[]> $foobar
  */
 ---
-/**
- * ParamNode(GenericNode(ClassNode(Foobar),ListNode(ClassNode(Barfoo))),VariableNode($foobar))
+Docblock: = 
+ ElementList: = /**
+ * 
+  ParamTag: = @param
+   GenericNode: = 
+    ClassNode: = Foobar<
+    TypeList: = 
+     ListNode: = 
+      ClassNode: = Barfoo[]>
+   VariableNode: = $foobar
  */
