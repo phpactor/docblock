@@ -2,19 +2,19 @@
 
 namespace Phpactor\Docblock;
 
-use Phpactor\Docblock\Ast\DeprecatedNode;
+use Phpactor\Docblock\Ast\Tag\DeprecatedTag;
 use Phpactor\Docblock\Ast\Docblock;
-use Phpactor\Docblock\Ast\MethodNode;
-use Phpactor\Docblock\Ast\MixinNode;
+use Phpactor\Docblock\Ast\Tag\MethodTag;
+use Phpactor\Docblock\Ast\Tag\MixinTag;
 use Phpactor\Docblock\Ast\ParameterList;
-use Phpactor\Docblock\Ast\ParameterNode;
-use Phpactor\Docblock\Ast\PropertyNode;
-use Phpactor\Docblock\Ast\ReturnNode;
+use Phpactor\Docblock\Ast\Tag\ParameterTag;
+use Phpactor\Docblock\Ast\Tag\PropertyTag;
+use Phpactor\Docblock\Ast\Tag\ReturnTag;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\Type\ClassNode;
 use Phpactor\Docblock\Ast\Node;
-use Phpactor\Docblock\Ast\ParamNode;
+use Phpactor\Docblock\Ast\Tag\ParamTag;
 use Phpactor\Docblock\Ast\TagNode;
 use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
@@ -26,8 +26,10 @@ use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\ValueNode;
 use Phpactor\Docblock\Ast\Value\NullValue;
-use Phpactor\Docblock\Ast\VarNode;
+use Phpactor\Docblock\Ast\Tag\VarTag;
 use Phpactor\Docblock\Ast\VariableNode;
+use Phpactor\Docblock\Ast\Token;
+use Phpactor\Docblock\Ast\Tokens;
 
 final class Parser
 {
@@ -92,7 +94,7 @@ final class Parser
         return new UnknownTag($this->tokens->chomp());
     }
 
-    private function parseParam(): ParamNode
+    private function parseParam(): ParamTag
     {
         $type = $variable = $textNode = null;
         $tag = $this->tokens->chomp(Token::T_TAG);
@@ -105,10 +107,10 @@ final class Parser
             $variable = $this->parseVariable();
         }
 
-        return new ParamNode($tag, $type, $variable, $this->parseText());
+        return new ParamTag($tag, $type, $variable, $this->parseText());
     }
 
-    private function parseVar(): VarNode
+    private function parseVar(): VarTag
     {
         $tag = $this->tokens->chomp(Token::T_TAG);
         $type = $variable = null;
@@ -119,10 +121,10 @@ final class Parser
             $variable = $this->parseVariable();
         }
 
-        return new VarNode($tag, $type, $variable);
+        return new VarTag($tag, $type, $variable);
     }
 
-    private function parseMethod(): MethodNode
+    private function parseMethod(): MethodTag
     {
         $tag = $this->tokens->chomp(Token::T_TAG);
         $type = $name = $parameterList = $open = $close = null;
@@ -148,10 +150,10 @@ final class Parser
             $close = $this->tokens->chompIf(Token::T_PAREN_CLOSE);
         }
 
-        return new MethodNode($tag, $type, $name, $static, $open, $parameterList, $close, $this->parseText());
+        return new MethodTag($tag, $type, $name, $static, $open, $parameterList, $close, $this->parseText());
     }
 
-    private function parseProperty(): PropertyNode
+    private function parseProperty(): PropertyTag
     {
         $this->tokens->chomp(Token::T_TAG);
         $type = $name = null;
@@ -162,7 +164,7 @@ final class Parser
             $name = $this->tokens->chomp();
         }
 
-        return new PropertyNode($type, $name);
+        return new PropertyTag($type, $name);
     }
 
     private function parseTypes(): ?TypeNode
@@ -295,7 +297,7 @@ final class Parser
         return new ParameterList($parameters);
     }
 
-    private function parseParameter(): ParameterNode
+    private function parseParameter(): ParameterTag
     {
         $type = $name = $default = null;
         if ($this->tokens->if(Token::T_LABEL)) {
@@ -308,18 +310,18 @@ final class Parser
             $equals = $this->tokens->chomp();
             $default = $this->parseValue();
         }
-        return new ParameterNode($type, $name, $default);
+        return new ParameterTag($type, $name, $default);
     }
 
-    private function parseDeprecated(): DeprecatedNode
+    private function parseDeprecated(): DeprecatedTag
     {
-        return new DeprecatedNode(
+        return new DeprecatedTag(
             $this->tokens->chomp(Token::T_TAG),
             $this->parseText()
         );
     }
 
-    private function parseMixin(): MixinNode
+    private function parseMixin(): MixinTag
     {
         $tag = $this->tokens->chomp(Token::T_TAG);
         $type = null;
@@ -331,10 +333,10 @@ final class Parser
             }
         }
 
-        return new MixinNode($tag, $type);
+        return new MixinTag($tag, $type);
     }
 
-    private function parseReturn(): ReturnNode
+    private function parseReturn(): ReturnTag
     {
         $tag = $this->tokens->chomp(Token::T_TAG);
         $type = null;
@@ -343,7 +345,7 @@ final class Parser
             $type = $this->parseTypes();
         }
 
-        return new ReturnNode($tag, $type, $this->parseText());
+        return new ReturnTag($tag, $type, $this->parseText());
     }
 
     private function parseText(): ?TextNode

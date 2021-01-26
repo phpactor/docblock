@@ -1,10 +1,12 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\TagNode;
+use Phpactor\Docblock\Ast\Token;
+use Phpactor\Docblock\Ast\TypeNode;
 
-class PropertyNode extends TagNode
+class PropertyTag extends TagNode
 {
     /**
      * @var TypeNode|null

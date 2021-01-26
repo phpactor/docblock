@@ -1,10 +1,11 @@
 <?php
 
-namespace Phpactor\Docblock;
+namespace Phpactor\Docblock\Ast;
 
 use ArrayIterator;
 use IteratorAggregate;
 use RuntimeException;
+use Phpactor\Docblock\Ast\Token;
 
 final class Tokens implements IteratorAggregate
 {

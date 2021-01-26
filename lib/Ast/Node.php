@@ -3,7 +3,7 @@
 namespace Phpactor\Docblock\Ast;
 
 use Generator;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 
 abstract class Node implements Element
 {

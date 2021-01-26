@@ -5,7 +5,7 @@ namespace Phpactor\Docblock\Ast;
 use ArrayIterator;
 use Countable;
 use IteratorAggregate;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 use RuntimeException;
 
 /**

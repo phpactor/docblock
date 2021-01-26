@@ -1,11 +1,12 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
+use Phpactor\Docblock\Ast\TagNode;
 use Phpactor\Docblock\Ast\Type\ClassNode;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 
-class MixinNode extends TagNode
+class MixinTag extends TagNode
 {
     protected const CHILD_NAMES = [
         'tag',

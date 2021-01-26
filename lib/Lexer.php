@@ -2,6 +2,9 @@
 
 namespace Phpactor\Docblock;
 
+use Phpactor\Docblock\Ast\Token;
+use Phpactor\Docblock\Ast\Tokens;
+
 final class Lexer
 {
     /**

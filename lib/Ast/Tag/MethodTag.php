@@ -1,10 +1,14 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\ParameterList;
+use Phpactor\Docblock\Ast\TagNode;
+use Phpactor\Docblock\Ast\TextNode;
+use Phpactor\Docblock\Ast\Token;
+use Phpactor\Docblock\Ast\TypeNode;
 
-class MethodNode extends TagNode
+class MethodTag extends TagNode
 {
     public const CHILD_NAMES = [
         'tag',
@@ -75,40 +79,5 @@ class MethodNode extends TagNode
         $this->parenOpen = $parenOpen;
         $this->parenClose = $parenClose;
         $this->tag = $tag;
-    }
-
-    public function name(): ?Token
-    {
-        return $this->name;
-    }
-
-    public function type(): ?TypeNode
-    {
-        return $this->type;
-    }
-
-    public function static(): ?Token
-    {
-        return $this->static;
-    }
-
-    public function parameters(): ?ParameterList
-    {
-        return $this->parameters;
-    }
-
-    public function text(): ?TextNode
-    {
-        return $this->text;
-    }
-
-    public function parenOpen(): ?Token
-    {
-        return $this->parenOpen;
-    }
-
-    public function parenClose(): ?Token
-    {
-        return $this->parenClose;
     }
 }

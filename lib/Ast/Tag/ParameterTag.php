@@ -1,8 +1,13 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
-class ParameterNode extends Node
+use Phpactor\Docblock\Ast\TagNode;
+use Phpactor\Docblock\Ast\TypeNode;
+use Phpactor\Docblock\Ast\ValueNode;
+use Phpactor\Docblock\Ast\VariableNode;
+
+class ParameterTag extends TagNode
 {
     protected const CHILD_NAMES = [
         'type',

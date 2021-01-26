@@ -2,20 +2,20 @@
 
 namespace Phpactor\Docblock\Printer;
 
-use Phpactor\Docblock\Ast\DeprecatedNode;
+use Phpactor\Docblock\Ast\Tag\DeprecatedTag;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
-use Phpactor\Docblock\Ast\MethodNode;
-use Phpactor\Docblock\Ast\MixinNode;
+use Phpactor\Docblock\Ast\Tag\MethodTag;
+use Phpactor\Docblock\Ast\Tag\MixinTag;
 use Phpactor\Docblock\Ast\ParameterList;
-use Phpactor\Docblock\Ast\ParameterNode;
-use Phpactor\Docblock\Ast\PropertyNode;
-use Phpactor\Docblock\Ast\ReturnNode;
+use Phpactor\Docblock\Ast\Tag\ParameterTag;
+use Phpactor\Docblock\Ast\Tag\PropertyTag;
+use Phpactor\Docblock\Ast\Tag\ReturnTag;
 use Phpactor\Docblock\Ast\TextNode;
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Ast\Node;
-use Phpactor\Docblock\Ast\ParamNode;
+use Phpactor\Docblock\Ast\Tag\ParamTag;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
 use Phpactor\Docblock\Ast\Type\NullNode;
@@ -23,10 +23,10 @@ use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\ValueNode;
-use Phpactor\Docblock\Ast\VarNode;
+use Phpactor\Docblock\Ast\Tag\VarTag;
 use Phpactor\Docblock\Ast\VariableNode;
 use Phpactor\Docblock\Printer;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 use RuntimeException;
 
 final class TestPrinter implements Printer
@@ -62,12 +62,12 @@ final class TestPrinter implements Printer
             return;
         }
 
-        if ($node instanceof ParamNode) {
+        if ($node instanceof ParamTag) {
             $this->renderParam($node);
             return;
         }
 
-        if ($node instanceof VarNode) {
+        if ($node instanceof VarTag) {
             $this->renderVar($node);
             return;
         }
@@ -117,32 +117,32 @@ final class TestPrinter implements Printer
             return;
         }
 
-        if ($node instanceof DeprecatedNode) {
+        if ($node instanceof DeprecatedTag) {
             $this->renderDeprecated($node);
             return;
         }
 
-        if ($node instanceof MethodNode) {
+        if ($node instanceof MethodTag) {
             $this->renderMethod($node);
             return;
         }
 
-        if ($node instanceof PropertyNode) {
+        if ($node instanceof PropertyTag) {
             $this->renderProperty($node);
             return;
         }
 
-        if ($node instanceof MixinNode) {
+        if ($node instanceof MixinTag) {
             $this->renderMixin($node);
             return;
         }
 
-        if ($node instanceof ReturnNode) {
+        if ($node instanceof ReturnTag) {
             $this->renderReturn($node);
             return;
         }
 
-        if ($node instanceof ParameterNode) {
+        if ($node instanceof ParameterTag) {
             $this->renderParameter($node);
             return;
         }
@@ -165,7 +165,7 @@ final class TestPrinter implements Printer
         }
     }
 
-    private function renderParam(ParamNode $node): void
+    private function renderParam(ParamTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
@@ -178,7 +178,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderVar(VarNode $node): void
+    private function renderVar(VarTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
@@ -236,7 +236,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderDeprecated(DeprecatedNode $node): void
+    private function renderDeprecated(DeprecatedTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         if ($node->text()) {
@@ -245,7 +245,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderMethod(MethodNode $node): void
+    private function renderMethod(MethodTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
@@ -267,7 +267,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderMixin(MixinNode $node): void
+    private function renderMixin(MixinTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->class());
@@ -281,7 +281,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderProperty(PropertyNode $node): void
+    private function renderProperty(PropertyTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
@@ -292,7 +292,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderReturn(ReturnNode $node): void
+    private function renderReturn(ReturnTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         $this->render($node->type());
@@ -319,7 +319,7 @@ final class TestPrinter implements Printer
         $this->out[] = ')';
     }
 
-    private function renderParameter(ParameterNode $node): void
+    private function renderParameter(ParameterTag $node): void
     {
         $this->out[] = $node->shortName() . '(';
         if ($node->name()) {

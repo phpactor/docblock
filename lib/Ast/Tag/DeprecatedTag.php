@@ -1,10 +1,12 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\TagNode;
+use Phpactor\Docblock\Ast\TextNode;
+use Phpactor\Docblock\Ast\Token;
 
-class DeprecatedNode extends TagNode
+class DeprecatedTag extends TagNode
 {
     public const CHILD_NAMES = [
         'token',
@@ -25,10 +27,5 @@ class DeprecatedNode extends TagNode
     {
         $this->text = $text;
         $this->token = $token;
-    }
-
-    public function text(): ?TextNode
-    {
-        return $this->text;
     }
 }

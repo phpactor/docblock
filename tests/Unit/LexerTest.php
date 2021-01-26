@@ -5,7 +5,7 @@ namespace Phpactor\Docblock\Tests\Unit;
 use Generator;
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Lexer;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 
 class LexerTest extends TestCase
 {

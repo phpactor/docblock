@@ -3,7 +3,7 @@
 namespace Phpactor\Docblock\Ast\Value;
 
 use Phpactor\Docblock\Ast\ValueNode;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 
 class NullValue extends ValueNode
 {

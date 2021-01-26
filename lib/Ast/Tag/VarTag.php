@@ -1,10 +1,13 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\TagNode;
+use Phpactor\Docblock\Ast\Token;
+use Phpactor\Docblock\Ast\TypeNode;
+use Phpactor\Docblock\Ast\VariableNode;
 
-class VarNode extends TagNode
+class VarTag extends TagNode
 {
     protected const CHILD_NAMES = [
         'tag',

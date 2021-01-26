@@ -8,7 +8,7 @@ use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Node;
 use Phpactor\Docblock\Lexer;
 use Phpactor\Docblock\Parser;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 
 class ParserTest extends TestCase
 {

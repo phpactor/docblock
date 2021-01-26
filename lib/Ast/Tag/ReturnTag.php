@@ -1,27 +1,24 @@
 <?php
 
-namespace Phpactor\Docblock\Ast;
+namespace Phpactor\Docblock\Ast\Tag;
 
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\TagNode;
+use Phpactor\Docblock\Ast\TextNode;
+use Phpactor\Docblock\Ast\Token;
+use Phpactor\Docblock\Ast\TypeNode;
 
-class ParamNode extends TagNode
+class ReturnTag extends TagNode
 {
     protected const CHILD_NAMES = [
         'tag',
         'type',
-        'variable',
         'text',
     ];
 
     /**
-     * @var ?TypeNode
+     * @var TypeNode|null
      */
     public $type;
-
-    /**
-     * @var ?VariableNode
-     */
-    public $variable;
 
     /**
      * @var TextNode|null
@@ -33,10 +30,9 @@ class ParamNode extends TagNode
      */
     public $tag;
 
-    public function __construct(Token $tag, ?TypeNode $type, ?VariableNode $variable, ?TextNode $text = null)
+    public function __construct(Token $tag, ?TypeNode $type, ?TextNode $text = null)
     {
         $this->type = $type;
-        $this->variable = $variable;
         $this->text = $text;
         $this->tag = $tag;
     }
@@ -44,11 +40,6 @@ class ParamNode extends TagNode
     public function type(): ?TypeNode
     {
         return $this->type;
-    }
-
-    public function variable(): ?VariableNode
-    {
-        return $this->variable;
     }
 
     public function text(): ?TextNode

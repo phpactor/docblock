@@ -1,6 +1,6 @@
 <?php
 
-namespace Phpactor\Docblock;
+namespace Phpactor\Docblock\Ast;
 
 use Phpactor\Docblock\Ast\Element;
 

@@ -4,7 +4,7 @@ namespace Phpactor\Docblock\Ast\Type;
 
 use Phpactor\Docblock\Ast\TypeList;
 use Phpactor\Docblock\Ast\TypeNode;
-use Phpactor\Docblock\Token;
+use Phpactor\Docblock\Ast\Token;
 
 class GenericNode extends TypeNode
 {
