@@ -26,26 +26,9 @@ abstract class AbstractParserBenchCase
     }
 
     /**
-     * @ParamProviders({"provideCoreDocs"})
+     * @Revs(5)
+     * @Iterations(10)
      */
-    public function benchPhpCore(array $params): void
-    {
-        $this->parse(trim($params['doc']));
-    }
-
-    /**
-     * @return Generator<mixed>
-     */
-    public function provideCoreDocs(): Generator
-    {
-        $contents = file_get_contents(__DIR__ . '/examples/php_core.example');
-        foreach (explode('#!---!#', $contents) as $doc) {
-            yield str_replace("\n", '', substr($doc, 0, 10)) => [
-                'doc' => $doc
-            ];
-        }
-    }
-
     public function benchAssert(): void
     {
         $this->parse(file_get_contents(__DIR__ . '/examples/assert.example'));
