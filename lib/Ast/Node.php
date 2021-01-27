@@ -26,31 +26,12 @@ abstract class Node implements Element
      */
     public function tokens(): Generator
     {
-        yield from $this->findTokens($this->getChildElements());
+        yield from $this->findTokens($this->children());
     }
 
     /**
-     * @return Generator<Token>
-     * @param iterable<Element|array<Element>> $nodes
+     * Return the short name of the node class (e.g. ParamTag)
      */
-    private function findTokens(iterable $nodes): Generator
-    {
-        foreach ($nodes as $node) {
-            if ($node instanceof Token) {
-                yield $node;
-                continue;
-            }
-
-            if ($node instanceof Node) {
-                yield from $node->tokens();
-            }
-
-            if (is_array($node)) {
-                yield from $this->findTokens($node);
-            }
-        }
-    }
-
     public function shortName(): string
     {
         return substr(get_class($this), strrpos(get_class($this), '\\') + 1);
@@ -59,10 +40,18 @@ abstract class Node implements Element
     /**
      * @return Generator<Element>
      */
-    public function getDescendantElements(): Generator
+    public function selfAndDescendantElements(): Generator
     {
         yield $this;
-        yield from $this->walkNodes($this->getChildElements());
+        yield from $this->traverseNodes($this->children());
+    }
+
+    /**
+     * @return Generator<Element>
+     */
+    public function descendantElements(): Generator
+    {
+        yield from $this->traverseNodes($this->children());
     }
 
     /**
@@ -70,17 +59,17 @@ abstract class Node implements Element
      *
      * @return Generator<Element>
      */
-    private function walkNodes(iterable $nodes): Generator
+    private function traverseNodes(iterable $nodes): Generator
     {
         $result = [];
         foreach ($nodes as $child) {
             if (is_array($child)) {
-                yield from $this->walkNodes($child);
+                yield from $this->traverseNodes($child);
                 continue;
             }
 
             if ($child instanceof Node) {
-                yield from $child->getDescendantElements();
+                yield from $child->selfAndDescendantElements();
                 continue;
             }
 
@@ -94,7 +83,7 @@ abstract class Node implements Element
     /**
      * @return Generator<Element>
      */
-    public function getChildElements(): Generator
+    public function children(): Generator
     {
         foreach (static::CHILD_NAMES as $name) {
             $child = $this->$name;
@@ -106,29 +95,12 @@ abstract class Node implements Element
 
     public function start(): int
     {
-        return $this->startOf($this->getChildElements());
-    }
-
-    /**
-     * @param iterable<Element|array<Element>> $elements
-     */
-    public function startOf(iterable $elements): int
-    {
-        foreach ($elements as $element) {
-            if ($element instanceof Element) {
-                return $element->start();
-            }
-            if (is_array($element)) {
-                return $this->startOf($element);
-            }
-        }
-
-        return 0;
+        return $this->startOf($this->children());
     }
 
     public function end(): int
     {
-        return $this->endOf(array_reverse(iterator_to_array($this->getChildElements(), false)));
+        return $this->endOf(array_reverse(iterator_to_array($this->children(), false)));
     }
 
     /**
@@ -155,5 +127,44 @@ abstract class Node implements Element
     private function length(): int
     {
         return $this->end() - $this->start();
+    }
+
+    /**
+     * @param iterable<Element|array<Element>> $elements
+     */
+    private function startOf(iterable $elements): int
+    {
+        foreach ($elements as $element) {
+            if ($element instanceof Element) {
+                return $element->start();
+            }
+            if (is_array($element)) {
+                return $this->startOf($element);
+            }
+        }
+
+        return 0;
+    }
+
+    /**
+     * @return Generator<Token>
+     * @param iterable<Element|array<Element>> $nodes
+     */
+    private function findTokens(iterable $nodes): Generator
+    {
+        foreach ($nodes as $node) {
+            if ($node instanceof Token) {
+                yield $node;
+                continue;
+            }
+
+            if ($node instanceof Node) {
+                yield from $node->tokens();
+            }
+
+            if (is_array($node)) {
+                yield from $this->findTokens($node);
+            }
+        }
     }
 }

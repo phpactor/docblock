@@ -38,25 +38,6 @@ class ElementList extends Node implements IteratorAggregate
     }
 
     /**
-     * @template T
-     * @param class-string<T> $classFqn
-     * @return ElementList<T>
-     */
-    public function byClass(string $classFqn): ElementList
-    {
-        return new self(array_filter($this->elements, function (Element $element) use ($classFqn): bool {
-            return get_class($element) === $classFqn;
-        }));
-    }
-
-    public function byName(string $name): ElementList
-    {
-        return new self(array_filter($this->elements, function (Element $element) use ($classFqn): bool {
-            return get_class($element) === $classFqn;
-        }));
-    }
-
-    /**
      * @return Element[]
      */
     public function toArray(): array

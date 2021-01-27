@@ -17,7 +17,7 @@ class NodeTestCase extends TestCase
     public function testNode(string $doc, ?Closure $assertion = null): void
     {
         $node = $this->parse($doc);
-        $nodes = iterator_to_array($node->getDescendantElements(), false);
+        $nodes = iterator_to_array($node->selfAndDescendantElements(), false);
         self::assertIsIterable($nodes);
         self::assertEquals(0, $node->start(), 'Start offset');
         self::assertEquals(strlen($doc), $node->end(), 'End offset');
@@ -34,7 +34,7 @@ class NodeTestCase extends TestCase
     {
         $node = $this->parse($doc);
         $partial = [];
-        foreach ($node->getChildElements() as $child) {
+        foreach ($node->children() as $child) {
             $partial[] = $child->toString();
             $node = $this->parse(implode(' ', $partial));
             self::assertInstanceOf(Element::class, $node);

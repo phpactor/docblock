@@ -42,7 +42,7 @@ final class TestPrinter implements Printer
     {
         $this->indent++;
         $out = sprintf('%s: = ', $node->shortName());
-        foreach ($node->getChildElements() as $child) {
+        foreach ($node->children() as $child) {
             $out .= $this->printElement($child);
         }
         $this->indent--;

@@ -20,13 +20,4 @@ class Docblock extends Node
     {
         $this->children = new ElementList($children);
     }
-
-    /**
-     * @return ElementList<Element>
-     */
-    public function children(): ElementList
-
-    {
-        return $this->children;
-    }
 }
