@@ -2,6 +2,8 @@
 
 namespace Phpactor\Docblock\Ast;
 
+use Generator;
+
 class Docblock extends Node
 {
     protected const CHILD_NAMES = [
@@ -19,6 +21,39 @@ class Docblock extends Node
     public function __construct(array $children)
     {
         $this->children = new ElementList($children);
+    }
+
+    /**
+     * @param class-string $tagFqn
+     */
+    public function hasTag(string $tagFqn): bool
+    {
+        foreach ($this->tags() as $tag) {
+            if ($tag instanceof $tagFqn) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @template T
+     * @param ?class-string<T> $tagFqn
+     * @return Generator<T>
+     */
+    public function tags(?string $tagFqn = null): Generator
+    {
+        foreach ($this->children as $child) {
+            if ($tagFqn && $child instanceof $tagFqn) {
+                yield $child;
+                continue;
+            }
+            if ($child instanceof TagNode) {
+                yield $child;
+                continue;
+            }
+        }
     }
 
     public function prose(): string

@@ -147,7 +147,7 @@ abstract class Node implements Element
     {
         $result = [];
         foreach ($nodes as $child) {
-            if (is_array($child)) {
+            if (is_iterable($child)) {
                 yield from $this->traverseNodes($child);
                 continue;
             }
@@ -178,6 +178,10 @@ abstract class Node implements Element
                 return $this->endOf(array_reverse($element));
             }
 
+            if (is_iterable($element)) {
+                return $this->endOf(array_reverse(iterator_to_array($element)));
+            }
+
             return $element->end();
         }
 
@@ -198,7 +202,7 @@ abstract class Node implements Element
             if ($element instanceof Element) {
                 return $element->start();
             }
-            if (is_array($element)) {
+            if (is_iterable($element)) {
                 return $this->startOf($element);
             }
         }
@@ -222,7 +226,7 @@ abstract class Node implements Element
                 yield from $node->tokens();
             }
 
-            if (is_array($node)) {
+            if (is_iterable($node)) {
                 yield from $this->findTokens($node);
             }
         }

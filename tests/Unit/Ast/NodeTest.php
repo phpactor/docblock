@@ -4,6 +4,7 @@ namespace Phpactor\Docblock\Tests\Unit\Ast;
 
 use Generator;
 use Phpactor\Docblock\Ast\Docblock;
+use Phpactor\Docblock\Ast\Tag\DeprecatedTag;
 use Phpactor\Docblock\Ast\Tag\MethodTag;
 use Phpactor\Docblock\Ast\Tag\ReturnTag;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -65,7 +66,15 @@ class NodeTest extends NodeTestCase
                 self::assertFalse($methodNode->hasChild(MethodTag::class));
             }
         ];
+
         yield [ '@deprecated This is deprecated'];
+        yield 'deprecated' => [
+            '/** @deprecated This is deprecated */',
+            function (Docblock $block) {
+                self::assertTrue($block->hasTag(DeprecatedTag::class));
+            }
+        ];
+
         yield [ '/** This is docblock @deprecated Foo */'];
         yield [ '@mixin Foo\Bar'];
         yield [ '@param string $foo This is a parameter'];
