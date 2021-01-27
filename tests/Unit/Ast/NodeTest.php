@@ -3,6 +3,7 @@
 namespace Phpactor\Docblock\Tests\Unit\Ast;
 
 use Generator;
+use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Tag\MethodTag;
 use Phpactor\Docblock\Ast\Tag\ReturnTag;
 use Phpactor\Docblock\Ast\Type\ClassNode;
@@ -20,6 +21,7 @@ class NodeTest extends NodeTestCase
     public function provideNode(): Generator
     {
         yield from $this->provideApiTest();
+        yield from $this->provideDocblock();
         yield from $this->provideTags();
         yield from $this->provideTypes();
     }
@@ -99,6 +101,34 @@ class NodeTest extends NodeTestCase
             '@return Foo<Bar<string, int>, Baz|Bar>',
             function (ReturnTag $return): void {
                 self::assertInstanceOf(GenericNode::class, $return->type);
+            }
+        ];
+    }
+
+    private function provideDocblock()
+    {
+        yield 'docblock' => [
+            <<<'EOT'
+/**
+ * This is a docblock
+ * With some text - 
+ * and maybe some 
+ * ```
+ * Markdown
+ * ```
+ * @param This $should not be included
+ */
+EOT
+            , function (Docblock $docblock): void {
+                self::assertEquals(<<<'EOT'
+This is a docblock
+With some text - 
+and maybe some 
+```
+Markdown
+```
+EOT
+, $docblock->prose());
             }
         ];
     }

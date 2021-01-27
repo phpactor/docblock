@@ -1,10 +1,10 @@
 /**
- * @method static Foobar foobar() 
+ * @method static Foobar foobar()
  */
 ---
 Docblock: = 
  ElementList: = /**
  * 
   MethodTag: = @methodstatic
-   ClassNode: = Foobarfoobar() 
+   ClassNode: = Foobarfoobar()
  */

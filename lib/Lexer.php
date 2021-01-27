@@ -13,11 +13,12 @@ final class Lexer
     private const PATTERNS = [
         '/\*+', // start tag
         '\*/', // close tag
-        '\*', // leading tag
-        '\[\]', //tag
+        ' {1}\* {1}',
+        '\[\]', // list
         '\?', //tag
         '@\w+', //tag
-        '\s+', // whitespace
+        '\R', // newline
+        ' *', // space
         ',', // comma
         '\|', // bar (union)
         '=', // equals
@@ -97,7 +98,7 @@ final class Lexer
             return Token::T_PHPDOC_CLOSE;
         }
 
-        if ($prevChunk && 0 === strpos($prevChunk[0], "\n") && trim($value) === '*') {
+        if (trim($value) === '*') {
             return Token::T_PHPDOC_LEADING;
         }
 

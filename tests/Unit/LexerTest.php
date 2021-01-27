@@ -42,19 +42,18 @@ class LexerTest extends TestCase
 
             ,[
                 [Token::T_PHPDOC_OPEN, '/**'],
-                [Token::T_WHITESPACE, "\n "],
-                [Token::T_PHPDOC_LEADING, '*'],
-                [Token::T_WHITESPACE, ' '],
+                [Token::T_WHITESPACE, "\n"],
+                [Token::T_PHPDOC_LEADING, ' * '],
                 [Token::T_LABEL, 'Hello'],
                 [Token::T_WHITESPACE, ' '],
                 [Token::T_LABEL, 'this'],
                 [Token::T_WHITESPACE, ' '],
                 [Token::T_LABEL, 'is'],
-                [Token::T_WHITESPACE, "\n "],
-                [Token::T_PHPDOC_LEADING, '*'],
-                [Token::T_WHITESPACE, ' '],
+                [Token::T_WHITESPACE, "\n"],
+                [Token::T_PHPDOC_LEADING, ' * '],
                 [Token::T_LABEL, 'Multi'],
-                [Token::T_WHITESPACE, "\n "],
+                [Token::T_WHITESPACE, "\n"],
+                [Token::T_WHITESPACE, " "],
                 [Token::T_PHPDOC_CLOSE, '*/'],
             ]
         ];
