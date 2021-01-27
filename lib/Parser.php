@@ -158,7 +158,7 @@ final class Parser
 
     private function parseProperty(): PropertyTag
     {
-        $this->tokens->chomp(Token::T_TAG);
+        $tag = $this->tokens->chomp(Token::T_TAG);
         $type = $name = null;
         if ($this->ifType()) {
             $type = $this->parseTypes();
@@ -167,7 +167,7 @@ final class Parser
             $name = $this->tokens->chomp();
         }
 
-        return new PropertyTag($type, $name);
+        return new PropertyTag($tag, $type, $name);
     }
 
     private function parseTypes(): ?TypeNode

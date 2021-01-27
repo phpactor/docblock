@@ -8,29 +8,31 @@ use Phpactor\Docblock\Ast\TypeNode;
 
 class PropertyTag extends TagNode
 {
+    protected const CHILD_NAMES = [
+        'tag',
+        'type',
+        'name',
+    ];
+
     /**
      * @var TypeNode|null
      */
-    private $type;
+    public $type;
 
     /**
      * @var Token|null
      */
-    private $name;
+    public $name;
 
-    public function __construct(?TypeNode $type, ?Token $name)
+    /**
+     * @var Token
+     */
+    public $tag;
+
+    public function __construct(Token $tag, ?TypeNode $type, ?Token $name)
     {
         $this->type = $type;
         $this->name = $name;
-    }
-
-    public function name(): ?Token
-    {
-        return $this->name;
-    }
-
-    public function type(): ?TypeNode
-    {
-        return $this->type;
+        $this->tag = $tag;
     }
 }

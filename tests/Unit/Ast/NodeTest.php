@@ -47,6 +47,7 @@ class NodeTest extends NodeTestCase
         yield ['@param Baz\Bar $foobar This is a parameter'];
         yield ['@var Baz\Bar $foobar'];
         yield ['@return Baz\Bar'];
+        yield ['@property Baz\Bar $foobar'];
     }
 
     /**
