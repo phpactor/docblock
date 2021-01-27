@@ -3,10 +3,7 @@
 namespace Phpactor\Docblock\Tests\Unit\Ast;
 
 use Generator;
-use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Ast\Tag\MethodTag;
-use Phpactor\Docblock\Ast\Node;
-use Phpactor\Docblock\Ast\Tag\ParamTag;
 use Phpactor\Docblock\Ast\Tag\ReturnTag;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
@@ -34,7 +31,7 @@ class NodeTest extends NodeTestCase
         yield [ '@param string $foo This is a parameter'];
         yield [
             '@method static Baz\Bar bar(string $boo, string $baz)',
-            function (MethodTag $methodNode) {
+            function (MethodTag $methodNode): void {
                 self::assertEquals('@method static Baz\Bar bar(string $boo, string $baz)', $methodNode->toString());
                 self::assertEquals('string $boo, string $baz', $methodNode->parameters->toString());
                 self::assertEquals('static', $methodNode->static->value);
@@ -58,7 +55,7 @@ class NodeTest extends NodeTestCase
         yield 'scalar' => ['string'];
         yield 'union' => [
             '@return string|int|bool|float|mixed',
-            function (ReturnTag $return) {
+            function (ReturnTag $return): void {
                 $type = $return->type;
                 assert($type instanceof UnionNode);
                 self::assertInstanceOf(UnionNode::class, $type);
@@ -68,16 +65,15 @@ class NodeTest extends NodeTestCase
         ];
         yield 'list' => [
             '@return Foo[]',
-            function (ReturnTag $return) {
+            function (ReturnTag $return): void {
                 self::assertInstanceOf(ListNode::class, $return->type);
             }
         ];
         yield 'generic' => [
             '@return Foo<Bar<string, int>, Baz|Bar>',
-            function (ReturnTag $return) {
+            function (ReturnTag $return): void {
                 self::assertInstanceOf(GenericNode::class, $return->type);
             }
         ];
     }
-
 }

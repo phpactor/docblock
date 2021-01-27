@@ -2,32 +2,10 @@
 
 namespace Phpactor\Docblock\Printer;
 
-use Phpactor\Docblock\Ast\Tag\DeprecatedTag;
-use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Element;
-use Phpactor\Docblock\Ast\Tag\MethodTag;
-use Phpactor\Docblock\Ast\Tag\MixinTag;
-use Phpactor\Docblock\Ast\ParameterList;
-use Phpactor\Docblock\Ast\Tag\ParameterTag;
-use Phpactor\Docblock\Ast\Tag\PropertyTag;
-use Phpactor\Docblock\Ast\Tag\ReturnTag;
-use Phpactor\Docblock\Ast\TextNode;
-use Phpactor\Docblock\Ast\TypeList;
-use Phpactor\Docblock\Ast\TypeNode;
 use Phpactor\Docblock\Ast\Node;
-use Phpactor\Docblock\Ast\Tag\ParamTag;
-use Phpactor\Docblock\Ast\Type\GenericNode;
-use Phpactor\Docblock\Ast\Type\ListNode;
-use Phpactor\Docblock\Ast\Type\NullNode;
-use Phpactor\Docblock\Ast\Type\NullableNode;
-use Phpactor\Docblock\Ast\Type\UnionNode;
-use Phpactor\Docblock\Ast\UnknownTag;
-use Phpactor\Docblock\Ast\ValueNode;
-use Phpactor\Docblock\Ast\Tag\VarTag;
-use Phpactor\Docblock\Ast\VariableNode;
 use Phpactor\Docblock\Printer;
 use Phpactor\Docblock\Ast\Token;
-use RuntimeException;
 
 final class TestPrinter implements Printer
 {
@@ -72,5 +50,4 @@ final class TestPrinter implements Printer
     {
         return "\n".str_repeat(' ', $this->indent);
     }
-
 }

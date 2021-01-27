@@ -2,8 +2,6 @@
 
 namespace Phpactor\Docblock\Ast;
 
-use Phpactor\Docblock\Ast\Token;
-
 class UnknownTag extends TagNode
 {
     /**

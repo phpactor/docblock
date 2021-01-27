@@ -2,8 +2,6 @@
 
 namespace Phpactor\Docblock\Ast;
 
-use Phpactor\Docblock\Ast\Element;
-
 final class Token implements Element
 {
     public const T_PHPDOC_OPEN = 'PHPDOC_OPEN';

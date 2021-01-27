@@ -2,8 +2,6 @@
 
 namespace Phpactor\Docblock\Ast;
 
-use Phpactor\Docblock\Ast\Token;
-
 class VariableNode extends Node
 {
     protected const CHILD_NAMES = [
