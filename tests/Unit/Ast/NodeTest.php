@@ -39,7 +39,7 @@ class NodeTest extends NodeTestCase
                 self::assertTrue($methodNode->hasDescendant(ScalarNode::class));
                 self::assertFalse($methodNode->hasDescendant(MethodNode::class));
                 self::assertCount(2, iterator_to_array($methodNode->descendantElements(ScalarNode::class)));
-                self::assertInstanceOf(ScalarNode::class,  $methodNode->firstDescendant(ScalarNode::class));
+                self::assertInstanceOf(ScalarNode::class, $methodNode->firstDescendant(ScalarNode::class));
             }
         ];
     }
