@@ -5,9 +5,12 @@ namespace Phpactor\Docblock\Tests\Unit\Ast;
 use Generator;
 use Phpactor\Docblock\Ast\Tag\MethodTag;
 use Phpactor\Docblock\Ast\Tag\ReturnTag;
+use Phpactor\Docblock\Ast\Type\ClassNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
 use Phpactor\Docblock\Ast\Type\ListNode;
+use Phpactor\Docblock\Ast\Type\ScalarNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
+use Prophecy\Doubler\Generator\Node\MethodNode;
 
 class NodeTest extends NodeTestCase
 {
@@ -16,6 +19,7 @@ class NodeTest extends NodeTestCase
      */
     public function provideNode(): Generator
     {
+        yield from $this->provideApiTest();
         yield from $this->provideTags();
         yield from $this->provideTypes();
     }
@@ -23,12 +27,28 @@ class NodeTest extends NodeTestCase
     /**
      * @return Generator<mixed>
      */
+    private function provideApiTest(): Generator
+    {
+        yield [
+            '@method static Baz\Bar bar(string $boo, string $baz)',
+            function (MethodTag $methodNode): void {
+                self::assertTrue($methodNode->hasChild(ClassNode::class));
+                self::assertFalse($methodNode->hasChild(MethodTag::class));
+                self::assertCount(7, iterator_to_array($methodNode->children()));
+                self::assertCount(1, iterator_to_array($methodNode->children(ClassNode::class)));
+                self::assertTrue($methodNode->hasDescendant(ScalarNode::class));
+                self::assertFalse($methodNode->hasDescendant(MethodNode::class));
+                self::assertCount(2, iterator_to_array($methodNode->descendantElements(ScalarNode::class)));
+                self::assertInstanceOf(ScalarNode::class,  $methodNode->firstDescendant(ScalarNode::class));
+            }
+        ];
+    }
+
+    /**
+     * @return Generator<mixed>
+     */
     private function provideTags()
     {
-        yield [ '@deprecated This is deprecated'];
-        yield [ '/** This is docblock @deprecated Foo */'];
-        yield [ '@mixin Foo\Bar'];
-        yield [ '@param string $foo This is a parameter'];
         yield [
             '@method static Baz\Bar bar(string $boo, string $baz)',
             function (MethodTag $methodNode): void {
@@ -39,8 +59,14 @@ class NodeTest extends NodeTestCase
                 self::assertEquals('bar', $methodNode->name->toString());
                 self::assertEquals('(', $methodNode->parenOpen->toString());
                 self::assertEquals(')', $methodNode->parenClose->toString());
+                self::assertTrue($methodNode->hasChild(ClassNode::class));
+                self::assertFalse($methodNode->hasChild(MethodTag::class));
             }
         ];
+        yield [ '@deprecated This is deprecated'];
+        yield [ '/** This is docblock @deprecated Foo */'];
+        yield [ '@mixin Foo\Bar'];
+        yield [ '@param string $foo This is a parameter'];
         yield ['@param Baz\Bar $foobar This is a parameter'];
         yield ['@var Baz\Bar $foobar'];
         yield ['@return Baz\Bar'];

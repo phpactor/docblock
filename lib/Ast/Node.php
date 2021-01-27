@@ -49,32 +49,93 @@ abstract class Node implements Element
     /**
      * @return Generator<Element>
      */
-    public function descendantElements(): Generator
+    public function descendantElements(?string $elementFqn = null): Generator
     {
-        yield from $this->traverseNodes($this->children());
+        if (null === $elementFqn) {
+            yield from $this->traverseNodes($this->children());
+            return;
+        }
+
+        foreach ($this->traverseNodes($this->children()) as $element) {
+            if ($element instanceof $elementFqn) {
+                yield $element;
+            }
+        }
+    }
+
+    public function hasDescendant(string $elementFqn): bool
+    {
+        foreach ($this->descendantElements($elementFqn) as $element) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
+     * @template T of Element
+     * @param class-string<T> $elementFqn
+     * @return T|null
+     */
+    public function firstDescendant(string $elementFqn): ?Element
+    {
+        foreach ($this->descendantElements($elementFqn) as $element) {
+            return $element;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param class-string<Element> $elementFqn
      * @return Generator<Element>
      */
-    public function children(): Generator
+    public function children(?string $elementFqn = null): Generator
     {
+        if (!$elementFqn) {
+            foreach (static::CHILD_NAMES as $name) {
+                $child = $this->$name;
+                if (null !== $child) {
+                    yield $child;
+                }
+            }
+
+            return;
+        }
+
         foreach (static::CHILD_NAMES as $name) {
             $child = $this->$name;
-            if (null !== $child) {
+            if ($child instanceof $elementFqn) {
                 yield $child;
             }
         }
     }
 
+    /**
+     * Return the bytes offset for the start of this node.
+     */
     public function start(): int
     {
         return $this->startOf($this->children());
     }
 
+    /**
+     * Return the bytes offset for the end of this node.
+     */
     public function end(): int
     {
         return $this->endOf(array_reverse(iterator_to_array($this->children(), false)));
+    }
+
+    public function hasChild(string $elementFqn): bool
+    {
+        foreach ($this->children() as $child) {
+            if ($child instanceof $elementFqn) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
