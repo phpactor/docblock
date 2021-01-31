@@ -6,6 +6,7 @@ use Generator;
 use Phpactor\Docblock\Ast\Docblock;
 use Phpactor\Docblock\Ast\Tag\DeprecatedTag;
 use Phpactor\Docblock\Ast\Tag\MethodTag;
+use Phpactor\Docblock\Ast\Tag\PropertyTag;
 use Phpactor\Docblock\Ast\Tag\ReturnTag;
 use Phpactor\Docblock\Ast\Type\ClassNode;
 use Phpactor\Docblock\Ast\Type\GenericNode;
@@ -66,6 +67,12 @@ class NodeTest extends NodeTestCase
                 self::assertFalse($methodNode->hasChild(MethodTag::class));
             }
         ];
+        yield [
+            '@property Baz\Bar $foobar',
+            function (PropertyTag $property): void {
+                self::assertEquals('$foobar', $property->name->toString());t 
+            }
+        ];
 
         yield [ '@deprecated This is deprecated'];
         yield 'deprecated' => [
@@ -81,7 +88,6 @@ class NodeTest extends NodeTestCase
         yield ['@param Baz\Bar $foobar This is a parameter'];
         yield ['@var Baz\Bar $foobar'];
         yield ['@return Baz\Bar'];
-        yield ['@property Baz\Bar $foobar'];
     }
 
     /**
