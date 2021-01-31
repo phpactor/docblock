@@ -70,7 +70,7 @@ class NodeTest extends NodeTestCase
         yield [
             '@property Baz\Bar $foobar',
             function (PropertyTag $property): void {
-                self::assertEquals('$foobar', $property->name->toString());t 
+                self::assertEquals('$foobar', $property->name->toString());
             }
         ];
 
@@ -88,6 +88,7 @@ class NodeTest extends NodeTestCase
         yield ['@param Baz\Bar $foobar This is a parameter'];
         yield ['@var Baz\Bar $foobar'];
         yield ['@return Baz\Bar'];
+        yield ['@return $this'];
     }
 
     /**

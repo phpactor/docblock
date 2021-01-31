@@ -22,6 +22,7 @@ use Phpactor\Docblock\Ast\Type\ListNode;
 use Phpactor\Docblock\Ast\Type\NullNode;
 use Phpactor\Docblock\Ast\Type\NullableNode;
 use Phpactor\Docblock\Ast\Type\ScalarNode;
+use Phpactor\Docblock\Ast\Type\ThisNode;
 use Phpactor\Docblock\Ast\Type\UnionNode;
 use Phpactor\Docblock\Ast\UnknownTag;
 use Phpactor\Docblock\Ast\ValueNode;
@@ -346,6 +347,13 @@ final class Parser
 
         if ($this->tokens->if(Token::T_LABEL)) {
             $type = $this->parseTypes();
+        }
+
+        if ($this->tokens->if(Token::T_VARIABLE)) {
+            $variable = $this->tokens->chomp(Token::T_VARIABLE);
+            if ($variable->value === '$this') {
+                $type = new ThisNode($variable);
+            }
         }
 
         return new ReturnTag($tag, $type, $this->parseText());
