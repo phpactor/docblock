@@ -49,7 +49,7 @@ class Docblock extends Node
                 yield $child;
                 continue;
             }
-            if ($child instanceof TagNode) {
+            if (!$tagFqn && $child instanceof TagNode) {
                 yield $child;
                 continue;
             }
