@@ -39,7 +39,7 @@ class Docblock extends Node
 
     /**
      * @template T
-     * @param ?class-string<T> $tagFqn
+     * @param class-string<T>|null $tagFqn
      * @return Generator<T>
      */
     public function tags(?string $tagFqn = null): Generator
