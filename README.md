@@ -1,6 +1,8 @@
 Docblock Parser
 ===============
 
+**DEPRECATED**: See https://github.com/phpactor/docblock-parser for a better solution.
+
 Sub-standard docblock parser.
 
 ```php
