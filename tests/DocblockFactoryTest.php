@@ -109,11 +109,11 @@ class DocblockFactoryTest extends TestCase
             ],
             'link without label' => [
                 '/** @link https://example.org */',
-                Docblock::fromTags([ new LinkTag("https://example.org", null) ])
+                Docblock::fromTags([ new LinkTag('https://example.org', null) ])
             ],
             'link with label' => [
                 '/** @link https://example.org Example */',
-                Docblock::fromTags([ new LinkTag("https://example.org", "Example") ])
+                Docblock::fromTags([ new LinkTag('https://example.org', 'Example') ])
             ]
         ];
     }
