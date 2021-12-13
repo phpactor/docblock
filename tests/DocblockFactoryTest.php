@@ -4,16 +4,17 @@ namespace Phpactor\Docblock\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Phpactor\Docblock\Docblock;
-use Phpactor\Docblock\Tag\DeprecatedTag;
-use Phpactor\Docblock\Tag\MixinTag;
-use Phpactor\Docblock\Tag\PropertyTag;
-use Phpactor\Docblock\Tag\VarTag;
 use Phpactor\Docblock\DocblockFactory;
-use Phpactor\Docblock\Tag\ParamTag;
-use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\DocblockTypes;
-use Phpactor\Docblock\Tag\ReturnTag;
 use Phpactor\Docblock\InheritTag;
+use Phpactor\Docblock\Tag\DeprecatedTag;
+use Phpactor\Docblock\Tag\LinkTag;
+use Phpactor\Docblock\Tag\MethodTag;
+use Phpactor\Docblock\Tag\MixinTag;
+use Phpactor\Docblock\Tag\ParamTag;
+use Phpactor\Docblock\Tag\PropertyTag;
+use Phpactor\Docblock\Tag\ReturnTag;
+use Phpactor\Docblock\Tag\VarTag;
 
 class DocblockFactoryTest extends TestCase
 {
@@ -106,6 +107,14 @@ class DocblockFactoryTest extends TestCase
                 '/** @mixin Foobar\\Barfoo */',
                 Docblock::fromTags([ new MixinTag('Foobar\\Barfoo') ]),
             ],
+            'link without label' => [
+                '/** @link https://example.org */',
+                Docblock::fromTags([ new LinkTag("https://example.org", null) ])
+            ],
+            'link with label' => [
+                '/** @link https://example.org Example */',
+                Docblock::fromTags([ new LinkTag("https://example.org", "Example") ])
+            ]
         ];
     }
 }

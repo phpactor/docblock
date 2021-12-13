@@ -5,6 +5,7 @@ namespace Phpactor\Docblock;
 use Phpactor\Docblock\Parser\MethodParser;
 use Phpactor\Docblock\Parser\TypesParser;
 use Phpactor\Docblock\Tag\DeprecatedTag;
+use Phpactor\Docblock\Tag\LinkTag;
 use Phpactor\Docblock\Tag\MethodTag;
 use Phpactor\Docblock\Tag\MixinTag;
 use Phpactor\Docblock\Tag\ParamTag;
@@ -63,6 +64,9 @@ class DocblockFactory
                         break;
                     case 'return':
                         $tags[] = $this->createReturnTag($metadata);
+                        break;
+                    case 'link':
+                        $tags[] = $this->createLinkTag($metadata);
                         break;
                     case 'inheritdoc':
                         $tags[] = new InheritTag();
@@ -130,6 +134,17 @@ class DocblockFactory
     private function createDeprecatedTag(array $metadata): DeprecatedTag
     {
         return new DeprecatedTag(implode(' ', $metadata));
+    }
+
+    /**
+     * @param string[] $metadata
+     */
+    private function createLinkTag(array $metadata): LinkTag
+    {
+        $link = array_shift($metadata);
+        $label = $metadata[0] ?? null;
+
+        return new LinkTag($link, $label);
     }
 
     private function createMixinTag(array $metadata): ?MixinTag
