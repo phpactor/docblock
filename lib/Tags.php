@@ -5,6 +5,7 @@ namespace Phpactor\Docblock;
 use IteratorAggregate;
 use Countable;
 use ArrayIterator;
+use Traversable;
 
 final class Tags implements IteratorAggregate, Countable
 {
@@ -22,7 +23,7 @@ final class Tags implements IteratorAggregate, Countable
         return new self($tags);
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->tags);
     }
@@ -38,7 +39,7 @@ final class Tags implements IteratorAggregate, Countable
     /**
      * {@inheritDoc}
      */
-    public function count()
+    public function count(): int
     {
         return count($this->tags);
     }

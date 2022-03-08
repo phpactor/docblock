@@ -127,6 +127,7 @@ class DocblockFactory
         }
 
         $propertyName = array_shift($metadata);
+        $propertyName = $propertyName ?? '';
 
         return new PropertyTag($this->typesParser->parseTypes($types), ltrim($propertyName, '$'));
     }

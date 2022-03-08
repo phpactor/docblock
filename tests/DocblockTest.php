@@ -3,6 +3,7 @@
 namespace Phpactor\Docblock\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Phpactor\Docblock\Tag;
 use Phpactor\Docblock\Docblock;
@@ -10,6 +11,8 @@ use Phpactor\Docblock\Tags;
 
 class DocblockTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var ObjectProphecy|Tag
      */

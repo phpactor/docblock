@@ -4,6 +4,7 @@ namespace Phpactor\Docblock;
 
 use IteratorAggregate;
 use ArrayIterator;
+use Traversable;
 
 final class DocblockTypes implements IteratorAggregate
 {
@@ -33,7 +34,7 @@ final class DocblockTypes implements IteratorAggregate
         return new self($docblocktypes);
     }
 
-    public function getIterator()
+    public function getIterator(): Traversable
     {
         return new ArrayIterator($this->docblocktypes);
     }
